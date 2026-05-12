@@ -1,0 +1,288 @@
+.home-cinematic-hero {
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  margin-left: calc(50% - 50vw);
+  margin-top: -132px;
+  padding: 0 24px 42px;
+  display: flex;
+  align-items: stretch;
+  overflow: clip;
+  isolation: isolate;
+}
+
+.home-cinematic-backdrop,
+.home-cinematic-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.home-cinematic-backdrop {
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(26, 28, 30, 0.08) 0%,
+      rgba(26, 28, 30, 0.18) 24%,
+      rgba(26, 28, 30, 0.44) 58%,
+      rgba(26, 28, 30, 0.9) 82%,
+      #1a1c1e 100%
+    ),
+    url("https://abrakadabra.fun/uploads/posts/2022-03/1646341724_2-abrakadabra-fun-p-ritualnii-fon-2.jpg");
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-blend-mode: multiply;
+  filter: saturate(0.48) contrast(0.92) brightness(0.88);
+  transform: scale(1.03);
+}
+
+.home-cinematic-grain {
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 120px 120px;
+  opacity: 0.12;
+  mix-blend-mode: soft-light;
+}
+
+.home-cinematic-hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 34vh;
+  background: linear-gradient(180deg, transparent 0%, #1a1c1e 92%);
+  pointer-events: none;
+}
+
+.home-cinematic-nav-space {
+  width: 100%;
+  min-height: 112px;
+}
+
+.home-cinematic-inner {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 1240px);
+  margin: 0 auto;
+  padding: 154px 24px 112px;
+  display: grid;
+  align-content: center;
+  justify-items: start;
+}
+
+.home-cinematic-kicker {
+  margin-left: 8vw;
+  color: rgba(236, 229, 217, 0.8);
+  font-size: 11px;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+}
+
+.home-cinematic-title {
+  display: grid;
+  gap: 14px;
+  max-width: 10ch;
+  margin: 28px 0 0 13vw;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  font-size: clamp(4rem, 10vw, 8.8rem);
+  font-weight: 400;
+  line-height: 0.88;
+  letter-spacing: 0.14em;
+  color: #ece5d9;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.home-cinematic-title span {
+  max-width: 15ch;
+  font-size: clamp(0.92rem, 1.7vw, 1.2rem);
+  line-height: 1.45;
+  letter-spacing: 0.32em;
+  color: rgba(194, 184, 170, 0.9);
+}
+
+.home-cinematic-lead {
+  max-width: 30ch;
+  margin: 34px 0 0 24vw;
+  color: rgba(236, 229, 217, 0.74);
+  font-size: clamp(1rem, 1.8vw, 1.24rem);
+  line-height: 1.7;
+}
+
+.home-cinematic-actions {
+  margin: 38px 0 0 24vw;
+}
+
+.home-action-link {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+  color: #ece5d9;
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.home-action-link::before,
+.home-action-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  transform-origin: left center;
+  transition: transform 0.45s ease, opacity 0.45s ease;
+}
+
+.home-action-link::before {
+  width: 100%;
+  background: rgba(236, 229, 217, 0.24);
+}
+
+.home-action-link::after {
+  width: 100%;
+  background: rgba(236, 229, 217, 0.92);
+  transform: scaleX(0.16);
+}
+
+.home-action-link:hover::after,
+.home-action-link:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.home-scroll-indicator {
+  position: absolute;
+  left: 50%;
+  bottom: 34px;
+  z-index: 1;
+  width: 20px;
+  height: 86px;
+  margin-left: -10px;
+  display: grid;
+  place-items: center;
+}
+
+.home-scroll-indicator span {
+  position: relative;
+  width: 1px;
+  height: 100%;
+  background: rgba(236, 229, 217, 0.18);
+  overflow: hidden;
+}
+
+.home-scroll-indicator span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -24px;
+  width: 1px;
+  height: 24px;
+  background: rgba(236, 229, 217, 0.96);
+  animation: home-scroll-line 1.8s ease-in-out infinite;
+}
+
+.home-reveal {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  animation: home-fade-up 1s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+
+.home-reveal-delay-1 {
+  animation-delay: 0.12s;
+}
+
+.home-reveal-delay-2 {
+  animation-delay: 0.24s;
+}
+
+.home-reveal-delay-3 {
+  animation-delay: 0.38s;
+}
+
+.home-reveal-delay-4 {
+  animation-delay: 0.52s;
+}
+
+@keyframes home-fade-up {
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes home-scroll-line {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(110px);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 960px) {
+  .home-cinematic-hero {
+    margin-top: -118px;
+    padding-inline: 18px;
+  }
+
+  .home-cinematic-inner {
+    padding: 144px 12px 98px;
+  }
+
+  .home-cinematic-kicker,
+  .home-cinematic-title,
+  .home-cinematic-lead,
+  .home-cinematic-actions {
+    margin-left: 0;
+  }
+
+  .home-cinematic-title {
+    max-width: 12ch;
+  }
+}
+
+@media (max-width: 640px) {
+  .home-cinematic-hero {
+    min-height: 100svh;
+    margin-top: -110px;
+    padding-inline: 12px;
+  }
+
+  .home-cinematic-backdrop {
+    background-attachment: scroll;
+  }
+
+  .home-cinematic-inner {
+    padding: 138px 6px 94px;
+  }
+
+  .home-cinematic-kicker {
+    letter-spacing: 0.28em;
+  }
+
+  .home-cinematic-title {
+    gap: 10px;
+    font-size: clamp(3.2rem, 18vw, 5.2rem);
+    letter-spacing: 0.1em;
+  }
+
+  .home-cinematic-title span,
+  .home-cinematic-lead,
+  .home-action-link {
+    letter-spacing: 0.18em;
+  }
+
+  .home-scroll-indicator {
+    bottom: 18px;
+    height: 64px;
+  }
+}

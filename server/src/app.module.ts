@@ -5,7 +5,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { TasksModule } from './tasks/tasks.module';
 
 @Module({
   imports: [
@@ -31,7 +30,6 @@ import { TasksModule } from './tasks/tasks.module';
     }),
     UsersModule,
     AuthModule,
-    TasksModule,
   ],
   controllers: [AppController],
   providers: [AppService],
