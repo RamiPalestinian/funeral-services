@@ -1,0 +1,219 @@
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  padding: 16px 20px 0;
+}
+
+.site-nav {
+  width: min(100%, var(--container-width));
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 18px;
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015)),
+    var(--bg-panel);
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(18px);
+}
+
+.site-header-home {
+  position: sticky;
+}
+
+.site-nav-home {
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.site-nav-home .nav-brand-mark,
+.site-nav-home .nav-hotline span {
+  color: rgba(236, 229, 217, 0.72);
+}
+
+.site-nav-home .nav-brand-copy,
+.site-nav-home .nav-hotline strong {
+  color: #f3ede2;
+}
+
+.site-nav-home .navlink {
+  border-color: transparent;
+  background: transparent;
+  color: rgba(236, 229, 217, 0.78);
+  box-shadow: none;
+}
+
+.site-nav-home .navlink:hover {
+  background: transparent;
+  border-color: transparent;
+  color: #f3ede2;
+  box-shadow: none;
+}
+
+.site-nav-home .navlink-accent {
+  position: relative;
+  color: #f3ede2;
+}
+
+.site-nav-home .navlink-accent::after {
+  content: "";
+  position: absolute;
+  left: 15px;
+  right: 15px;
+  bottom: 8px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0.18);
+  transform-origin: left center;
+  transition: transform 0.35s ease;
+}
+
+.site-nav-home .navlink-accent:hover::after {
+  transform: scaleX(1);
+}
+
+.nav-brand {
+  display: grid;
+  gap: 4px;
+  align-content: center;
+  padding-right: 14px;
+}
+
+.nav-brand-mark,
+.nav-hotline span {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-blue);
+  opacity: 0.78;
+}
+
+.nav-brand-copy {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.7rem;
+  color: var(--text-main);
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.navlink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: var(--text-muted);
+  border: 1px solid rgba(214, 204, 189, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.025);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 12px;
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.navlink:hover {
+  transform: translateY(-1px);
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(214, 204, 189, 0.14);
+  box-shadow: 0 10px 24px rgba(9, 11, 13, 0.18);
+}
+
+.navlink-accent {
+  background: linear-gradient(135deg, rgba(214, 199, 181, 0.92), rgba(184, 164, 143, 0.9));
+  color: #1d2022;
+  border-color: transparent;
+  font-weight: 700;
+}
+
+.navlink-accent:hover {
+  color: #1d2022;
+  background: linear-gradient(135deg, rgba(214, 199, 181, 1), rgba(184, 164, 143, 0.96));
+}
+
+.navlink.name {
+  cursor: default;
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(214, 204, 189, 0.08);
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 14px;
+}
+
+.navlink.name:hover {
+  transform: none;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: none;
+}
+
+.nav-hotline {
+  display: grid;
+  gap: 2px;
+  justify-items: end;
+  padding-left: 14px;
+}
+
+.nav-hotline strong {
+  color: var(--text-main);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.5rem;
+  line-height: 0.9;
+}
+
+@media (max-width: 980px) {
+  .site-nav {
+    grid-template-columns: 1fr;
+    justify-items: stretch;
+  }
+
+  .nav-brand,
+  .nav-hotline {
+    padding: 0;
+    justify-items: start;
+  }
+
+  .nav-links {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 700px) {
+  .site-header {
+    padding: 12px 12px 0;
+  }
+
+  .site-nav {
+    padding: 14px;
+  }
+
+  .navlink {
+    width: 100%;
+    justify-content: flex-start;
+    font-size: 14px;
+  }
+
+  .nav-links {
+    display: grid;
+  }
+}
