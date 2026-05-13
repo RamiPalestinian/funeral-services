@@ -1,6 +1,5 @@
 'use client';
 import { useState } from 'react';
-// import { useNavigate } from 'react-router';
 import { useRouter } from 'next/navigation';
 import './SignInForm.css';
 import { UserValidator } from '@/entities/user/model/UserValidator';
@@ -41,8 +40,7 @@ export default function SignInForm({ setUser } : SignInFormProps) {
     if (statusCode === 200) {
       setAccessToken(data?.accessToken || '');
       setUser(data?.user || null);
-      // navigate('/');
-      router.push('/');
+      router.push('/home');
       setSignInData(initialValue);
     } else {
       alert(error || 'Ошибка при входе в приложение');

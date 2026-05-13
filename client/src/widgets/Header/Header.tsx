@@ -35,13 +35,16 @@ export default function Header({ user, setUser }: HeaderProps) {
           {user?.id ? (
             <>
               <Link href="/home" className="navlink">
-                Панель
+                О нас
               </Link>
               <Link href="/ai" className="navlink">
                 Обращение
               </Link>
               <Link href="/personal" className="navlink">
                 Кабинет
+              </Link>
+                <Link href="/contact" className="navlink">
+                Контакты
               </Link>
               <Link
                 href="/auth"

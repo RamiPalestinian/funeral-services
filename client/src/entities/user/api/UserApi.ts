@@ -1,6 +1,6 @@
 import { axiosInstance } from '../../../shared/lib/axiosInstance';
 import type { AxiosError } from 'axios';
-import type { UserType } from '../model';
+import type { UserWithTokenType } from '../model';
 
 console.log('axiosInstance:', axiosInstance);
 
@@ -10,11 +10,6 @@ type AuthRequestData = {
   password: string;
 };
 
-type AuthResponseData = {
-  accessToken: string;
-  user: UserType;
-};
-
 type ApiResponse<T = undefined> = {
   statusCode?: number;
   data?: T;
@@ -22,47 +17,76 @@ type ApiResponse<T = undefined> = {
   message?: string;
 };
 
+type ErrorResponse = {
+  statusCode?: number;
+  error?: string;
+  message?: string | string[];
+};
+
+const getErrorMessage = (error: AxiosError<ErrorResponse>) => {
+  const responseMessage = error.response?.data?.message;
+
+  if (Array.isArray(responseMessage) && responseMessage.length > 0) {
+    return responseMessage.join(', ');
+  }
+
+  if (typeof responseMessage === 'string' && responseMessage.length > 0) {
+    return responseMessage;
+  }
+
+  if (typeof error.response?.data?.error === 'string' && error.response.data.error.length > 0) {
+    return error.response.data.error;
+  }
+
+  return 'Request failed';
+};
+
 export default class UserApi {
   static async register(userData: AuthRequestData) {
     try {
-      const response = await axiosInstance.post('/auth/register', userData);
+      const response = await axiosInstance.post<UserWithTokenType>('/auth/register', userData);
       return {
         statusCode: response.status,
-        data: response.data.data as AuthResponseData,
-        message: response.data.message
-      } as ApiResponse<AuthResponseData>;
+        data: response.data,
+      } as ApiResponse<UserWithTokenType>;
     } catch (error) {
-      const axiosError = error as AxiosError<ApiResponse>;
-      return axiosError.response?.data ?? { error: 'Request failed' };
+      const axiosError = error as AxiosError<ErrorResponse>;
+      return {
+        statusCode: axiosError.response?.status,
+        error: getErrorMessage(axiosError),
+      } as ApiResponse<UserWithTokenType>;
     }
   }
 
   static async login(userData: AuthRequestData) {
     try {
-      const response = await axiosInstance.post('/auth/login', userData);
+      const response = await axiosInstance.post<UserWithTokenType>('/auth/login', userData);
       return {
         statusCode: response.status,
-        data: response.data.data as AuthResponseData,
-        message: response.data.message
-      } as ApiResponse<AuthResponseData>;
+        data: response.data,
+      } as ApiResponse<UserWithTokenType>;
     } catch (error) {
-      const axiosError = error as AxiosError<ApiResponse>;
-      return axiosError.response?.data ?? { error: 'Request failed' };
+      const axiosError = error as AxiosError<ErrorResponse>;
+      return {
+        statusCode: axiosError.response?.status,
+        error: getErrorMessage(axiosError),
+      } as ApiResponse<UserWithTokenType>;
     }
   }
 
   static async refresh() {
     try {
-      const response = await axiosInstance.get('/auth/refresh');
-      // console.log('ответ от аксиос ==>  ', response)
+      const response = await axiosInstance.post<UserWithTokenType>('/auth/refresh');
       return {
         statusCode: response.status,
-        data: response.data.data as AuthResponseData,
-        message: response.data.message
-      } as ApiResponse<AuthResponseData>;
+        data: response.data,
+      } as ApiResponse<UserWithTokenType>;
     } catch (error) {
-      const axiosError = error as AxiosError<ApiResponse>;
-      return axiosError.response?.data ?? { error: 'Request failed' };
+      const axiosError = error as AxiosError<ErrorResponse>;
+      return {
+        statusCode: axiosError.response?.status,
+        error: getErrorMessage(axiosError),
+      } as ApiResponse<UserWithTokenType>;
     }
   }
 
@@ -71,22 +95,23 @@ export default class UserApi {
       const response = await axiosInstance.post('/auth/logout');
       return {
         statusCode: response.status,
-        data: response.data.data as AuthResponseData,
-        message: response.data.message
-      } as ApiResponse<AuthResponseData>;
+      } as ApiResponse;
     } catch (error) {
-      const axiosError = error as AxiosError<ApiResponse>;
-      return axiosError.response?.data ?? { error: 'Request failed' };
+      const axiosError = error as AxiosError<ErrorResponse>;
+      return {
+        statusCode: axiosError.response?.status,
+        error: getErrorMessage(axiosError),
+      } as ApiResponse;
     }
   }
 
   static async deleteUser(id: number) {
     try {
       const response = await axiosInstance.delete(`/users/${id}`);
-     return response.data
+      return response.data;
     } catch (error) {
-      const axiosError = error as AxiosError<ApiResponse>;
-      return axiosError.response?.data ?? { error: 'Request failed' };
+      const axiosError = error as AxiosError<ErrorResponse>;
+      return { error: getErrorMessage(axiosError) };
     }
   }
 }

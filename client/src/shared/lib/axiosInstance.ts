@@ -34,8 +34,8 @@ axiosInstance.interceptors.response.use(    // перехватываем наш
         previousRequest.sent = true; // устанавливаем флажок,что мы попробуем еще ОДИН раз жто сделать
 
         try {
-          const { data } = await axiosInstance.get('/auth/refresh'); //отправляем запрос на наш путь http://localhost:3000/api/auth/refresh что бы обновить токен accessToken
-          const newToken = data.data.accessToken; // достаем из ответа новый токен accessToken
+          const { data } = await axiosInstance.post('/auth/refresh'); //отправляем запрос на наш путь http://localhost:3000/api/auth/refresh что бы обновить токен accessToken
+          const newToken = data.accessToken; // достаем из ответа новый токен accessToken
           setAccessToken(newToken);
           previousRequest.headers.Authorization = `Bearer ${accessToken}`; // к нашему предыдущему запросу который получил ошибку 403(33) устанавливаем заголовок авторизации (как в 19)
           return axiosInstance(previousRequest); // и опять запускаем через axiosInstance наш запрос что бы обновить наш accessToken если не удачно то в catch(переходит на страницу авторизации)
