@@ -9,6 +9,8 @@ import {
 } from 'sequelize-typescript';
 import { Service } from '../services/services.model';
 import { Islamic } from 'src/islamic/islamic.model';
+import { ClassicService } from 'src/classic-service/classicService.model';
+import { Cremation } from 'src/cremations/cremations.model';
 
 @Table({ tableName: 'users' }) //декоратор - мы добавляем либо методанные либо функционал
 export class User extends Model {
@@ -19,6 +21,13 @@ export class User extends Model {
 
   @HasMany(() => Islamic, { foreignKey: 'userId' })
   declare islamics: Islamic[];
+  declare services: Service[]; // магазин
+
+  @HasMany(() => ClassicService, { foreignKey: 'userId' })
+  declare classicServices: ClassicService[]; //классические похороны
+
+  @HasMany(() => Cremation, { foreignKey: 'userId' })
+  declare cremations: Cremation[];
 
   @Column({
     type: DataType.STRING,
