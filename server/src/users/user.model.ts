@@ -8,6 +8,7 @@ import {
   HasMany,
 } from 'sequelize-typescript';
 import { Service } from '../services/services.model';
+import { Islamic } from 'src/islamic/islamic.model';
 import { ClassicService } from 'src/classic-service/classicService.model';
 import { Cremation } from 'src/cremations/cremations.model';
 
@@ -16,6 +17,10 @@ export class User extends Model {
   // устанавливаем взаимосвязь
 
   @HasMany(() => Service, { foreignKey: 'userId' })
+  declare services: Service[];
+
+  @HasMany(() => Islamic, { foreignKey: 'userId' })
+  declare islamics: Islamic[];
   declare services: Service[]; // магазин
 
   @HasMany(() => ClassicService, { foreignKey: 'userId' })
