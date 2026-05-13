@@ -49,7 +49,7 @@ const cremationSlice = createSlice({
     });
     builder.addCase(createCremationThunk.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.cremations = action.payload;
+      state.cremations.push(action.payload);
     });
     builder.addCase(createCremationThunk.rejected, (state, action) => {
       state.isLoading = false;
@@ -62,7 +62,9 @@ const cremationSlice = createSlice({
     });
     builder.addCase(updateCremationThunk.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.cremations = action.payload;
+      state.cremations = state.cremations.map((shop) =>
+        shop.id === action.payload.id ? action.payload : shop,
+      );
     });
     builder.addCase(updateCremationThunk.rejected, (state, action) => {
       state.isLoading = false;
@@ -75,7 +77,9 @@ const cremationSlice = createSlice({
     });
     builder.addCase(deleteCremationThunk.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.cremations = action.payload;
+      state.cremations = state.cremations.filter(
+        (shop) => shop.id !== action.payload.id,
+      );
     });
     builder.addCase(deleteCremationThunk.rejected, (state, action) => {
       state.isLoading = false;

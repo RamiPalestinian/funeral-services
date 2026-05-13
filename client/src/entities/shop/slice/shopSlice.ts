@@ -49,7 +49,7 @@ const shopSlice = createSlice({
     });
     builder.addCase(createShopThunk.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.shops = action.payload;
+      state.shops.push(action.payload);
     });
     builder.addCase(createShopThunk.rejected, (state, action) => {
       state.isLoading = false;
@@ -62,7 +62,9 @@ const shopSlice = createSlice({
     });
     builder.addCase(updateShopThunk.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.shops = action.payload;
+      state.shops = state.shops.map((shop) =>
+        shop.id === action.payload.id ? action.payload : shop,
+      );
     });
     builder.addCase(updateShopThunk.rejected, (state, action) => {
       state.isLoading = false;
@@ -75,7 +77,7 @@ const shopSlice = createSlice({
     });
     builder.addCase(deleteShopThunk.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.shops = action.payload;
+      state.shops = state.shops.filter((shop) => shop.id !== action.payload.id);
     });
     builder.addCase(deleteShopThunk.rejected, (state, action) => {
       state.isLoading = false;
