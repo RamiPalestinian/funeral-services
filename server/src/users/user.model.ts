@@ -5,12 +5,16 @@ import {
   DataType,
   CreatedAt,
   UpdatedAt,
+  HasMany,
 } from 'sequelize-typescript';
+import { Service } from '../services/services.model';
 
 @Table({ tableName: 'users' }) //декоратор - мы добавляем либо методанные либо функционал
 export class User extends Model {
   // устанавливаем взаимосвязь
 
+  @HasMany(() => Service, { foreignKey: 'userId' })
+  declare services: Service[];
   @Column({
     type: DataType.STRING,
     allowNull: false,
