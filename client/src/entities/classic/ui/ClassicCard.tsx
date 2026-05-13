@@ -1,43 +1,33 @@
-import "./ClassicCard.css"
+import "./ClassicCard.css";
+import type { ClassicType } from "@/entities/classic/model";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
-export default function ClassicCard() {
+type ClassicCardProps = {
+  classic: ClassicType | null;
+};
+
+export default function ClassicCard({ classic }: ClassicCardProps) {
+  const router = useRouter();
+
+  if (!classic) {
+    return null; // или можно отобразить заглушку, если данных нет
+  }
   return (
     <div>
       <div>
-        <img
-          src="https://cdn-icons-png.flaticon.com/256/10323/10323153.png"
-          alt="Услуга 1"
+        <Image
+          src={classic.image}
+          alt={classic.name}
+          width={400} // обязательный пропс
+          height={300} // обязательный пропс
         />
-        <h2>Услуга 1</h2>
-        <p>Описание услуги 1</p>
-        <p>Цена: 1000 руб.</p>
-        <button>Заказать</button>
-        <button>Подробнее</button>
       </div>
-
-      <div>
-        <img
-          src="https://cdn-icons-png.flaticon.com/256/10323/10323153.png"
-          alt="Услуга 1"
-        />
-        <h2>Услуга 2</h2>
-        <p>Описание услуги 2</p>
-        <p>Цена: 1500 руб.</p>
-        <button>Заказать</button>
-        <button>Подробнее</button>
-      </div>
-
-      <div>
-        <img
-          src="https://cdn-icons-png.flaticon.com/256/10323/10323153.png"
-          alt="Услуга 1"
-        />
-        <h2>Услуга 3</h2>
-        <p>Описание услуги 3</p>
-        <p>Цена: 2000 руб.</p>
-        <button>Заказать</button>
-        <button>Подробнее</button>
-      </div>
+      <h4>{classic.name}</h4>
+      <p>{classic.description}</p>
+      <p>{classic.price}</p>
+      <button>Выбрать услугу</button>
+      <button  onClick={() => {router.push(`/classic/${classic.id}`)}}>Подробнее</button>
     </div>
   );
 }

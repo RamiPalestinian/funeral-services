@@ -17,11 +17,10 @@ export class User extends Model {
   // устанавливаем взаимосвязь
 
   @HasMany(() => Service, { foreignKey: 'userId' })
-  declare services: Service[];
+  declare services: Service[]; // магазин
 
   @HasMany(() => Islamic, { foreignKey: 'userId' })
   declare islamics: Islamic[];
-  declare services: Service[]; // магазин
 
   @HasMany(() => ClassicService, { foreignKey: 'userId' })
   declare classicServices: ClassicService[]; //классические похороны
