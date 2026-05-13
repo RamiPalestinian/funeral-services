@@ -1,10 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { userReducer } from "@/entities/user/slice/userSlice";
+import { classicReducer } from "@/entities/classic/slice/classicSlice";
 
 // создаём store - глобальное хранилище данных
 export const store = configureStore({
     reducer: { 
-        user: userReducer}
+        user: userReducer,
+        classic: classicReducer
+    }
 })
 
 
