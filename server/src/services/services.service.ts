@@ -46,12 +46,6 @@ export class ServicesService {
   }
 
   async delete(id: number) {
-    const result = await this.serviceModel.destroy({
-      where: { id },
-    });
-    if (result === 0) {
-      throw new NotFoundException('Service not found');
-    }
-    return result;
+    return this.serviceModel.destroy({ where: { id } });
   }
 }
