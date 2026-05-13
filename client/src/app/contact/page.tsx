@@ -12,7 +12,6 @@ export default function ContactPage() {
       </button>
 
       <section className="contact-hero">
-        <p className="contact-eyebrow">Связь и маршрут</p>
         <div className="contact-hero-grid">
           <h1>Контакты</h1>
           <p>
