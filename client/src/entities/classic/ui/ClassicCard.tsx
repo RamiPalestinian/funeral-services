@@ -31,3 +31,4 @@ export default function ClassicCard({ classic }: ClassicCardProps) {
     </div>
   );
 }
+//x
