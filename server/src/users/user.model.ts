@@ -17,7 +17,7 @@ export class User extends Model {
   // устанавливаем взаимосвязь
 
   @HasMany(() => Service, { foreignKey: 'userId' })
-  declare services: Service[];
+  declare services: Service[]; // магазин
 
   @HasMany(() => Islamic, { foreignKey: 'userId' })
   declare islamics: Islamic[];
