@@ -13,7 +13,7 @@ import { ServicesService } from './services.service';
 import { CreateServicesDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 
-@Controller('services')
+@Controller('shops')
 export class ServicesController {
   constructor(private readonly servicesService: ServicesService) {}
 

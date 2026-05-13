@@ -11,13 +11,13 @@ export type CremationType = {
 };
 
 export type CremationStateType = {
-  cremations: CremationType | null;
+  cremations: CremationType[];
   isLoading: boolean;
   error: string | null;
 };
 
 export const initialCremationState: CremationStateType = {
-  cremations: null,
+  cremations: [],
   isLoading: false,
   error: null,
 };

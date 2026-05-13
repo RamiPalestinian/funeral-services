@@ -11,13 +11,13 @@ export type ShopType = {
 };
 
 export type ShopStateType = {
-  shops: ShopType | null;
+  shops: ShopType[];
   isLoading: boolean;
   error: string | null;
 };
 
 export const initialShopState: ShopStateType = {
-  shops: null,
+  shops: [],
   isLoading: false,
   error: null,
 };
