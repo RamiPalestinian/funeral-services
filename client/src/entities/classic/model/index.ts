@@ -8,7 +8,7 @@ export type ClassicType = {
   image: string;
   category?: string;
   status?: string;
-  user_id: number;
+  userId: number;
   createdAt?: string;
   updatedAt?: string;
 };

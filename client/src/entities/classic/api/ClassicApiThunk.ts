@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ClassicType, NewClassicType } from "../model";
-import { ServerResponseType } from "@/shared/types";
 import { AxiosError } from "axios";
 import { axiosInstance} from "@/shared/lib/axiosInstance";
 
@@ -22,18 +21,39 @@ const CLASSIC_API_URLS = {
   GET_USER_CLASSIC: (userId: number) => `/classic/user/${userId}`,
 } as const;
 
+type ErrorResponse = {
+  message?: string | string[];
+  error?: string;
+  statusCode?: number;
+};
+
+const getErrorMessage = (error: unknown, fallback: string) => {
+  const axiosError = error as AxiosError<ErrorResponse>;
+  const responseMessage = axiosError.response?.data?.message;
+
+  if (Array.isArray(responseMessage) && responseMessage.length > 0) {
+    return responseMessage.join(", ");
+  }
+
+  if (typeof responseMessage === "string" && responseMessage.length > 0) {
+    return responseMessage;
+  }
+
+  if (typeof axiosError.response?.data?.error === "string" && axiosError.response.data.error.length > 0) {
+    return axiosError.response.data.error;
+  }
+
+  return axiosError.message ?? fallback;
+};
+
 // Загрузка всех классических услуг
 export const fetchClassicThunk = createAsyncThunk<ClassicType[],void,{rejectValue: string}> (
     CLASSIC_THUNK_NAMES.SET_CLASSIC,async(_, {rejectWithValue}) => {
         try{
-            const {data} = await axiosInstance.get<ServerResponseType<ClassicType[]>>(CLASSIC_API_URLS.SET_CLASSIC)
-
-        if (data.statusCode === 200 && data.data) {
-            return data.data;
-        }
-        return rejectWithValue(data.error ?? 'Ошибка при загрузке классических услуг');
+            const {data} = await axiosInstance.get<ClassicType[]>(CLASSIC_API_URLS.SET_CLASSIC)
+            return data;
         } catch (error) {
-            return rejectWithValue ((error as AxiosError).message ?? 'Ошибка при загрузке классических услуг');
+            return rejectWithValue (getErrorMessage(error, 'Ошибка при загрузке классических услуг'));
         }
        
     }
@@ -43,14 +63,10 @@ export const fetchClassicThunk = createAsyncThunk<ClassicType[],void,{rejectValu
 export const fetchClassicByIdThunk = createAsyncThunk<ClassicType, number, {rejectValue: string}>(
     CLASSIC_THUNK_NAMES.SET_ONE_CLASSIC,async (id, {rejectWithValue}) => {
         try {
-            const {data} = await axiosInstance.get<ServerResponseType<ClassicType>>(CLASSIC_API_URLS.SET_ONE_CLASSIC(id))
-
-            if (data.statusCode === 200 && data.data) {
-                return data.data;
-            }
-            return rejectWithValue(data.error ?? 'Ошибка при загрузке классических услуг');
+            const {data} = await axiosInstance.get<ClassicType>(CLASSIC_API_URLS.SET_ONE_CLASSIC(id))
+            return data;
         } catch (error) {
-            return rejectWithValue ((error as AxiosError).message ?? 'Ошибка при загрузке классических услуг');
+            return rejectWithValue (getErrorMessage(error, 'Ошибка при загрузке классических услуг'));
         }
     }
 );
@@ -59,14 +75,10 @@ export const fetchClassicByIdThunk = createAsyncThunk<ClassicType, number, {reje
 export const createClassicThunk = createAsyncThunk<ClassicType, NewClassicType, {rejectValue: string}>(
     CLASSIC_THUNK_NAMES.ADD_CLASSIC, async (classicData, {rejectWithValue}) => {
         try {
-            const {data} = await axiosInstance.post<ServerResponseType<ClassicType>>(CLASSIC_API_URLS.ADD_CLASSIC, classicData)
-
-            if (data.statusCode === 201 && data.data) {
-                return data.data;
-            }
-            return rejectWithValue(data.error ?? 'Ошибка при создании классических услуг');
+            const {data} = await axiosInstance.post<ClassicType>(CLASSIC_API_URLS.ADD_CLASSIC, classicData)
+            return data;
         } catch (error) {
-            return rejectWithValue ((error as AxiosError).message ?? 'Ошибка при создании классических услуг');
+            return rejectWithValue (getErrorMessage(error, 'Ошибка при создании классических услуг'));
         }
     }
 );
@@ -75,14 +87,10 @@ export const createClassicThunk = createAsyncThunk<ClassicType, NewClassicType, 
 export const deleteClassicThunk = createAsyncThunk<number, number, {rejectValue: string}>(
     CLASSIC_THUNK_NAMES.DELETE_CLASSIC, async (id, {rejectWithValue}) => {
         try {
-            const {data} = await axiosInstance.delete<ServerResponseType<null>>(CLASSIC_API_URLS.DELETE_CLASSIC(id))
-
-            if (data.statusCode === 200) {
-                return id;
-            }
-            return rejectWithValue(data.error ?? 'Ошибка при удалении классических услуг');
+            await axiosInstance.delete(CLASSIC_API_URLS.DELETE_CLASSIC(id))
+            return id;
         } catch (error) {
-            return rejectWithValue ((error as AxiosError).message ?? 'Ошибка при удалении классических услуг');
+            return rejectWithValue (getErrorMessage(error, 'Ошибка при удалении классических услуг'));
         }
     }
 );
@@ -92,16 +100,12 @@ export const getUserClassicThunk = createAsyncThunk<ClassicType[], number, {reje
     CLASSIC_THUNK_NAMES.GET_USER_CLASSIC,
     async (userId, { rejectWithValue }) => {
         try {
-            const { data } = await axiosInstance.get<ServerResponseType<ClassicType[]>>(
+            const { data } = await axiosInstance.get<ClassicType[]>(
                 CLASSIC_API_URLS.GET_USER_CLASSIC(userId)
             );
-
-            if (data.statusCode === 200 && data.data) {
-                return data.data;
-            }
-            return rejectWithValue(data.error ?? 'Ошибка при загрузке классических услуг пользователя');
+            return data;
         } catch (error) {
-            return rejectWithValue((error as AxiosError).message ?? 'Ошибка при загрузке классических услуг пользователя');
+            return rejectWithValue(getErrorMessage(error, 'Ошибка при загрузке классических услуг пользователя'));
         }
     }
 );
