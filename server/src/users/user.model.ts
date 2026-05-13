@@ -8,6 +8,7 @@ import {
   HasMany,
 } from 'sequelize-typescript';
 import { Service } from '../services/services.model';
+import { Cremation } from 'src/cremations/cremations.model';
 
 @Table({ tableName: 'users' }) //декоратор - мы добавляем либо методанные либо функционал
 export class User extends Model {
@@ -15,6 +16,10 @@ export class User extends Model {
 
   @HasMany(() => Service, { foreignKey: 'userId' })
   declare services: Service[];
+
+  @HasMany(() => Cremation, { foreignKey: 'userId' })
+  declare cremations: Cremation[];
+
   @Column({
     type: DataType.STRING,
     allowNull: false,
