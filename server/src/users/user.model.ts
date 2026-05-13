@@ -21,7 +21,7 @@ export class User extends Model {
   @HasMany(() => ClassicService, { foreignKey: 'userId' })
   declare classicServices: ClassicService[]; //классические похороны
   
-  declare services: Service[];
+
 
   @HasMany(() => Cremation, { foreignKey: 'userId' })
   declare cremations: Cremation[];
