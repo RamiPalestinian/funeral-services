@@ -8,6 +8,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { ServicesModule } from './services/services.module';
 import { TasksModule } from './tasks/tasks.module';
 import { ClassicServiceModule } from './classic-service/classic-service.module';
+import { CremationsModule } from './cremations/cremations.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { ClassicServiceModule } from './classic-service/classic-service.module';
     ServicesModule,
     TasksModule,
     ClassicServiceModule,
+    CremationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
