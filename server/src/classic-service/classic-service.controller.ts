@@ -6,6 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
 } from '@nestjs/common';
@@ -13,33 +14,36 @@ import { ClassicServiceService } from './classic-service.service';
 import { CreateClassicServicesDto } from './dto/create-classicService.dto';
 import { UpdateClassicServiceDto } from './dto/update-classicService.dto';
 
-@Controller('classic-service')
+@Controller('classic')
 export class ClassicServiceController {
-  constructor(private readonly servicesService: ClassicServiceService) {}
+  constructor(private readonly classicServiceService: ClassicServiceService) {}
 
   @Get()
   findAll() {
-    return this.servicesService.findAll();
+    return this.classicServiceService.findAll();
   }
 
   @Get(':id')
-  findById(@Param('id') id: number) {
-    return this.servicesService.findById(id);
+  findById(@Param('id', ParseIntPipe) id: number) {
+    return this.classicServiceService.findById(id);
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
   create(@Body() dto: CreateClassicServicesDto) {
-    return this.servicesService.create(dto);
+    return this.classicServiceService.create(dto);
   }
 
   @Patch(':id')
-  update(@Param('id') id: number, @Body() dto: UpdateClassicServiceDto) {
-    return this.servicesService.update(id, dto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateClassicServiceDto,
+  ) {
+    return this.classicServiceService.update(id, dto);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: number) {
-    return this.servicesService.delete(id);
+  delete(@Param('id', ParseIntPipe) id: number) {
+    return this.classicServiceService.delete(id);
   }
 }
