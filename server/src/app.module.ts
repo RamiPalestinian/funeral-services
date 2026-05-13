@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ServicesModule } from './services/services.module';
+import { CremationsModule } from './cremations/cremations.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { ServicesModule } from './services/services.module';
     UsersModule,
     AuthModule,
     ServicesModule,
+    CremationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
