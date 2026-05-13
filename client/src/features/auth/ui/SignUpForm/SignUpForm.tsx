@@ -23,7 +23,7 @@ export default function SignUpForm() {
     }));
   };
 
-  const signUpHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+  const signUpHandler = async (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();  // отключение формы по умолчанию
 
     if (signUpData.password !== signUpData.confirmPassword) {
@@ -49,7 +49,7 @@ export default function SignUpForm() {
       await dispatch(registerThunk(registrationData)).unwrap();
       setError(null);
       setSignUpData(initialValue);
-      router.push('/ai');
+      router.push('/home');
       router.refresh();
     } catch (thunkError) {
       setError(thunkError as string);

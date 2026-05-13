@@ -1,9 +1,10 @@
 'use client';
-import { useState, useEffect, createContext, useContext, ReactNode } from "react";
+import { useEffect, createContext, useContext, ReactNode } from "react";
 import type { UserType } from "@/entities/user/model";
 import ApplicationLayout from "./ApplicationLayout";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { refreshTokenThunk } from "@/entities/user/api/UserApiThunk";
+import { setUser as setUserAction } from "@/entities/user/slice/userSlice";
 
 type UserContextType = {
   user: UserType | null;
@@ -23,10 +24,13 @@ export function useUser() {
 }
 
 function UserProvider({ children }: { children: ReactNode }) {
-  const [, setUser] = useState<UserType | null>(null);
-
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.user);
+
+  const setUser: React.Dispatch<React.SetStateAction<UserType | null>> = (value) => {
+    const nextUser = typeof value === "function" ? value(user) : value;
+    dispatch(setUserAction(nextUser));
+  };
 
   useEffect(() => {
     dispatch(refreshTokenThunk());
