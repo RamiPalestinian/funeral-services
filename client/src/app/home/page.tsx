@@ -69,12 +69,12 @@ export default function Home() {
 
           <article className="home-service-card">
             <span>04</span>
-            <h3>Выездная служба 24/7</h3>
+            <h3>Магазин 24/7</h3>
             <p>
-              Круглосуточная помощь: выезд агента на дом, организация
-              перевозки тела, оформление всех необходимых документов.
+              Круглосуточный магазин ритуальных товаров: гробы, венки,
+              памятники, ритуальная одежда и аксессуары.
             </p>
-            <button onClick={() => router.push('/outreach')}>
+            <button onClick={() => router.push('/shop')}>
               Подробнее
             </button>
           </article>
