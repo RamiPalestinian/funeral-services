@@ -1,4 +1,11 @@
-import { IsString, IsNumber, IsUrl, MinLength, IsInt, Min } from 'class-validator';
+import {
+  IsString,
+  Min,
+  IsNumber,
+  IsUrl,
+  MinLength,
+  IsInt,
+} from 'class-validator';
 
 export class CreateCremationDto {
   @IsString()

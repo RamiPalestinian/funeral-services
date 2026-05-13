@@ -21,7 +21,6 @@ export class User extends Model {
 
   @HasMany(() => Islamic, { foreignKey: 'userId' })
   declare islamics: Islamic[];
-  declare services: Service[]; // магазин
 
   @HasMany(() => ClassicService, { foreignKey: 'userId' })
   declare classicServices: ClassicService[]; //классические похороны

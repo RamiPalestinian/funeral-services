@@ -19,7 +19,7 @@ export class Cremation extends Model {
   @Column({ type: DataType.STRING, allowNull: false })
   declare description: string;
 
-  @Column({ type: DataType.INTEGER, allowNull: false })
+  @Column({ type: DataType.STRING, allowNull: false })
   declare price: number;
 
   @Column({ type: DataType.STRING, allowNull: false })
