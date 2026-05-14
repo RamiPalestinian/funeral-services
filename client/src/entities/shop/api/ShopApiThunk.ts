@@ -110,17 +110,17 @@ export const updateShopThunk = createAsyncThunk<
 });
 
 export const deleteShopThunk = createAsyncThunk<
-  ShopType,
+  number,
   number,
   { rejectValue: string }
 >(SHOP_THUNK_NAMES.DELETE_SHOP, async (id, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.delete<ShopType>(
+    const response = await axiosInstance.delete<number>(
       SHOP_API_URLS.DELETE_SHOP(id),
     );
 
     if (response.status === 200) {
-      return response.data;
+      return id;
     }
 
     return rejectWithValue("Ошибка при удалении магазина");

@@ -31,6 +31,7 @@ export class CremationsService {
       image: dto.image,
       category: dto.category,
       status: dto.status,
+      userId: dto.userId,
     } as CreationAttributes<Cremation>);
   }
 

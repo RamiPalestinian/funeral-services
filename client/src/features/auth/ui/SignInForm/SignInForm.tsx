@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import './SignInForm.css';
 import { UserValidator } from '@/entities/user/model/UserValidator';
-import UserApi from '@/entities/user/api/UserApi';
-import { setAccessToken } from '@/shared/lib/axiosInstance';
 import FormInput from '@/shared/ui/FormInput/FormInput';
 import type { UserType } from '@/entities/user/model';
+import { useAppDispatch } from '@/shared/hooks/useReduxHooks';
+import { loginThunk } from '@/entities/user/api/UserApiThunk';
 
 type SignInFormProps = {
   setUser: React.Dispatch<React.SetStateAction<UserType | null>>  
@@ -14,12 +14,14 @@ type SignInFormProps = {
 
 export default function SignInForm({ setUser } : SignInFormProps) {
   const initialValue = { email: '', password: '' };
-  // const navigate = useNavigate();
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const [signInData, setSignInData] = useState(initialValue);
+  const [error, setError] = useState<string | null>(null);
 
   const inputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setError(null);
     setSignInData((current) => ({
       ...current,
       [event.target.name]: event.target.value,
@@ -33,17 +35,18 @@ export default function SignInForm({ setUser } : SignInFormProps) {
       UserValidator.validateLoginData(signInData);
 
     if (!isValid) {
-      alert(validationError);
+      setError(validationError);
       return;
     }
-    const { statusCode, data, error } = await UserApi.login(signInData);
-    if (statusCode === 200) {
-      setAccessToken(data?.accessToken || '');
-      setUser(data?.user || null);
+
+    try {
+      const user = await dispatch(loginThunk(signInData)).unwrap();
+      setUser(user);
       router.push('/home');
       setSignInData(initialValue);
-    } else {
-      alert(error || 'Ошибка при входе в приложение');
+      setError(null);
+    } catch (thunkError) {
+      setError(thunkError as string);
     }
   };
 
@@ -72,6 +75,7 @@ export default function SignInForm({ setUser } : SignInFormProps) {
           value={signInData.password}
           label="Пароль"
         />
+        {error && <p className="form-error">{error}</p>}
         <button className="form-action-button">Открыть кабинет</button>
       </form>
     </div>

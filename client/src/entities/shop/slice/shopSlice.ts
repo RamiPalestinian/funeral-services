@@ -77,7 +77,7 @@ const shopSlice = createSlice({
     });
     builder.addCase(deleteShopThunk.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.shops = state.shops.filter((shop) => shop.id !== action.payload.id);
+      state.shops = state.shops.filter((shop) => shop.id !== action.payload);
     });
     builder.addCase(deleteShopThunk.rejected, (state, action) => {
       state.isLoading = false;

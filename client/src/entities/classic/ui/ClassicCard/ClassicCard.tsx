@@ -3,11 +3,13 @@ import type { ClassicType } from "@/entities/classic/model";
 import { useRouter } from "next/navigation";
 
 type ClassicCardProps = {
+  // user: UserType | null,
   classic: ClassicType | null;
 };
 
-export default function ClassicCard({ classic }: ClassicCardProps) {
+export default function ClassicCard({ classic  }: ClassicCardProps) {
   const router = useRouter();
+  const dispatch = useAppDispatch()
 
   if (!classic) {
     return null; // или можно отобразить заглушку, если данных нет
@@ -32,7 +34,7 @@ export default function ClassicCard({ classic }: ClassicCardProps) {
         <p className="classic-card-description">{classic.description}</p>
         <div className="classic-card-meta">
           <span className="classic-card-price">{formattedPrice} ₽</span>
-          <span className="classic-card-status">{classic.status}</span>
+          {/* <span className="classic-card-status">{classic.status}</span> */}
         </div>
         <div className="classic-card-actions">
           <button className="classic-card-button">Выбрать услугу</button>
@@ -44,9 +46,14 @@ export default function ClassicCard({ classic }: ClassicCardProps) {
           >
             Подробнее
           </button>
+          <button
+            className="classic-card-button classic-card-button-delete"
+            onClick={() => dispatch(deleteClassicThunk(classic.id))}
+          >
+            Удалить
+          </button>
         </div>
       </div>
     </article>
   );
 }
-

@@ -2,8 +2,6 @@ import { axiosInstance } from '../../../shared/lib/axiosInstance';
 import type { AxiosError } from 'axios';
 import type { UserWithTokenType } from '../model';
 
-console.log('axiosInstance:', axiosInstance);
-
 type AuthRequestData = {
   name?: string;
   email: string;
