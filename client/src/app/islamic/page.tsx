@@ -7,7 +7,7 @@ import {
   createIslamicThunk,
   fetchIslamicThunk,
 } from "@/entities/islamic/api/IslamicApiThunk";
-import { type ChangeEvent, type FormEvent, useEffect, useState } from "react";
+import { type ChangeEvent, useEffect, useState } from "react";
 
 const initialFormState = {
   name: "",
@@ -37,7 +37,7 @@ export default function Islamic() {
   }, [dispatch]);
 
   const handleChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = event.target;
 

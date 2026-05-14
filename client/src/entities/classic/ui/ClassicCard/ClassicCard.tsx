@@ -3,9 +3,12 @@
 import "./ClassicCard.css";
 import { deleteClassicThunk } from "@/entities/classic/api/ClassicApiThunk";
 import type { ClassicType } from "@/entities/classic/model";
-import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
+import {
+  useAddToCard,
+  useAppDispatch,
+  useAppSelector,
+} from "@/shared/hooks/useReduxHooks";
 import { useRouter } from "next/navigation";
-import { useAddToCard } from "@/shared/hooks/useAddToCard";
 
 type ClassicCardProps = {
   // user: UserType | null,

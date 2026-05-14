@@ -1,0 +1,21 @@
+/* Дополнения к ../shop/page.css для страницы корзины */
+
+.cart-hero-copy h1 {
+  max-width: 18ch;
+}
+
+.cart-message-wrap {
+  padding: 12px 18px;
+}
+
+.cart-panel-message {
+  margin: 0;
+  padding: 16px 18px;
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01)),
+    var(--bg-panel);
+  box-shadow: var(--shadow-md);
+  color: var(--text-muted);
+  line-height: 1.6;
+}

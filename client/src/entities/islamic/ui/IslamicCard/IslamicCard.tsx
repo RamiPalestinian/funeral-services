@@ -3,9 +3,12 @@
 import "./IslamicCard.css";
 import { deleteIslamicThunk } from "@/entities/islamic/api/IslamicApiThunk";
 import type { IslamicType } from "@/entities/islamic/model";
-import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
+import {
+  useAddToCard,
+  useAppDispatch,
+  useAppSelector,
+} from "@/shared/hooks/useReduxHooks";
 import { useRouter } from "next/navigation";
-import { useAddToCard } from "@/shared/hooks/useAddToCard";
 
 type IslamicCardProps = {
   islamic: IslamicType | null;

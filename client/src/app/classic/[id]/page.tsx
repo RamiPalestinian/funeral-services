@@ -2,14 +2,17 @@
 
 import "../page.css";
 import "@/entities/classic/ui/ClassicCard/ClassicCard.css";
-import { type ChangeEvent, type FormEvent, useEffect, useState } from "react";
+import { type ChangeEvent, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
+import {
+  useAddToCard,
+  useAppDispatch,
+  useAppSelector,
+} from "@/shared/hooks/useReduxHooks";
 import {
   fetchClassicByIdThunk,
   updateClassicThunk,
 } from "@/entities/classic/api/ClassicApiThunk";
-import { useAddToCard } from "@/shared/hooks/useAddToCard";
 
 const initialFormState = {
   name: "",
@@ -81,7 +84,7 @@ export default function OneClassicPage() {
     setIsEditing(false);
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!oneClassic) {
@@ -199,10 +202,7 @@ export default function OneClassicPage() {
             Назад
           </button>
           {isAdmin && (
-            <button
-              className="classic-card-button"
-              onClick={handleStartEdit}
-            >
+            <button className="classic-card-button" onClick={handleStartEdit}>
               Изменить
             </button>
           )}

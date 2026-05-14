@@ -3,12 +3,15 @@
 import "../page.css";
 import { type ChangeEvent, type FormEvent, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
+import {
+  useAddToCard,
+  useAppDispatch,
+  useAppSelector,
+} from "@/shared/hooks/useReduxHooks";
 import {
   fetchIslamicByIdThunk,
   updateIslamicThunk,
 } from "@/entities/islamic/api/IslamicApiThunk";
-import { useAddToCard } from "@/shared/hooks/useAddToCard";
 
 const initialFormState = {
   name: "",

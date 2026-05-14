@@ -1,3 +1,9 @@
+import { ClassicType } from "@/entities/classic/model";
+import { CremationType } from "@/entities/cremation/model";
+import { IslamicType } from "@/entities/islamic/model";
+import { UserType } from "@/entities/user/model";
+import { ShopType } from "@/entities/shop/model";
+
 export type CardType = {
   id: number;
   userId?: number | null;
@@ -7,6 +13,11 @@ export type CardType = {
   cremationId?: number | null;
   createdAt: string;
   updatedAt: string;
+  user?: UserType;
+  service?: ShopType;
+  islamic?: IslamicType;
+  classicService?: ClassicType;
+  cremation?: CremationType;
 };
 
 export type CreateCardPayload = {
