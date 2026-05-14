@@ -22,10 +22,15 @@ export default function Islamic() {
   const router = useRouter();
 
   const dispatch = useAppDispatch();
-  const { error, islamics, isLoading } = useAppSelector((state) => state.islamic);
+  const { error, islamics } = useAppSelector((state) => state.islamic);
   const user = useAppSelector((state) => state.user.user);
   const isAdmin = user?.id === 1;
   const [formData, setFormData] = useState(initialFormState);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredIslamics = islamics.filter((islamic) =>
+    islamic.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
 
   useEffect(() => {
     dispatch(fetchIslamicThunk());
@@ -139,13 +144,21 @@ export default function Islamic() {
             required
           />
           {error && <p className="islamic-create-error">{error}</p>}
-          <button type="submit" disabled={isLoading || !user}>
+          <button type="submit" disabled={!user}>
             Создать услугу
           </button>
         </form>
       )}
+      <input
+        type="search"
+        className="islamic-search"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Поиск по названию"
+        aria-label="Поиск услуг по названию"
+      />
       <div className="islamic-grid">
-        {islamics.map((islamic) => (
+        {filteredIslamics.map((islamic) => (
           <IslamicCard key={islamic.id} islamic={islamic} />
         ))}
       </div>

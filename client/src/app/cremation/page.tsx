@@ -1,7 +1,7 @@
 "use client";
 
 import "./page.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import CremationCard from "@/entities/cremation/ui/CremationCard/CremationCard";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
@@ -16,10 +16,14 @@ export default function CremationPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const cremations = useAppSelector((state) => state.cremation.cremations);
-  const isLoading = useAppSelector((state) => state.cremation.isLoading);
   const error = useAppSelector((state) => state.cremation.error);
   const { user } = useUser();
   const isAdmin = user?.id === 1;
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredCremations = cremations.filter((cremation) =>
+    cremation.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
 
   useEffect(() => {
     dispatch(getAllCremationsThunk());
@@ -89,13 +93,20 @@ export default function CremationPage() {
             required
           />
           {error && <p>{error}</p>}
-          <button type="submit" disabled={isLoading || !user}>
+          <button type="submit" disabled={!user}>
             Создать похороны
           </button>
         </form>
       )}
+      <input
+        type="search"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Поиск по названию"
+        aria-label="Поиск услуг по названию"
+      />
       <div>
-        {cremations?.map((cremation: CremationType) => (
+        {filteredCremations.map((cremation: CremationType) => (
           <CremationCard key={cremation.id} cremation={cremation} />
         ))}
       </div>

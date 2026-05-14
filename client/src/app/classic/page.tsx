@@ -4,15 +4,14 @@ import ClassicCard from "@/entities/classic/ui/ClassicCard/ClassicCard";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { fetchClassicThunk } from "@/entities/classic/api/ClassicApiThunk";
-import { useEffect } from "react";
-import {useState} from "react";
+import { useEffect, useState } from "react";
 import { createClassicThunk } from "@/entities/classic/api/ClassicApiThunk";
 
 
 export default function Classic() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { classics, error: classicError, isLoading } = useAppSelector(
+  const { classics, error: classicError } = useAppSelector(
     (state) => state.classic,
   );
   const user = useAppSelector((state) => state.user.user);
@@ -27,6 +26,11 @@ export default function Classic() {
     userId: 1,
   });
   const [formError, setFormError] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredClassics = classics.filter((classic) =>
+    classic.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
 
   useEffect(() => {
     dispatch(fetchClassicThunk());
@@ -146,12 +150,8 @@ export default function Classic() {
               required
             />
 
-            <button
-              className="classic-form-button"
-              type="submit"
-              disabled={isLoading}
-            >
-              {isLoading ? "Создание..." : "Создать"}
+            <button className="classic-form-button" type="submit">
+              Создать
             </button>
           </form>
           {(formError || classicError) && (
@@ -160,8 +160,16 @@ export default function Classic() {
         </div>
       )}
 
+      <input
+        type="search"
+        className="classic-search"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Поиск по названию"
+        aria-label="Поиск услуг по названию"
+      />
       <div className="classic-grid">
-        {classics.map((classic) => (
+        {filteredClassics.map((classic) => (
           <ClassicCard key={classic.id} classic={classic} />
         ))}
       </div>
