@@ -16,6 +16,7 @@ const cardSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    //createCardThunk
     builder.addCase(createCardThunk.pending, (state) => {
       state.isLoading = true;
       state.error = null;
