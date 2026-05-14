@@ -3,12 +3,8 @@ import "./page.css";
 import ClassicCard from "@/entities/classic/ui/ClassicCard/ClassicCard";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
-import {
-  createClassicThunk,
-  fetchClassicThunk,
-} from "@/entities/classic/api/ClassicApiThunk";
-import { useEffect, useState } from "react";
-// import Image from "next/image";
+import { fetchClassicThunk } from "@/entities/classic/api/ClassicApiThunk";
+import { useEffect } from "react";
 
 export default function Classic() {
   const router = useRouter();

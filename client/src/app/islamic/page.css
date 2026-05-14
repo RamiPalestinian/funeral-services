@@ -145,6 +145,131 @@
   transform: scaleX(1);
 }
 
+.islamic-create-form {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  padding: 18px;
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01)),
+    var(--bg-panel);
+  box-shadow: var(--shadow-md);
+}
+
+.islamic-create-form input,
+.islamic-create-form textarea {
+  min-width: 0;
+  border: 1px solid rgba(214, 204, 189, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-main);
+  font: inherit;
+  outline: none;
+  padding: 13px 14px;
+}
+
+.islamic-create-form input::placeholder,
+.islamic-create-form textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.islamic-create-form textarea {
+  grid-column: 1 / -1;
+  min-height: 110px;
+  resize: vertical;
+}
+
+.islamic-create-form button {
+  min-height: 46px;
+  width: fit-content;
+  border: 1px solid rgba(214, 204, 189, 0.12);
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, rgba(125, 151, 168, 0.94), rgba(94, 112, 124, 0.94));
+  color: #f6f1e8;
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  padding: 0 18px;
+  text-transform: uppercase;
+}
+
+.islamic-create-form button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.islamic-create-error {
+  align-self: center;
+  color: #ffd7d7;
+  line-height: 1.5;
+}
+
+.islamic-update-form {
+  display: grid;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.islamic-update-form input,
+.islamic-update-form textarea {
+  min-width: 0;
+  border: 1px solid rgba(214, 204, 189, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-main);
+  font: inherit;
+  outline: none;
+  padding: 13px 14px;
+}
+
+.islamic-update-form input::placeholder,
+.islamic-update-form textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.islamic-update-form textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.islamic-update-form button {
+  min-height: 46px;
+  width: fit-content;
+  border: 1px solid rgba(214, 204, 189, 0.12);
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, rgba(125, 151, 168, 0.94), rgba(94, 112, 124, 0.94));
+  color: #f6f1e8;
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  padding: 0 18px;
+  text-transform: uppercase;
+}
+
+.islamic-update-form button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.islamic-update-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.islamic-update-form .islamic-update-button-secondary {
+  background: transparent;
+  color: var(--text-main);
+}
+
+.islamic-update-error {
+  color: #ffd7d7;
+  line-height: 1.5;
+}
+
 .islamic-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -233,6 +358,10 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .islamic-create-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .islamic-hero-copy h1 {
     max-width: none;
   }
@@ -261,5 +390,10 @@
 
   .islamic-grid {
     grid-template-columns: 1fr;
+  }
+
+  .islamic-create-form {
+    grid-template-columns: 1fr;
+    padding: 16px;
   }
 }
