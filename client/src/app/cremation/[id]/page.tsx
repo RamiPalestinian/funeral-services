@@ -1,7 +1,8 @@
 "use client";
 
-import "./page.css";
-import { useEffect, useState } from "react";
+import "../page.css";
+import "@/entities/cremation/ui/CremationCard/CremationCard.css";
+import { type ChangeEvent, type FormEvent, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import {
@@ -10,92 +11,190 @@ import {
 } from "@/entities/cremation/api/CremationApiThunk";
 import { useUser } from "@/application/UserProvider";
 
+const initialFormState = {
+  name: "",
+  description: "",
+  price: "",
+  image: "",
+  category: "",
+  status: "",
+};
+
 export default function CremationByIdPage() {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { id } = useParams();
-  const [editing, setEditing] = useState(false);
+  const { id } = useParams<{ id: string }>();
   const { user } = useUser();
   const isAdmin = user?.id === 1;
-
-  const cremation = useAppSelector((state) =>
-    state.cremation.cremations.find((el) => el.id === Number(id)),
+  const { cremations, error, isLoading } = useAppSelector(
+    (state) => state.cremation,
   );
+  const [editing, setEditing] = useState(false);
+  const [formData, setFormData] = useState(initialFormState);
 
-  const updateCremation = async (event: React.ChangeEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const formData = new FormData(event.currentTarget);
-
-    await dispatch(
-      updateCremationThunk({
-        id: Number(id),
-        name: String(formData.get("name")),
-        description: String(formData.get("description")),
-        price: Number(formData.get("price")),
-        image: String(formData.get("image")),
-        category: String(formData.get("category")),
-        status: String(formData.get("status")),
-      }),
-    );
-    setEditing(false);
-  };
+  const cremation = cremations.find((el) => el.id === Number(id));
 
   useEffect(() => {
     dispatch(getCremationByIdThunk(Number(id)));
   }, [dispatch, id]);
+
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = event.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleStartEdit = () => {
+    if (!cremation) {
+      return;
+    }
+
+    setFormData({
+      name: cremation.name,
+      description: cremation.description,
+      price: String(cremation.price),
+      image: cremation.image,
+      category: cremation.category,
+      status: cremation.status ?? "",
+    });
+    setEditing(true);
+  };
+
+  const updateCremation = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    await dispatch(
+      updateCremationThunk({
+        id: Number(id),
+        name: formData.name,
+        description: formData.description,
+        price: Number(formData.price),
+        image: formData.image,
+        category: formData.category,
+        status: formData.status,
+      }),
+    );
+    setEditing(false);
+  };
 
   if (!cremation) {
     return null;
   }
 
   return (
-    <div>
-      <form onSubmit={updateCremation}>
-        <img src={cremation.image} alt={cremation.name} />
-        <h2>{cremation.name}</h2>
-        <p>{cremation.description}</p>
-        <p>{cremation.price}</p>
-        <p>{cremation.category}</p>
-        {editing && (
-          <div className="cremation-edit-fields">
-            <input name="name" type="text" defaultValue={cremation.name} />
+    <section className="cremation-page cremation-detail-page">
+      <div className="cremation-detail-media">
+        <img
+          className="cremation-detail-image"
+          src={cremation.image}
+          alt={cremation.name}
+          width={400}
+          height={300}
+        />
+      </div>
+      <div className="cremation-detail-body">
+        <p className="cremation-eyebrow">{cremation.category}</p>
+        <h1 className="cremation-detail-title">{cremation.name}</h1>
+        <p className="cremation-detail-description">{cremation.description}</p>
+        <div className="cremation-detail-meta">
+          <span>{new Intl.NumberFormat("ru-RU").format(cremation.price)} ₽</span>
+          {/* {cremation.status && <span>{cremation.status}</span>} */}
+        </div>
+        {isAdmin && editing && (
+          <form className="cremation-update-form" onSubmit={updateCremation}>
             <input
-              name="description"
+              name="name"
               type="text"
-              defaultValue={cremation.description}
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Название"
+              minLength={3}
+              required
             />
-            <input name="price" type="number" defaultValue={cremation.price} />
-            <input name="image" type="text" defaultValue={cremation.image} />
             <input
               name="category"
               type="text"
-              defaultValue={cremation.category}
+              value={formData.category}
+              onChange={handleChange}
+              placeholder="Категория"
+              minLength={3}
+              required
             />
-            <button type="submit">Сохранить</button>
-            <button type="button" onClick={() => setEditing(false)}>
-              Отмена
-            </button>
-          </div>
+            {/* <input
+              name="status"
+              type="text"
+              value={formData.status}
+              onChange={handleChange}
+              placeholder="Статус"
+              minLength={3}
+            /> */}
+            <input
+              name="price"
+              type="number"
+              value={formData.price}
+              onChange={handleChange}
+              placeholder="Цена"
+              min={0}
+              required
+            />
+            <input
+              name="image"
+              type="url"
+              value={formData.image}
+              onChange={handleChange}
+              placeholder="Ссылка на изображение"
+              required
+            />
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              placeholder="Описание"
+              minLength={10}
+              required
+            />
+            {error && <p className="cremation-update-error">{error}</p>}
+            <div className="cremation-update-actions">
+              <button type="submit" disabled={isLoading}>
+                Сохранить изменения
+              </button>
+              <button
+                type="button"
+                className="cremation-update-button-secondary"
+                onClick={() => setEditing(false)}
+              >
+                Отмена
+              </button>
+            </div>
+          </form>
         )}
-      </form>
-      <button
-        type="button"
-        className="cremation-back-link"
-        onClick={() => router.back()}
-      >
-        Назад
-      </button>
-      {isAdmin && !editing && (
-        <button
-          type="button"
-          onClick={() => {
-            setEditing(true);
-          }}
-        >
-          Изменить
-        </button>
-      )}
-    </div>
+        <div className="cremation-detail-actions">
+          <button
+            type="button"
+            className="cremation-card-button cremation-card-button-secondary"
+            onClick={() => router.back()}
+          >
+            Назад
+          </button>
+          {isAdmin && (
+            <button
+              type="button"
+              className="cremation-card-button"
+              onClick={handleStartEdit}
+            >
+              Изменить
+            </button>
+          )}
+          <button type="button" className="cremation-card-button">
+            Заказать
+          </button>
+        </div>
+      </div>
+    </section>
   );
 }

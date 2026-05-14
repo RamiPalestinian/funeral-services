@@ -149,14 +149,17 @@ export default function Islamic() {
           </button>
         </form>
       )}
-      <input
-        type="search"
-        className="islamic-search"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="Поиск по названию"
-        aria-label="Поиск услуг по названию"
-      />
+      <div className="islamic-filter-bar">
+        <span className="islamic-filter-label">Фильтрация</span>
+        <input
+          type="search"
+          className="islamic-search"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Поиск по названию"
+          aria-label="Поиск услуг по названию"
+        />
+      </div>
       <div className="islamic-grid">
         {filteredIslamics.map((islamic) => (
           <IslamicCard key={islamic.id} islamic={islamic} />

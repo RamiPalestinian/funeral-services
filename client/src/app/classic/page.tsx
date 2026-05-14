@@ -160,14 +160,17 @@ export default function Classic() {
         </div>
       )}
 
-      <input
-        type="search"
-        className="classic-search"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="Поиск по названию"
-        aria-label="Поиск услуг по названию"
-      />
+      <div className="classic-filter-bar">
+        <span className="classic-filter-label">Фильтрация</span>
+        <input
+          type="search"
+          className="classic-search"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Поиск по названию"
+          aria-label="Поиск услуг по названию"
+        />
+      </div>
       <div className="classic-grid">
         {filteredClassics.map((classic) => (
           <ClassicCard key={classic.id} classic={classic} />
