@@ -1,5 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ShopType } from "../model";
+import {
+  CreateShopPayload,
+  ShopType,
+  UpdateShopPayload,
+} from "../model";
 import { axiosInstance } from "@/shared/lib/axiosInstance";
 import { AxiosError } from "axios";
 
@@ -42,12 +46,12 @@ export const getAllShopsThunk = createAsyncThunk<
 });
 
 export const getShopByIdThunk = createAsyncThunk<
-  ShopType[],
+  ShopType,
   number,
   { rejectValue: string }
 >(SHOP_THUNK_NAMES.GET_SHOP_BY_ID, async (id, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.get<ShopType[]>(
+    const response = await axiosInstance.get<ShopType>(
       SHOP_API_URLS.GET_SHOP_BY_ID(id),
     );
 
@@ -65,7 +69,7 @@ export const getShopByIdThunk = createAsyncThunk<
 
 export const createShopThunk = createAsyncThunk<
   ShopType,
-  ShopType,
+  CreateShopPayload,
   { rejectValue: string }
 >(SHOP_THUNK_NAMES.CREATE_SHOP, async (shop, { rejectWithValue }) => {
   try {
@@ -88,13 +92,14 @@ export const createShopThunk = createAsyncThunk<
 
 export const updateShopThunk = createAsyncThunk<
   ShopType,
-  ShopType,
+  UpdateShopPayload,
   { rejectValue: string }
 >(SHOP_THUNK_NAMES.UPDATE_SHOP, async (shop, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.put<ShopType>(
-      SHOP_API_URLS.UPDATE_SHOP(shop.id),
-      shop,
+    const { id, ...data } = shop;
+    const response = await axiosInstance.patch<ShopType>(
+      SHOP_API_URLS.UPDATE_SHOP(id),
+      data,
     );
 
     if (response.status === 200) {

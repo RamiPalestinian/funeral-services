@@ -36,7 +36,7 @@ const shopSlice = createSlice({
     });
     builder.addCase(getShopByIdThunk.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.shops = action.payload;
+      state.shops = [action.payload];
     });
     builder.addCase(getShopByIdThunk.rejected, (state, action) => {
       state.isLoading = false;

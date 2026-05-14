@@ -26,7 +26,7 @@ export default function CremationPage() {
   }, [dispatch]);
 
   const handleCreateSubmit = async (
-    event: React.FormEvent<HTMLFormElement>,
+    event: React.ChangeEvent<HTMLFormElement>,
   ) => {
     event.preventDefault();
 
@@ -36,20 +36,18 @@ export default function CremationPage() {
 
     const formData = new FormData(event.currentTarget);
 
-
-      await dispatch(
-        createCremationThunk({
-          name: String(formData.get("name")),
-          description: String(formData.get("description")),
-          price: Number(formData.get("price")),
-          image: String(formData.get("image")),
-          category: String(formData.get("category")),
-          status: String(formData.get("status")),
-          userId: user.id,
-        }),
-      )
-      event.currentTarget.reset();
-
+    await dispatch(
+      createCremationThunk({
+        name: String(formData.get("name")),
+        description: String(formData.get("description")),
+        price: Number(formData.get("price")),
+        image: String(formData.get("image")),
+        category: String(formData.get("category")),
+        status: String(formData.get("status")),
+        userId: user.id,
+      }),
+    );
+    event.currentTarget.reset();
   };
 
   return (
@@ -71,7 +69,13 @@ export default function CremationPage() {
             minLength={3}
             required
           />
-          <input name="price" type="number" placeholder="Цена" min={0} required />
+          <input
+            name="price"
+            type="number"
+            placeholder="Цена"
+            min={0}
+            required
+          />
           <input
             name="image"
             type="url"
