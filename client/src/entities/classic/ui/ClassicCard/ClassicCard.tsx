@@ -37,7 +37,7 @@ export default function ClassicCard({ classic  }: ClassicCardProps) {
         <p className="classic-card-description">{classic.description}</p>
         <div className="classic-card-meta">
           <span className="classic-card-price">{formattedPrice} ₽</span>
-          <span className="classic-card-status">{classic.status}</span>
+          {/* <span className="classic-card-status">{classic.status}</span> */}
         </div>
         <div className="classic-card-actions">
           <button className="classic-card-button">Выбрать услугу</button>
@@ -49,10 +49,14 @@ export default function ClassicCard({ classic  }: ClassicCardProps) {
           >
             Подробнее
           </button>
-          <button className="classic-card-button" onClick={() => dispatch(deleteClassicThunk(classic.id))}>Удалить</button>
+          <button
+            className="classic-card-button classic-card-button-delete"
+            onClick={() => dispatch(deleteClassicThunk(classic.id))}
+          >
+            Удалить
+          </button>
         </div>
       </div>
     </article>
   );
 }
-
