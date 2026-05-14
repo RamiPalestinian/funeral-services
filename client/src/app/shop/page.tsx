@@ -1,7 +1,7 @@
 "use client";
 
 import "./page.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ShopCard from "@/entities/shop/ui/ShopCard/ShopCard";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
@@ -16,10 +16,14 @@ export default function ShopPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const shops = useAppSelector((state) => state.shop.shops);
-  const isLoading = useAppSelector((state) => state.shop.isLoading);
   const error = useAppSelector((state) => state.shop.error);
   const { user } = useUser();
   const isAdmin = user?.id === 1;
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredShops = shops.filter((shop) =>
+    shop.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
 
   useEffect(() => {
     dispatch(getAllShopsThunk());
@@ -90,13 +94,20 @@ export default function ShopPage() {
             required
           />
           {error && <p>{error}</p>}
-          <button type="submit" disabled={isLoading || !user}>
+          <button type="submit" disabled={!user}>
             Создать товар
           </button>
         </form>
       )}
+      <input
+        type="search"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Поиск по названию"
+        aria-label="Поиск товаров по названию"
+      />
       <div>
-        {shops?.map((shop: ShopType) => (
+        {filteredShops.map((shop: ShopType) => (
           <ShopCard key={shop.id} shop={shop} />
         ))}
       </div>
