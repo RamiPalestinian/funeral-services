@@ -365,3 +365,9 @@
     display: none;
   }
 }
+
+button.navlink {
+  cursor: pointer;
+  font: inherit;
+  text-align: inherit;
+}

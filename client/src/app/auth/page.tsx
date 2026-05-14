@@ -1,13 +1,15 @@
-'use client';
+"use client";
 import "./page.css";
 import SignUpForm from "@/features/auth/ui/SignUpForm/SignUpForm";
 import SignInForm from "@/features/auth/ui/SignInForm/SignInForm";
-import { useState } from "react";
 import { useUser } from "@/application/UserProvider";
+import { useState } from "react";
+
 
 export default function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(false);
-  const { setUser } = useUser();
+  const { user, setUser } = useUser();
+
 
   return (
     <div className="auth-page">
@@ -43,11 +45,7 @@ export default function AuthPage() {
             </button>
           </div>
 
-          {isSignUp ? (
-            <SignUpForm />
-          ) : (
-            <SignInForm setUser={setUser} />
-          )}
+          {isSignUp ? <SignUpForm /> : <SignInForm setUser={setUser} />}
         </div>
       </div>
     </div>
