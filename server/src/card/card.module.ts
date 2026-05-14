@@ -3,9 +3,10 @@ import { CardController } from './card.controller';
 import { CardService } from './card.service';
 import { Card } from './card.model';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Card])],
+  imports: [SequelizeModule.forFeature([Card]), AuthModule],
   controllers: [CardController],
   providers: [CardService],
 })

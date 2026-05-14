@@ -27,18 +27,26 @@ function cardSearchText(card: CardType): string {
 export default function CardPage() {
   const dispatch = useAppDispatch();
   const { cards, isLoading, error } = useAppSelector((state) => state.card);
+  const { user, isInitialized } = useAppSelector((state) => state.user);
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
+    if (!isInitialized) return;
+    if (!user) {
+      router.replace("/auth");
+      return;
+    }
     void dispatch(getAllCardsThunk());
-  }, [dispatch]);
+  }, [dispatch, isInitialized, user, router]);
 
   const filteredCards = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
     if (!q) return cards;
     return cards.filter((card) => cardSearchText(card).includes(q));
   }, [cards, searchQuery]);
+
+  const showCartContent = isInitialized && user;
 
   return (
     <section className="shop-page">
@@ -63,7 +71,7 @@ export default function CardPage() {
         </div>
       </div>
 
-      {error ? (
+      {showCartContent && error ? (
         <div className="shop-form-wrap cart-message-wrap">
           <p className="shop-form-error" role="alert">
             {error}
@@ -71,32 +79,42 @@ export default function CardPage() {
         </div>
       ) : null}
 
-      <div className="shop-filter-bar">
-        <span className="shop-filter-label">Фильтрация</span>
-        <input
-          className="shop-search"
-          type="search"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Поиск по названию или категории"
-          aria-label="Поиск позиций в корзине"
-        />
-      </div>
+      {showCartContent ? (
+        <div className="shop-filter-bar">
+          <span className="shop-filter-label">Фильтрация</span>
+          <input
+            className="shop-search"
+            type="search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Поиск по названию или категории"
+            aria-label="Поиск позиций в корзине"
+          />
+        </div>
+      ) : null}
 
-      {isLoading ? (
+      {!isInitialized ? (
+        <p className="cart-panel-message">Проверка входа…</p>
+      ) : null}
+
+      {showCartContent && isLoading ? (
         <p className="cart-panel-message">Загрузка…</p>
       ) : null}
 
-      {!isLoading && cards.length === 0 && !error ? (
+      {showCartContent && !isLoading && cards.length === 0 && !error ? (
         <p className="cart-panel-message">Корзина пуста.</p>
       ) : null}
 
-      {!isLoading && filteredCards.length === 0 && cards.length > 0 ? (
+      {showCartContent &&
+      !isLoading &&
+      filteredCards.length === 0 &&
+      cards.length > 0 ? (
         <p className="cart-panel-message">Ничего не найдено по запросу.</p>
       ) : null}
 
       <div className="shop-grid">
-        {!isLoading &&
+        {showCartContent &&
+          !isLoading &&
           filteredCards.map((card) => <CardCard key={card.id} card={card} />)}
       </div>
 

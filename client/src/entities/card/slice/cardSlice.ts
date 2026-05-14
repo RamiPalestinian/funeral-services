@@ -1,11 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { initialCardState, CardStateType } from "../model";
+import { initialCardState } from "../model";
 import {
   getAllCardsThunk,
   getCardByIdThunk,
   deleteCardThunk,
   createCardThunk,
 } from "../api/CardApiThunk";
+import {
+  logoutThunk,
+  deleteUserAccountThunk,
+} from "@/entities/user/api/UserApiThunk";
 
 const cardSlice = createSlice({
   name: "card",
@@ -67,6 +71,17 @@ const cardSlice = createSlice({
     builder.addCase(deleteCardThunk.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload ?? null;
+    });
+
+    builder.addCase(logoutThunk.fulfilled, (state) => {
+      state.cards = [];
+      state.error = null;
+      state.isLoading = false;
+    });
+    builder.addCase(deleteUserAccountThunk.fulfilled, (state) => {
+      state.cards = [];
+      state.error = null;
+      state.isLoading = false;
     });
   },
 });

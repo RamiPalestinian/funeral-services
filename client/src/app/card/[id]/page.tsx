@@ -31,6 +31,7 @@ export default function CardByIdPage() {
   const numericId = Number(id);
   const { cards, isLoading, error } = useAppSelector((state) => state.card);
   const user = useAppSelector((state) => state.user.user);
+  const { isInitialized } = useAppSelector((state) => state.user);
 
   const card = cards.find((c) => c.id === numericId);
   const item = card ? lineItem(card) : null;
@@ -41,10 +42,31 @@ export default function CardByIdPage() {
     card.userId === user.id;
 
   useEffect(() => {
+    if (!isInitialized) return;
+    if (!user) {
+      router.replace("/auth");
+      return;
+    }
     if (Number.isFinite(numericId)) {
       void dispatch(getCardByIdThunk(numericId));
     }
-  }, [dispatch, numericId]);
+  }, [dispatch, isInitialized, user, router, numericId]);
+
+  if (!isInitialized) {
+    return (
+      <section className="card-page cremation-detail-page">
+        <p className="cremation-detail-description">Проверка входа…</p>
+      </section>
+    );
+  }
+
+  if (!user) {
+    return (
+      <section className="card-page cremation-detail-page">
+        <p className="cremation-detail-description">Нужен вход в аккаунт.</p>
+      </section>
+    );
+  }
 
   if (!Number.isFinite(numericId)) {
     return (

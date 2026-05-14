@@ -57,7 +57,7 @@ export class CardService {
     ];
   }
 
-  async create(dto: CreateCardDto) {
+  async create(dto: CreateCardDto, userId: number) {
     const refs = [
       dto.serviceId,
       dto.islamicId,
@@ -72,7 +72,7 @@ export class CardService {
     }
 
     const created = await this.cardModel.create({
-      userId: dto.userId,
+      userId,
       serviceId: dto.serviceId ?? null,
       islamicId: dto.islamicId ?? null,
       classicServiceId: dto.classicServiceId ?? null,
@@ -82,15 +82,17 @@ export class CardService {
     return created.reload({ include: this.cardWithRelationsInclude() });
   }
 
-  async findAll() {
+  async findAllForUser(userId: number) {
     return this.cardModel.findAll({
+      where: { userId },
       include: this.cardWithRelationsInclude(),
       order: [['createdAt', 'DESC']],
     });
   }
 
-  async findById(id: number) {
-    const card = await this.cardModel.findByPk(id, {
+  async findByIdForUser(id: number, userId: number) {
+    const card = await this.cardModel.findOne({
+      where: { id, userId },
       include: this.cardWithRelationsInclude(),
     });
     if (!card) {
@@ -99,8 +101,8 @@ export class CardService {
     return card;
   }
 
-  async delete(id: number) {
-    const result = await this.cardModel.destroy({ where: { id } });
+  async deleteForUser(id: number, userId: number) {
+    const result = await this.cardModel.destroy({ where: { id, userId } });
     if (result === 0) {
       throw new NotFoundException('Card not found');
     }

@@ -31,7 +31,7 @@ export function useAddToCard() {
         return;
       }
       try {
-        await dispatch(createCardThunk({ userId: user.id, ...ref })).unwrap();
+        await dispatch(createCardThunk({ ...ref })).unwrap();
       } catch {
         console.log("Ошибка при добавлении в корзину");
       }
