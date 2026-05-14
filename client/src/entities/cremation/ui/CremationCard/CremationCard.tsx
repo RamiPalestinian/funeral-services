@@ -5,6 +5,7 @@ import { CremationType } from "../../model";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { deleteCremationThunk } from "../../api/CremationApiThunk";
+import { useUser } from "@/application/UserProvider";
 
 type CremationCardProps = {
   cremation: CremationType;
@@ -13,6 +14,8 @@ type CremationCardProps = {
 export default function CremationCard({ cremation }: CremationCardProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const { user } = useUser();
+  const isAdmin = user?.id === 1;
 
   const handleDelete = () => {
     dispatch(deleteCremationThunk(Number(cremation.id)));
@@ -29,7 +32,7 @@ export default function CremationCard({ cremation }: CremationCardProps) {
       <button onClick={() => router.push(`/cremation/${cremation.id}`)}>
         Подробнее
       </button>
-      <button onClick={() => handleDelete()}>Удалить</button>
+      {isAdmin && <button onClick={() => handleDelete()}>Удалить</button>}
     </div>
   );
 }
