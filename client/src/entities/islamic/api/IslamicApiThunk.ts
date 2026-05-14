@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {IslamicType, NewIslamicType} from '../model';
+import { IslamicType, NewIslamicType, UpdateIslamicType } from '../model';
 import {AxiosError} from 'axios';
 import {axiosInstance} from '@/shared/lib/axiosInstance';
 
@@ -7,6 +7,7 @@ const ISLAMIC_THUNK_NAMES = {
     SET_ISLAMIC: 'islamic/fetchIslamic',
     SET_ONE_ISLAMIC: 'islamic/fetchIslamicById',
     ADD_ISLAMIC: 'islamic/createIslamic',
+    UPDATE_ISLAMIC: 'islamic/updateIslamic',
     DELETE_ISLAMIC: 'islamic/deleteIslamic',
     GET_USER_ISLAMIC: 'islamic/getUserIslamic',
 } as const;
@@ -15,6 +16,7 @@ const ISLAMIC_API_URLS = {
     SET_ISLAMIC: '/islamic',
     SET_ONE_ISLAMIC: (id: number) => `/islamic/${id}`,
     ADD_ISLAMIC: '/islamic',
+    UPDATE_ISLAMIC: (id: number) => `/islamic/${id}`,
     DELETE_ISLAMIC: (id: number) => `/islamic/${id}`,
     GET_USER_ISLAMIC: (userId: number) => `/islamic/user/${userId}`,
 } as const;
@@ -81,16 +83,37 @@ export const createIslamicThunk = createAsyncThunk<IslamicType, NewIslamicType, 
     }
 );  
 
-export const deleteIslamicThunk = createAsyncThunk<void, number, { rejectValue: string }>(
-    ISLAMIC_THUNK_NAMES.DELETE_ISLAMIC,
-    async (id, { rejectWithValue }) => {
+export const updateIslamicThunk = createAsyncThunk<
+    IslamicType,
+    { id: number; islamicData: UpdateIslamicType },
+    { rejectValue: string }
+>(
+    ISLAMIC_THUNK_NAMES.UPDATE_ISLAMIC,
+    async ({ id, islamicData }, { rejectWithValue }) => {
         try {
-            await axiosInstance.delete(ISLAMIC_API_URLS.DELETE_ISLAMIC(id));
+            const { data } = await axiosInstance.patch<IslamicType>(
+                ISLAMIC_API_URLS.UPDATE_ISLAMIC(id),
+                islamicData,
+            );
+            return data;
         } catch (error) {
-            return rejectWithValue(getErrorMessage(error, 'Ошибка при удалении исламской услуги'));
+            return rejectWithValue(getErrorMessage(error, 'Ошибка при изменении исламской услуги'));
         }
     }
-);  
+);
+
+export const deleteIslamicThunk = createAsyncThunk<number, number, { rejectValue: string }>(
+  ISLAMIC_THUNK_NAMES.DELETE_ISLAMIC,
+  async (id, { rejectWithValue }) => {
+    try {
+      await axiosInstance.delete(ISLAMIC_API_URLS.DELETE_ISLAMIC(id));
+      return id;
+    } catch (error) {
+      return rejectWithValue(getErrorMessage(error, 'Ошибка при удалении исламской услуги'));
+    }
+  }
+);
+
 
 export const getUserIslamicThunk = createAsyncThunk<IslamicType[], number, { rejectValue: string }>(
     ISLAMIC_THUNK_NAMES.GET_USER_ISLAMIC,

@@ -4,6 +4,7 @@ import {
   fetchIslamicThunk,
   fetchIslamicByIdThunk,
   createIslamicThunk,
+  updateIslamicThunk,
   deleteIslamicThunk,
   getUserIslamicThunk,
 } from "../api/IslamicApiThunk";
@@ -61,6 +62,23 @@ const islamicSlice = createSlice({
     builder.addCase(createIslamicThunk.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload ?? "Ошибка при создании исламской услуги";
+    });
+
+    // updateIslamicThunk
+    builder.addCase(updateIslamicThunk.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(updateIslamicThunk.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.oneIslamic = action.payload;
+      state.islamics = state.islamics.map((islamic) =>
+        islamic.id === action.payload.id ? action.payload : islamic,
+      );
+    });
+    builder.addCase(updateIslamicThunk.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload ?? "Ошибка при изменении исламской услуги";
     });
 
     // deleteIslamicThunk

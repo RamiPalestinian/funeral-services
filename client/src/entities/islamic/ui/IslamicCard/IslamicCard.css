@@ -98,6 +98,12 @@
   color: var(--text-main);
 }
 
+.islamic-card-button-danger {
+  border-color: rgba(183, 70, 70, 0.34);
+  background: rgba(183, 70, 70, 0.14);
+  color: #ffd7d7;
+}
+
 @media (max-width: 640px) {
   .islamic-card {
     grid-template-rows: 210px 1fr;

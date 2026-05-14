@@ -1,24 +1,100 @@
 "use client";
+
 import "../page.css";
-import { useEffect } from "react";
-import { useParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { type ChangeEvent, type FormEvent, useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
-import { fetchIslamicByIdThunk } from "@/entities/islamic/api/IslamicApiThunk";
-// import Image from "next/image";
+import {
+  fetchIslamicByIdThunk,
+  updateIslamicThunk,
+} from "@/entities/islamic/api/IslamicApiThunk";
+
+const initialFormState = {
+  name: "",
+  description: "",
+  price: "",
+  image: "",
+  category: "",
+  status: "",
+};
 
 export default function OneIslamicPage() {
   const dispatch = useAppDispatch();
-  const { oneIslamic } = useAppSelector((state) => state.islamic);
-  const { id } = useParams();
-
+  const { error, isLoading, oneIslamic } = useAppSelector(
+    (state) => state.islamic,
+  );
+  const { id } = useParams<{ id: string }>();
   const router = useRouter();
+  const [formData, setFormData] = useState(initialFormState);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     if (id) {
       dispatch(fetchIslamicByIdThunk(Number(id)));
     }
-  }, [id]);
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (oneIslamic) {
+      setFormData({
+        name: oneIslamic.name,
+        description: oneIslamic.description,
+        price: String(oneIslamic.price),
+        image: oneIslamic.image,
+        category: oneIslamic.category ?? "",
+        status: oneIslamic.status ?? "",
+      });
+    }
+  }, [oneIslamic]);
+
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = event.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleCancelEdit = () => {
+    if (oneIslamic) {
+      setFormData({
+        name: oneIslamic.name,
+        description: oneIslamic.description,
+        price: String(oneIslamic.price),
+        image: oneIslamic.image,
+        category: oneIslamic.category ?? "",
+        status: oneIslamic.status ?? "",
+      });
+    }
+
+    setIsEditing(false);
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!oneIslamic) {
+      return;
+    }
+
+    try {
+      await dispatch(
+        updateIslamicThunk({
+          id: oneIslamic.id,
+          islamicData: {
+            ...formData,
+            price: Number(formData.price),
+          },
+        }),
+      ).unwrap();
+      setIsEditing(false);
+    } catch {
+      // Ошибка уже записывается в islamic slice.
+    }
+  };
 
   if (!oneIslamic) return null;
 
@@ -29,8 +105,8 @@ export default function OneIslamicPage() {
           className="islamic-detail-image"
           src={oneIslamic.image}
           alt={oneIslamic.name}
-          width={400} // обязательный пропс
-          height={300} // обязательный пропс
+          width={400}
+          height={300}
         />
       </div>
       <div className="islamic-detail-body">
@@ -41,6 +117,75 @@ export default function OneIslamicPage() {
           <span>{oneIslamic.price} ₽</span>
           <span>{oneIslamic.status}</span>
         </div>
+        {isEditing && (
+          <form className="islamic-update-form" onSubmit={handleSubmit}>
+            <input
+              name="name"
+              type="text"
+              placeholder="Название"
+              value={formData.name}
+              onChange={handleChange}
+              minLength={3}
+              required
+            />
+            <input
+              name="category"
+              type="text"
+              placeholder="Категория"
+              value={formData.category}
+              onChange={handleChange}
+              minLength={3}
+              required
+            />
+            <input
+              name="status"
+              type="text"
+              placeholder="Статус"
+              value={formData.status}
+              onChange={handleChange}
+              minLength={3}
+              required
+            />
+            <input
+              name="price"
+              type="number"
+              placeholder="Цена"
+              value={formData.price}
+              onChange={handleChange}
+              min={0}
+              required
+            />
+            <input
+              name="image"
+              type="url"
+              placeholder="Ссылка на изображение"
+              value={formData.image}
+              onChange={handleChange}
+              required
+            />
+            <textarea
+              name="description"
+              placeholder="Описание"
+              value={formData.description}
+              onChange={handleChange}
+              minLength={10}
+              required
+            />
+            {error && <p className="islamic-update-error">{error}</p>}
+            <div className="islamic-update-actions">
+              <button type="submit" disabled={isLoading}>
+                Сохранить изменения
+              </button>
+              <button
+                type="button"
+                className="islamic-update-button-secondary"
+                onClick={handleCancelEdit}
+              >
+                Отмена
+              </button>
+            </div>
+          </form>
+        )}
         <div className="islamic-detail-actions">
           <button
             className="islamic-card-button islamic-card-button-secondary"
@@ -49,6 +194,12 @@ export default function OneIslamicPage() {
             }}
           >
             Назад
+          </button>
+          <button
+            className="islamic-card-button"
+            onClick={() => setIsEditing(true)}
+          >
+            Изменить
           </button>
           <button className="islamic-card-button">Выбрать услугу</button>
         </div>

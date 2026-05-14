@@ -1,7 +1,6 @@
 import "./ClassicCard.css";
 import type { ClassicType } from "@/entities/classic/model";
 import { useRouter } from "next/navigation";
-// import Image from "next/image";
 
 type ClassicCardProps = {
   classic: ClassicType | null;
@@ -23,8 +22,8 @@ export default function ClassicCard({ classic }: ClassicCardProps) {
           className="classic-card-image"
           src={classic.image}
           alt={classic.name}
-          width={400} // обязательный пропс
-          height={300} // обязательный пропс
+          width={400}
+          height={300}
         />
       </div>
       <div className="classic-card-body">

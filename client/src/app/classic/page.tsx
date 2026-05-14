@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { fetchClassicThunk } from "@/entities/classic/api/ClassicApiThunk";
 import { useEffect } from "react";
-// import Image from "next/image";
 
 export default function Classic() {
   const router = useRouter();

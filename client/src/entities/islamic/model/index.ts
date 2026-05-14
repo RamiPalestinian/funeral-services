@@ -18,7 +18,12 @@ export type NewIslamicType = {
     description: string;
     price: number;
     image: string;
+    category: string;
+    status: string;
+    userId: number;
 };
+
+export type UpdateIslamicType = Partial<Omit<NewIslamicType, "userId">>;
 
 export type IslamicStateType = {
     islamics: IslamicType[];
