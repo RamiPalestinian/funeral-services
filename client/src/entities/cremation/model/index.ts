@@ -10,6 +10,26 @@ export type CremationType = {
   updatedAt: string;
 };
 
+export type CreateCremationPayload = {
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+  category: string;
+  status: string;
+  userId: number;
+};
+
+export type UpdateCremationPayload = {
+  id: number;
+  name?: string;
+  description?: string;
+  price?: number;
+  image?: string;
+  category?: string;
+  status?: string;
+};
+
 export type CremationStateType = {
   cremations: CremationType[];
   isLoading: boolean;

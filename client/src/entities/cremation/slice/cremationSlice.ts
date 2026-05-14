@@ -36,7 +36,7 @@ const cremationSlice = createSlice({
     });
     builder.addCase(getCremationByIdThunk.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.cremations = action.payload;
+      state.cremations = [action.payload];
     });
     builder.addCase(getCremationByIdThunk.rejected, (state, action) => {
       state.isLoading = false;
@@ -78,7 +78,7 @@ const cremationSlice = createSlice({
     builder.addCase(deleteCremationThunk.fulfilled, (state, action) => {
       state.isLoading = false;
       state.cremations = state.cremations.filter(
-        (shop) => shop.id !== action.payload.id,
+        (shop) => shop.id !== action.payload,
       );
     });
     builder.addCase(deleteCremationThunk.rejected, (state, action) => {
