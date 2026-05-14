@@ -1,6 +1,6 @@
 "use client";
 import "./page.css";
-import ShopCard from "@/entities/shop/ui/ShopCard";
+import ShopCard from "@/entities/shop/ui/ShopCard/ShopCard";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { useEffect } from "react";

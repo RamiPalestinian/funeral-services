@@ -1,5 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { CremationType } from "../model";
+import {
+  CremationType,
+  CreateCremationPayload,
+  UpdateCremationPayload,
+} from "../model";
 import { axiosInstance } from "@/shared/lib/axiosInstance";
 import { AxiosError } from "axios";
 
@@ -42,14 +46,14 @@ export const getAllCremationsThunk = createAsyncThunk<
 });
 
 export const getCremationByIdThunk = createAsyncThunk<
-  CremationType[],
+  CremationType,
   number,
   { rejectValue: string }
 >(
   CREMATION_THUNK_NAMES.GET_CREMATION_BY_ID,
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get<CremationType[]>(
+      const response = await axiosInstance.get<CremationType>(
         CREMATION_API_URLS.GET_CREMATION_BY_ID(id),
       );
 
@@ -68,7 +72,7 @@ export const getCremationByIdThunk = createAsyncThunk<
 
 export const createCremationThunk = createAsyncThunk<
   CremationType,
-  CremationType,
+  CreateCremationPayload,
   { rejectValue: string }
 >(
   CREMATION_THUNK_NAMES.CREATE_CREMATION,
@@ -94,15 +98,16 @@ export const createCremationThunk = createAsyncThunk<
 
 export const updateCremationThunk = createAsyncThunk<
   CremationType,
-  CremationType,
+  UpdateCremationPayload,
   { rejectValue: string }
 >(
   CREMATION_THUNK_NAMES.UPDATE_CREMATION,
   async (cremation, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.put<CremationType>(
-        CREMATION_API_URLS.UPDATE_CREMATION(cremation.id),
-        cremation,
+      const { id, ...data } = cremation;
+      const response = await axiosInstance.patch<CremationType>(
+        CREMATION_API_URLS.UPDATE_CREMATION(id),
+        data,
       );
 
       if (response.status === 200) {
@@ -119,17 +124,17 @@ export const updateCremationThunk = createAsyncThunk<
 );
 
 export const deleteCremationThunk = createAsyncThunk<
-  CremationType,
+  number,
   number,
   { rejectValue: string }
 >(CREMATION_THUNK_NAMES.DELETE_CREMATION, async (id, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.delete<CremationType>(
+    const response = await axiosInstance.delete<number>(
       CREMATION_API_URLS.DELETE_CREMATION(id),
     );
 
     if (response.status === 200) {
-      return response.data;
+      return id;
     }
 
     return rejectWithValue("Ошибка при удалении похороны");
