@@ -92,11 +92,11 @@ export class UserValidator {
       !password ||
       typeof password !== 'string' ||
       password.trim().length === 0 ||
-      !this.validatePassword(password)
+      password.length < 8
     ) {
       return {
         isValid: false,
-        error: 'Пароль не соответствует критериям валидации',
+        error: 'Пароль должен содержать не менее 8 символов',
       };
     }
 
