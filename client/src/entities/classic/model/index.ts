@@ -15,7 +15,7 @@ export type ClassicType = {
 
 export type NewClassicType = {
   name: string;
-  discription: string;
+  description: string;
   price: number;
   image: string;
 };

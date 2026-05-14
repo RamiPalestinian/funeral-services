@@ -12,10 +12,9 @@ export default function AuthPage() {
   return (
     <div className="auth-page">
       <div className="auth-shell">
-        <section className="auth-copy-panel">
+        {/* <section className="auth-copy-panel">
           <p className="auth-copy-kicker">Служба сопровождения</p>
           <div className="auth-copy-frame">
-            {/* <span className="auth-copy-index">01</span> */}
             <div></div>
             <h1>Семейный кабинет для срочного обращения</h1>
           </div>
@@ -27,7 +26,7 @@ export default function AuthPage() {
             <span>1 форма</span>
             <span>спокойный тон</span>
           </div>
-        </section>
+        </section> */}
         <div className="form-container">
           <div className="auth-toggle">
             <button
