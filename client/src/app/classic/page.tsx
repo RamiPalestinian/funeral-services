@@ -39,14 +39,12 @@ export default function Classic() {
         </div>
       </div>
 
-     
-
       <div className="classic-grid">
         {classics.map((classic) => (
           <ClassicCard key={classic.id} classic={classic} />
         ))}
       </div>
-       <button
+      <button
         className="classic-back-link"
         onClick={() => router.push("/home")}
       >

@@ -3,6 +3,7 @@ import { userReducer } from "@/entities/user/slice/userSlice";
 import { classicReducer } from "@/entities/classic/slice/classicSlice";
 import { cremationReducer } from "@/entities/cremation/slice/cremationSlice";
 import { shopReducer } from "@/entities/shop/slice/shopSlice";
+import { islamicReducer } from "@/entities/islamic/slice/islamicSlice";
 
 // создаём store - глобальное хранилище данных
 export const store = configureStore({
@@ -11,6 +12,7 @@ export const store = configureStore({
     cremation: cremationReducer,
     classic: classicReducer,
     shop: shopReducer,
+    islamic: islamicReducer,
   },
 });
 

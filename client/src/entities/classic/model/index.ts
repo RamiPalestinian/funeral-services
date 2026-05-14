@@ -15,10 +15,12 @@ export type ClassicType = {
 
 export type NewClassicType = {
   name: string;
-  discription: string;
+  description: string;
   price: number;
   image: string;
 };
+
+
 
 export type ClassicStateType = {
     classics: ClassicType[];
