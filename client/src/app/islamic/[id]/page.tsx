@@ -23,6 +23,8 @@ export default function OneIslamicPage() {
   const { error, isLoading, oneIslamic } = useAppSelector(
     (state) => state.islamic,
   );
+  const user = useAppSelector((state) => state.user.user);
+  const isAdmin = user?.id === 1;
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const [formData, setFormData] = useState(initialFormState);
@@ -34,19 +36,6 @@ export default function OneIslamicPage() {
     }
   }, [dispatch, id]);
 
-  useEffect(() => {
-    if (oneIslamic) {
-      setFormData({
-        name: oneIslamic.name,
-        description: oneIslamic.description,
-        price: String(oneIslamic.price),
-        image: oneIslamic.image,
-        category: oneIslamic.category ?? "",
-        status: oneIslamic.status ?? "",
-      });
-    }
-  }, [oneIslamic]);
-
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -56,6 +45,22 @@ export default function OneIslamicPage() {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleStartEdit = () => {
+    if (!oneIslamic) {
+      return;
+    }
+
+    setFormData({
+      name: oneIslamic.name,
+      description: oneIslamic.description,
+      price: String(oneIslamic.price),
+      image: oneIslamic.image,
+      category: oneIslamic.category ?? "",
+      status: oneIslamic.status ?? "",
+    });
+    setIsEditing(true);
   };
 
   const handleCancelEdit = () => {
@@ -115,9 +120,9 @@ export default function OneIslamicPage() {
         <p className="islamic-detail-description">{oneIslamic.description}</p>
         <div className="islamic-detail-meta">
           <span>{oneIslamic.price} ₽</span>
-          <span>{oneIslamic.status}</span>
+          {/* <span>{oneIslamic.status}</span> */}
         </div>
-        {isEditing && (
+        {isAdmin && isEditing && (
           <form className="islamic-update-form" onSubmit={handleSubmit}>
             <input
               name="name"
@@ -195,12 +200,14 @@ export default function OneIslamicPage() {
           >
             Назад
           </button>
-          <button
-            className="islamic-card-button"
-            onClick={() => setIsEditing(true)}
-          >
-            Изменить
-          </button>
+          {isAdmin && (
+            <button
+              className="islamic-card-button"
+              onClick={handleStartEdit}
+            >
+              Изменить
+            </button>
+          )}
           <button className="islamic-card-button">Выбрать услугу</button>
         </div>
       </div>

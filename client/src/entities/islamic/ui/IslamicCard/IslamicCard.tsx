@@ -3,7 +3,7 @@
 import "./IslamicCard.css";
 import { deleteIslamicThunk } from "@/entities/islamic/api/IslamicApiThunk";
 import type { IslamicType } from "@/entities/islamic/model";
-import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
+import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { useRouter } from "next/navigation";
 
 type IslamicCardProps = {
@@ -13,6 +13,8 @@ type IslamicCardProps = {
 export default function IslamicCard({ islamic }: IslamicCardProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user.user);
+  const isAdmin = user?.id === 1;
 
   if (!islamic) {
     return null; // или можно отобразить заглушку, если данных нет
@@ -52,16 +54,17 @@ export default function IslamicCard({ islamic }: IslamicCardProps) {
           >
             Подробнее
           </button>
-          <button
-            type="button"
-            className="islamic-card-button islamic-card-button-danger"
-            onClick={handleDelete}
-          >
-            Удалить
-          </button>
+          {isAdmin && (
+            <button
+              type="button"
+              className="islamic-card-button islamic-card-button-danger"
+              onClick={handleDelete}
+            >
+              Удалить
+            </button>
+          )}
         </div>
       </div>
     </article>
   );
 }   
-

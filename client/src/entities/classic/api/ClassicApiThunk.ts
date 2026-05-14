@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ClassicType, NewClassicType } from "../model";
+import { ClassicType, NewClassicType, UpdateClassicType } from "../model";
 import { AxiosError } from "axios";
 import { axiosInstance} from "@/shared/lib/axiosInstance";
 
@@ -8,6 +8,7 @@ const CLASSIC_THUNK_NAMES = {
   SET_CLASSIC: "classic/fetchClassic",
   SET_ONE_CLASSIC: "classic/fetchClassicById",
   ADD_CLASSIC: "classic/createClassic",
+  UPDATE_CLASSIC: "classic/updateClassic",
   DELETE_CLASSIC: "classic/deleteClassic",
   GET_USER_CLASSIC: "classic/getUserClassic",
 } as const;
@@ -17,6 +18,7 @@ const CLASSIC_API_URLS = {
   SET_CLASSIC: "/classic",
   SET_ONE_CLASSIC: (id: number) => `/classic/${id}`,
   ADD_CLASSIC: "/classic",
+  UPDATE_CLASSIC: (id: number) => `/classic/${id}`,
   DELETE_CLASSIC: (id: number) => `/classic/${id}`,
   GET_USER_CLASSIC: (userId: number) => `/classic/user/${userId}`,
 } as const;
@@ -81,6 +83,27 @@ export const createClassicThunk = createAsyncThunk<ClassicType, NewClassicType, 
             return rejectWithValue (getErrorMessage(error, 'Ошибка при создании классических услуг'));
         }
     }
+);
+
+export const updateClassicThunk = createAsyncThunk<
+  ClassicType,
+  { id: number; classicData: UpdateClassicType },
+  { rejectValue: string }
+>(
+  CLASSIC_THUNK_NAMES.UPDATE_CLASSIC,
+  async ({ id, classicData }, { rejectWithValue }) => {
+    try {
+      const { data } = await axiosInstance.patch<ClassicType>(
+        CLASSIC_API_URLS.UPDATE_CLASSIC(id),
+        classicData,
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(
+        getErrorMessage(error, "Ошибка при изменении классической услуги"),
+      );
+    }
+  },
 );
 
 // Удаление одной услуги
