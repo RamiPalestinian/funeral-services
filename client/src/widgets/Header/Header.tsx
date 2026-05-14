@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -25,7 +25,9 @@ export default function Header({ user, setUser }: HeaderProps) {
     }
   }
   return (
-    <header className={isHomePage ? "site-header site-header-home" : "site-header"}>
+    <header
+      className={isHomePage ? "site-header site-header-home" : "site-header"}
+    >
       <nav className={isHomePage ? "site-nav site-nav-home" : "site-nav"}>
         <div className="nav-brand">
           <span className="nav-brand-mark">линия сопровождения</span>
@@ -43,9 +45,18 @@ export default function Header({ user, setUser }: HeaderProps) {
               <Link href="/personal" className="navlink">
                 Кабинет
               </Link>
-                <Link href="/contact" className="navlink">
+              {/* <Link href="/contact" className="navlink">
                 Контакты
-              </Link>
+              </Link> */}
+              <div className="dropdown">
+                <button className="dropbtn">Наши услуги</button>
+                <div className="dropdown-content">
+                  <a href="/classic">Традиционные похороны</a>
+                  <a href="/islamic">Исламские похороны</a>
+                  <a href="/cremation">Кремация</a>
+                  <a href="/shop">Ритуальный магазин</a>
+                </div>
+              </div>
               <Link
                 href="/"
                 className="navlink navlink-accent"
