@@ -105,6 +105,10 @@ export default function OneIslamicPage() {
 
   if (!oneIslamic) return null;
 
+  const formattedPrice = new Intl.NumberFormat("ru-RU").format(
+    oneIslamic.price,
+  );
+
   return (
     <section className="islamic-page islamic-detail-page">
       <div className="islamic-detail-media">
@@ -121,7 +125,7 @@ export default function OneIslamicPage() {
         <h1 className="islamic-detail-title">{oneIslamic.name}</h1>
         <p className="islamic-detail-description">{oneIslamic.description}</p>
         <div className="islamic-detail-meta">
-          <span>{oneIslamic.price} ₽</span>
+          <span>{formattedPrice} ₽</span>
           {/* <span>{oneIslamic.status}</span> */}
         </div>
         {isAdmin && isEditing && (
