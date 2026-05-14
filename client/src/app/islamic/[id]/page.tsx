@@ -8,6 +8,7 @@ import {
   fetchIslamicByIdThunk,
   updateIslamicThunk,
 } from "@/entities/islamic/api/IslamicApiThunk";
+import { useAddToCard } from "@/shared/hooks/useAddToCard";
 
 const initialFormState = {
   name: "",
@@ -27,6 +28,7 @@ export default function OneIslamicPage() {
   const isAdmin = user?.id === 1;
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
+  const addToCard = useAddToCard();
   const [formData, setFormData] = useState(initialFormState);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -208,7 +210,13 @@ export default function OneIslamicPage() {
               Изменить
             </button>
           )}
-          <button className="islamic-card-button">Выбрать услугу</button>
+          <button
+            type="button"
+            className="islamic-card-button"
+            onClick={() => void addToCard({ islamicId: oneIslamic.id })}
+          >
+            В корзину
+          </button>
         </div>
       </div>
     </section>

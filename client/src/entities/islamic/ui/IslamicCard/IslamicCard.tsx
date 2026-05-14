@@ -5,6 +5,7 @@ import { deleteIslamicThunk } from "@/entities/islamic/api/IslamicApiThunk";
 import type { IslamicType } from "@/entities/islamic/model";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { useRouter } from "next/navigation";
+import { useAddToCard } from "@/shared/hooks/useAddToCard";
 
 type IslamicCardProps = {
   islamic: IslamicType | null;
@@ -13,6 +14,7 @@ type IslamicCardProps = {
 export default function IslamicCard({ islamic }: IslamicCardProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const addToCard = useAddToCard();
   const user = useAppSelector((state) => state.user.user);
   const isAdmin = user?.id === 1;
 
@@ -45,7 +47,13 @@ export default function IslamicCard({ islamic }: IslamicCardProps) {
           {/* <span className="islamic-card-status">{islamic.status}</span> */}
         </div>
         <div className="islamic-card-actions">
-          <button className="islamic-card-button">Выбрать услугу</button>
+          <button
+            type="button"
+            className="islamic-card-button"
+            onClick={() => void addToCard({ islamicId: islamic.id })}
+          >
+            В корзину
+          </button>
           <button
             className="islamic-card-button islamic-card-button-secondary"
             onClick={() => {

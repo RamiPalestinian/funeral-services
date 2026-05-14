@@ -28,7 +28,9 @@ export default function ShopPage() {
     dispatch(getAllShopsThunk());
   }, [dispatch]);
 
-  const handleCreateSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleCreateSubmit = async (
+    event: React.ChangeEvent<HTMLFormElement>,
+  ) => {
     event.preventDefault();
 
     if (user === null) {
@@ -60,8 +62,8 @@ export default function ShopPage() {
             <h1>Товары для церемонии и памятного оформления</h1>
             <p>
               Подобрали венки, текстиль, урны, кресты и памятные принадлежности,
-              которые помогают провести прощание спокойно, достойно и без
-              лишней спешки.
+              которые помогают провести прощание спокойно, достойно и без лишней
+              спешки.
             </p>
           </div>
           <div className="shop-hero-mark">
@@ -115,7 +117,11 @@ export default function ShopPage() {
               minLength={10}
               required
             />
-            <button className="shop-form-button" type="submit" disabled={!user || isLoading}>
+            <button
+              className="shop-form-button"
+              type="submit"
+              disabled={!user || isLoading}
+            >
               {isLoading ? "Создание..." : "Создать товар"}
             </button>
           </form>

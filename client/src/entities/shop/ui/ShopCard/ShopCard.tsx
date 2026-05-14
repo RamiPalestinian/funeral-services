@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { deleteShopThunk } from "../../api/ShopApiThunk";
 import { useUser } from "@/application/UserProvider";
+import { useAddToCard } from "@/shared/hooks/useAddToCard";
 
 type ShopCardProps = {
   shop: ShopType;
@@ -14,6 +15,7 @@ type ShopCardProps = {
 export default function ShopCard({ shop }: ShopCardProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const addToCard = useAddToCard();
   const { user } = useUser();
   const isAdmin = user?.id === 1;
   const formattedPrice = new Intl.NumberFormat("ru-RU").format(shop.price);
@@ -42,8 +44,12 @@ export default function ShopCard({ shop }: ShopCardProps) {
           {/* <span className="shop-card-status">{shop.status}</span> */}
         </div>
         <div className="shop-card-actions">
-          <button type="button" className="shop-card-button">
-            Заказать
+          <button
+            type="button"
+            className="shop-card-button"
+            onClick={() => void addToCard({ serviceId: Number(shop.id) })}
+          >
+            В корзину
           </button>
           <button
             type="button"

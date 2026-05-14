@@ -10,6 +10,7 @@ import {
   updateShopThunk,
 } from "@/entities/shop/api/ShopApiThunk";
 import { useUser } from "@/application/UserProvider";
+import { useAddToCard } from "@/shared/hooks/useAddToCard";
 
 const initialFormState = {
   name: "",
@@ -25,6 +26,7 @@ export default function ShopByIdPage() {
   const router = useRouter();
   const { id } = useParams<{ id: string }>();
   const { user } = useUser();
+  const addToCard = useAddToCard();
   const isAdmin = user?.id === 1;
   const { shops, error, isLoading } = useAppSelector((state) => state.shop);
   const [formData, setFormData] = useState(initialFormState);
@@ -193,8 +195,12 @@ export default function ShopByIdPage() {
               Изменить
             </button>
           )}
-          <button type="button" className="shop-card-button">
-            Заказать
+          <button
+            type="button"
+            className="shop-card-button"
+            onClick={() => void addToCard({ serviceId: Number(id) })}
+          >
+            В корзину
           </button>
         </div>
       </div>

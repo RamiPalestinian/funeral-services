@@ -30,7 +30,9 @@ export default function CremationPage() {
     dispatch(getAllCremationsThunk());
   }, [dispatch]);
 
-  const handleCreateSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleCreateSubmit = async (
+    event: React.ChangeEvent<HTMLFormElement>,
+  ) => {
     event.preventDefault();
 
     if (user === null) {
@@ -116,7 +118,11 @@ export default function CremationPage() {
               minLength={10}
               required
             />
-            <button className="cremation-form-button" type="submit" disabled={!user || isLoading}>
+            <button
+              className="cremation-form-button"
+              type="submit"
+              disabled={!user || isLoading}
+            >
               {isLoading ? "Создание..." : "Создать услугу"}
             </button>
           </form>

@@ -9,6 +9,7 @@ import {
   fetchClassicByIdThunk,
   updateClassicThunk,
 } from "@/entities/classic/api/ClassicApiThunk";
+import { useAddToCard } from "@/shared/hooks/useAddToCard";
 
 const initialFormState = {
   name: "",
@@ -28,6 +29,7 @@ export default function OneClassicPage() {
   const isAdmin = user?.id === 1;
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
+  const addToCard = useAddToCard();
   const [formData, setFormData] = useState(initialFormState);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -209,7 +211,13 @@ export default function OneClassicPage() {
               Изменить
             </button>
           )}
-          <button className="classic-card-button">Выбрать услугу</button>
+          <button
+            type="button"
+            className="classic-card-button"
+            onClick={() => void addToCard({ classicServiceId: oneClassic.id })}
+          >
+            В корзину
+          </button>
         </div>
       </div>
     </section>

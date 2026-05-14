@@ -11,6 +11,7 @@ import { Service } from '../services/services.model';
 import { Islamic } from 'src/islamic/islamic.model';
 import { ClassicService } from 'src/classic-service/classicService.model';
 import { Cremation } from 'src/cremations/cremations.model';
+import { Card } from 'src/card/card.model';
 
 @Table({ tableName: 'users' }) //декоратор - мы добавляем либо методанные либо функционал
 export class User extends Model {
@@ -27,6 +28,9 @@ export class User extends Model {
 
   @HasMany(() => Cremation, { foreignKey: 'userId' })
   declare cremations: Cremation[];
+
+  @HasMany(() => Card, { foreignKey: 'userId' })
+  declare cards: Card[];
 
   @Column({
     type: DataType.STRING,

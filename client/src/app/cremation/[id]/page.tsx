@@ -10,6 +10,7 @@ import {
   updateCremationThunk,
 } from "@/entities/cremation/api/CremationApiThunk";
 import { useUser } from "@/application/UserProvider";
+import { useAddToCard } from "@/shared/hooks/useAddToCard";
 
 const initialFormState = {
   name: "",
@@ -26,6 +27,7 @@ export default function CremationByIdPage() {
   const { id } = useParams<{ id: string }>();
   const { user } = useUser();
   const isAdmin = user?.id === 1;
+  const addToCard = useAddToCard();
   const { cremations, error, isLoading } = useAppSelector(
     (state) => state.cremation,
   );
@@ -190,8 +192,12 @@ export default function CremationByIdPage() {
               Изменить
             </button>
           )}
-          <button type="button" className="cremation-card-button">
-            Заказать
+          <button
+            type="button"
+            className="cremation-card-button"
+            onClick={() => void addToCard({ cremationId: Number(id) })}
+          >
+            В корзину
           </button>
         </div>
       </div>

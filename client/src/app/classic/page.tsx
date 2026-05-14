@@ -7,7 +7,6 @@ import { fetchClassicThunk } from "@/entities/classic/api/ClassicApiThunk";
 import { useEffect, useState } from "react";
 import { createClassicThunk } from "@/entities/classic/api/ClassicApiThunk";
 
-
 export default function Classic() {
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -46,7 +45,7 @@ export default function Classic() {
     }));
   };
 
-  async function addNewClassic(event: React.FormEvent<HTMLFormElement>) {
+  async function addNewClassic(event: React.ChangeEvent<HTMLFormElement>) {
     event.preventDefault();
 
     try {
