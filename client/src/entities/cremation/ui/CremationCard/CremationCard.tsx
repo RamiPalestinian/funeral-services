@@ -3,10 +3,9 @@
 import "./CremationCard.css";
 import type { CremationType } from "../../model";
 import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
+import { useAddToCard, useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { deleteCremationThunk } from "../../api/CremationApiThunk";
 import { useUser } from "@/application/UserProvider";
-import { useAddToCard } from "@/shared/hooks/useAddToCard";
 
 type CremationCardProps = {
   cremation: CremationType;

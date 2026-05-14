@@ -2,15 +2,18 @@
 
 import "../page.css";
 import "@/entities/cremation/ui/CremationCard/CremationCard.css";
-import { type ChangeEvent, type FormEvent, useEffect, useState } from "react";
+import { type ChangeEvent, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
+import {
+  useAddToCard,
+  useAppDispatch,
+  useAppSelector,
+} from "@/shared/hooks/useReduxHooks";
 import {
   getCremationByIdThunk,
   updateCremationThunk,
 } from "@/entities/cremation/api/CremationApiThunk";
 import { useUser } from "@/application/UserProvider";
-import { useAddToCard } from "@/shared/hooks/useAddToCard";
 
 const initialFormState = {
   name: "",
@@ -67,7 +70,7 @@ export default function CremationByIdPage() {
     setEditing(true);
   };
 
-  const updateCremation = async (event: FormEvent<HTMLFormElement>) => {
+  const updateCremation = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     await dispatch(
@@ -104,7 +107,9 @@ export default function CremationByIdPage() {
         <h1 className="cremation-detail-title">{cremation.name}</h1>
         <p className="cremation-detail-description">{cremation.description}</p>
         <div className="cremation-detail-meta">
-          <span>{new Intl.NumberFormat("ru-RU").format(cremation.price)} ₽</span>
+          <span>
+            {new Intl.NumberFormat("ru-RU").format(cremation.price)} ₽
+          </span>
           {/* {cremation.status && <span>{cremation.status}</span>} */}
         </div>
         {isAdmin && editing && (

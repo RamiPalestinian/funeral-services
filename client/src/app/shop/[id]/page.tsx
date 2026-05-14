@@ -4,13 +4,16 @@ import "../page.css";
 import "@/entities/shop/ui/ShopCard/ShopCard.css";
 import { type ChangeEvent, type FormEvent, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
+import {
+  useAddToCard,
+  useAppDispatch,
+  useAppSelector,
+} from "@/shared/hooks/useReduxHooks";
 import {
   getShopByIdThunk,
   updateShopThunk,
 } from "@/entities/shop/api/ShopApiThunk";
 import { useUser } from "@/application/UserProvider";
-import { useAddToCard } from "@/shared/hooks/useAddToCard";
 
 const initialFormState = {
   name: "",

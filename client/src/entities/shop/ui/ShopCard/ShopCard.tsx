@@ -3,10 +3,9 @@
 import "./ShopCard.css";
 import type { ShopType } from "../../model";
 import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
+import { useAddToCard, useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { deleteShopThunk } from "../../api/ShopApiThunk";
 import { useUser } from "@/application/UserProvider";
-import { useAddToCard } from "@/shared/hooks/useAddToCard";
 
 type ShopCardProps = {
   shop: ShopType;
