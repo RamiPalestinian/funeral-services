@@ -20,6 +20,8 @@ export type NewClassicType = {
   image: string;
 };
 
+
+
 export type ClassicStateType = {
     classics: ClassicType[];
     oneClassic: ClassicType | null;

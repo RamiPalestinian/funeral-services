@@ -50,4 +50,4 @@ export default function ClassicCard({ classic }: ClassicCardProps) {
     </article>
   );
 }
-//x
+
