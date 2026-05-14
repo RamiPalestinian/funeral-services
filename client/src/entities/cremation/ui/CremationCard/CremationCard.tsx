@@ -27,7 +27,7 @@ export default function CremationCard({ cremation }: CremationCardProps) {
       <h2>{cremation.name}</h2>
       <p>{cremation.description}</p>
       <p>{cremation.price}</p>
-      <p>{cremation.status}</p>
+      <p>{cremation.category}</p>
       <button>Заказать</button>
       <button onClick={() => router.push(`/cremation/${cremation.id}`)}>
         Подробнее
