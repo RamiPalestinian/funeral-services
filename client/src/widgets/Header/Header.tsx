@@ -41,14 +41,22 @@ export default function Header({ user, setUser }: HeaderProps) {
           {user !== null ? (
             <>
               <Link href="/home" className="navlink">
-                О нас
+                Главная страница
               </Link>
-              <Link href="/ai" className="navlink">
+              {/* <Link href="/ai" className="navlink">
                 Обращение
               </Link>
               <Link href="/personal" className="navlink">
                 Кабинет
-              </Link>
+              </Link> */}
+              <div className="dropdown">
+                <button className="dropbtn">Кабинет</button>
+                <div className="dropdown-content">
+                  <Link href="/personal">Личный кабинет</Link>
+                  <Link href="/ai">Обращение</Link>
+                  <Link href="/card">Корзина</Link>
+                </div>
+              </div>
               {/* <Link href="/contact" className="navlink">
                 Контакты
               </Link> */}
