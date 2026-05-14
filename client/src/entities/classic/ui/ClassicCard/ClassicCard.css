@@ -91,11 +91,34 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-size: 12px;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+
+.classic-card-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 24px rgba(10, 12, 14, 0.22);
 }
 
 .classic-card-button-secondary {
   background: transparent;
   color: var(--text-main);
+}
+
+.classic-card-button-delete {
+  border-color: rgba(179, 110, 98, 0.28);
+  background:
+    linear-gradient(135deg, rgba(122, 72, 64, 0.96), rgba(84, 44, 39, 0.96));
+  color: #f5eae3;
+}
+
+.classic-card-button-delete:hover {
+  border-color: rgba(206, 141, 128, 0.46);
+  background:
+    linear-gradient(135deg, rgba(137, 80, 71, 0.98), rgba(98, 48, 43, 0.98));
 }
 
 @media (max-width: 640px) {

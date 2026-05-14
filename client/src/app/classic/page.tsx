@@ -3,19 +3,73 @@ import "./page.css";
 import ClassicCard from "@/entities/classic/ui/ClassicCard/ClassicCard";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
-import { fetchClassicThunk } from "@/entities/classic/api/ClassicApiThunk";
-import { useEffect } from "react";
+import {
+  createClassicThunk,
+  fetchClassicThunk,
+} from "@/entities/classic/api/ClassicApiThunk";
+import { useEffect, useState } from "react";
 // import Image from "next/image";
 
 export default function Classic() {
   const router = useRouter();
-
   const dispatch = useAppDispatch();
-  const classics = useAppSelector((state) => state.classic.classics);
+  const { classics, error: classicError, isLoading } = useAppSelector(
+    (state) => state.classic,
+  );
+  const user = useAppSelector((state) => state.user.user);
+  const [newClassic, setNewClassic] = useState({
+    name: "",
+    description: "",
+    price: 0,
+    image: "",
+    category: "",
+    status: "active",
+    userId: 1,
+  });
+  const [formError, setFormError] = useState("");
 
   useEffect(() => {
     dispatch(fetchClassicThunk());
-  }, []);
+  }, [dispatch]);
+
+  const handleNewClassic = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormError("");
+
+    setNewClassic((prev) => ({
+      ...prev,
+      [name]: name === "price" ? Number(value) : value,
+    }));
+  };
+
+  async function addNewClassic(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    try {
+      await dispatch(
+        createClassicThunk({
+          ...newClassic,
+          userId: user?.id ?? 1,
+        }),
+      ).unwrap();
+      setNewClassic({
+        name: "",
+        description: "",
+        price: 0,
+        image: "",
+        category: "",
+        status: "active",
+        userId: 1,
+      });
+      setFormError("");
+    } catch (error) {
+      setFormError(
+        typeof error === "string"
+          ? error
+          : "Не удалось создать услугу. Проверь поля формы.",
+      );
+    }
+  }
 
   return (
     <section className="classic-page">
@@ -37,6 +91,71 @@ export default function Classic() {
             />
           </div>
         </div>
+      </div>
+
+      <div className="classic-form-wrap">
+        <form className="classic-form" onSubmit={addNewClassic}>
+          <input
+            className="classic-form-input"
+            type="text"
+            onChange={handleNewClassic}
+            name="name"
+            value={newClassic.name}
+            placeholder="Название"
+            minLength={3}
+            required
+          />
+          <input
+            className="classic-form-input"
+            type="text"
+            onChange={handleNewClassic}
+            name="description"
+            value={newClassic.description}
+            placeholder="Описание"
+            minLength={10}
+            required
+          />
+          <input
+            className="classic-form-input"
+            type="number"
+            onChange={handleNewClassic}
+            name="price"
+            value={newClassic.price}
+            placeholder="Цена"
+            min={0}
+            required
+          />
+          <input
+            className="classic-form-input"
+            type="text"
+            onChange={handleNewClassic}
+            name="image"
+            value={newClassic.image}
+            placeholder="Ссылка на изображение"
+            required
+          />
+          <input
+            className="classic-form-input"
+            type="text"
+            onChange={handleNewClassic}
+            name="category"
+            value={newClassic.category}
+            placeholder="Категория"
+            minLength={3}
+            required
+          />
+
+          <button
+            className="classic-form-button"
+            type="submit"
+            disabled={isLoading}
+          >
+            {isLoading ? "Создание..." : "Создать"}
+          </button>
+        </form>
+        {(formError || classicError) && (
+          <p className="classic-form-error">{formError || classicError}</p>
+        )}
       </div>
 
       <div className="classic-grid">

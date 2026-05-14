@@ -18,6 +18,9 @@ export type NewClassicType = {
   description: string;
   price: number;
   image: string;
+  category: string;
+  status: string;
+  userId: number;
 };
 
 
