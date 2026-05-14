@@ -36,7 +36,7 @@ export default function CremationPage() {
 
     const formData = new FormData(event.currentTarget);
 
-    try {
+
       await dispatch(
         createCremationThunk({
           name: String(formData.get("name")),
@@ -47,11 +47,9 @@ export default function CremationPage() {
           status: String(formData.get("status")),
           userId: user.id,
         }),
-      ).unwrap();
+      )
       event.currentTarget.reset();
-    } catch {
-      // ошибка в state.cremation.error
-    }
+
   };
 
   return (
@@ -70,13 +68,6 @@ export default function CremationPage() {
             name="category"
             type="text"
             placeholder="Категория"
-            minLength={3}
-            required
-          />
-          <input
-            name="status"
-            type="text"
-            placeholder="Статус"
             minLength={3}
             required
           />
