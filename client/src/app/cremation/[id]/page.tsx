@@ -72,11 +72,6 @@ export default function CremationByIdPage() {
               type="text"
               defaultValue={cremation.category}
             />
-            <input
-              name="status"
-              type="text"
-              defaultValue={cremation.status ?? ""}
-            />
             <button type="submit">Сохранить</button>
             <button type="button" onClick={() => setEditing(false)}>
               Отмена
