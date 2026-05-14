@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import "./Header.css";
-import UserApi from "@/entities/user/api/UserApi";
-import { setAccessToken } from "@/shared/lib/axiosInstance";
 import type { UserType } from "@/entities/user/model";
+import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
+import { logoutThunk } from "@/entities/user/api/UserApiThunk";
+import { setAccessToken } from "@/shared/lib/axiosInstance";
 
 type HeaderProps = {
   user: UserType | null;
@@ -14,15 +15,18 @@ type HeaderProps = {
 
 export default function Header({ user, setUser }: HeaderProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const isHomePage = pathname === "/";
 
   async function handleLogout() {
-    const { statusCode } = await UserApi.logout();
-
-    if (statusCode === 200) {
+    try {
+      await dispatch(logoutThunk()).unwrap();
+    } catch {
       setUser(null);
       setAccessToken("");
     }
+    router.push("/");
   }
   return (
     <header
@@ -34,7 +38,7 @@ export default function Header({ user, setUser }: HeaderProps) {
           <span className="nav-brand-copy">Груз 200</span>
         </div>
         <div className="nav-links">
-          {user?.id ? (
+          {user !== null ? (
             <>
               <Link href="/home" className="navlink">
                 О нас
@@ -57,13 +61,13 @@ export default function Header({ user, setUser }: HeaderProps) {
                   <a href="/shop">Ритуальный магазин</a>
                 </div>
               </div>
-              <Link
-                href="/"
+              <button
+                type="button"
                 className="navlink navlink-accent"
-                onClick={handleLogout}
+                onClick={() => void handleLogout()}
               >
                 Выйти
-              </Link>
+              </button>
               <p className="navlink name">Здравствуйте, {user.name}</p>
             </>
           ) : (
