@@ -21,7 +21,6 @@ export type CardType = {
 };
 
 export type CreateCardPayload = {
-  userId: number;
   serviceId?: number;
   islamicId?: number;
   classicServiceId?: number;

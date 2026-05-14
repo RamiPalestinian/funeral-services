@@ -1,9 +1,6 @@
 import { IsInt, IsOptional, Min } from 'class-validator';
 
 export class CreateCardDto {
-  @IsInt()
-  userId: number;
-
   @IsOptional()
   @IsInt()
   @Min(1)
