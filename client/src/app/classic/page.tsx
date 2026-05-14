@@ -16,6 +16,7 @@ export default function Classic() {
     (state) => state.classic,
   );
   const user = useAppSelector((state) => state.user.user);
+  const isAdmin = user?.id === 1;
   const [newClassic, setNewClassic] = useState({
     name: "",
     description: "",
@@ -92,70 +93,72 @@ export default function Classic() {
         </div>
       </div>
 
-      <div className="classic-form-wrap">
-        <form className="classic-form" onSubmit={addNewClassic}>
-          <input
-            className="classic-form-input"
-            type="text"
-            onChange={handleNewClassic}
-            name="name"
-            value={newClassic.name}
-            placeholder="Название"
-            minLength={3}
-            required
-          />
-          <input
-            className="classic-form-input"
-            type="text"
-            onChange={handleNewClassic}
-            name="description"
-            value={newClassic.description}
-            placeholder="Описание"
-            minLength={10}
-            required
-          />
-          <input
-            className="classic-form-input"
-            type="number"
-            onChange={handleNewClassic}
-            name="price"
-            value={newClassic.price}
-            placeholder="Цена"
-            min={0}
-            required
-          />
-          <input
-            className="classic-form-input"
-            type="text"
-            onChange={handleNewClassic}
-            name="image"
-            value={newClassic.image}
-            placeholder="Ссылка на изображение"
-            required
-          />
-          <input
-            className="classic-form-input"
-            type="text"
-            onChange={handleNewClassic}
-            name="category"
-            value={newClassic.category}
-            placeholder="Категория"
-            minLength={3}
-            required
-          />
+      {isAdmin && (
+        <div className="classic-form-wrap">
+          <form className="classic-form" onSubmit={addNewClassic}>
+            <input
+              className="classic-form-input"
+              type="text"
+              onChange={handleNewClassic}
+              name="name"
+              value={newClassic.name}
+              placeholder="Название"
+              minLength={3}
+              required
+            />
+            <input
+              className="classic-form-input"
+              type="text"
+              onChange={handleNewClassic}
+              name="description"
+              value={newClassic.description}
+              placeholder="Описание"
+              minLength={10}
+              required
+            />
+            <input
+              className="classic-form-input"
+              type="number"
+              onChange={handleNewClassic}
+              name="price"
+              value={newClassic.price}
+              placeholder="Цена"
+              min={0}
+              required
+            />
+            <input
+              className="classic-form-input"
+              type="text"
+              onChange={handleNewClassic}
+              name="image"
+              value={newClassic.image}
+              placeholder="Ссылка на изображение"
+              required
+            />
+            <input
+              className="classic-form-input"
+              type="text"
+              onChange={handleNewClassic}
+              name="category"
+              value={newClassic.category}
+              placeholder="Категория"
+              minLength={3}
+              required
+            />
 
-          <button
-            className="classic-form-button"
-            type="submit"
-            disabled={isLoading}
-          >
-            {isLoading ? "Создание..." : "Создать"}
-          </button>
-        </form>
-        {(formError || classicError) && (
-          <p className="classic-form-error">{formError || classicError}</p>
-        )}
-      </div>
+            <button
+              className="classic-form-button"
+              type="submit"
+              disabled={isLoading}
+            >
+              {isLoading ? "Создание..." : "Создать"}
+            </button>
+          </form>
+          {(formError || classicError) && (
+            <p className="classic-form-error">{formError || classicError}</p>
+          )}
+        </div>
+      )}
 
       <div className="classic-grid">
         {classics.map((classic) => (

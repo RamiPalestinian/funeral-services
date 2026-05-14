@@ -23,7 +23,14 @@ export type NewClassicType = {
   userId: number;
 };
 
-
+export type UpdateClassicType = {
+  name?: string;
+  description?: string;
+  price?: number;
+  image?: string;
+  category?: string;
+  status?: string;
+};
 
 export type ClassicStateType = {
     classics: ClassicType[];

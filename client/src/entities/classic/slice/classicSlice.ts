@@ -4,6 +4,7 @@ import {
   fetchClassicThunk,
   fetchClassicByIdThunk,
   createClassicThunk,
+  updateClassicThunk,
   deleteClassicThunk,
   getUserClassicThunk,
 } from "../api/ClassicApiThunk";
@@ -61,6 +62,24 @@ const classicSlice = createSlice({
     builder.addCase(createClassicThunk.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload ?? "Ошибка при создании классических услуг";
+    });
+
+    // updateClassicThunk
+    builder.addCase(updateClassicThunk.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(updateClassicThunk.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.oneClassic = action.payload;
+      state.classics = state.classics.map((classic) =>
+        classic.id === action.payload.id ? action.payload : classic,
+      );
+    });
+    builder.addCase(updateClassicThunk.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error =
+        action.payload ?? "Ошибка при изменении классической услуги";
     });
 
     // deleteClassicThunk
