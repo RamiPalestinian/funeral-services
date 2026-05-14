@@ -5,6 +5,7 @@ import { deleteClassicThunk } from "@/entities/classic/api/ClassicApiThunk";
 import type { ClassicType } from "@/entities/classic/model";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { useRouter } from "next/navigation";
+import { useAddToCard } from "@/shared/hooks/useAddToCard";
 
 type ClassicCardProps = {
   // user: UserType | null,
@@ -14,6 +15,7 @@ type ClassicCardProps = {
 export default function ClassicCard({ classic  }: ClassicCardProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const addToCard = useAddToCard();
   const user = useAppSelector((state) => state.user.user);
   const isAdmin = user?.id === 1;
 
@@ -43,7 +45,13 @@ export default function ClassicCard({ classic  }: ClassicCardProps) {
           {/* <span className="classic-card-status">{classic.status}</span> */}
         </div>
         <div className="classic-card-actions">
-          <button className="classic-card-button">Выбрать услугу</button>
+          <button
+            type="button"
+            className="classic-card-button"
+            onClick={() => void addToCard({ classicServiceId: classic.id })}
+          >
+            В корзину
+          </button>
           <button
             className="classic-card-button classic-card-button-secondary"
             onClick={() => {

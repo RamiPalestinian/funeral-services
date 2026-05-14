@@ -7,12 +7,17 @@ import {
   BelongsTo,
   CreatedAt,
   UpdatedAt,
+  HasMany,
 } from 'sequelize-typescript';
 
 import { User } from '../users/user.model';
+import { Card } from '../card/card.model';
 
 @Table({ tableName: 'islamic' })
 export class Islamic extends Model<Islamic> {
+  @HasMany(() => Card, { foreignKey: 'islamicId' })
+  declare cards: Card[];
+
   @Column({ type: DataType.STRING, allowNull: false })
   declare name: string;
 

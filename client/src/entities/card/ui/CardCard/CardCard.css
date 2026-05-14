@@ -1,0 +1,32 @@
+.card-line {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  background: #fff;
+}
+
+.card-line-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.card-line-meta {
+  margin: 0;
+  display: grid;
+  gap: 0.5rem 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+}
+
+.card-line-meta dt {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.card-line-meta dd {
+  margin: 0.15rem 0 0;
+  font-size: 0.95rem;
+}

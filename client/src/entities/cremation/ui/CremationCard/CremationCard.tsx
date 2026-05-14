@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { deleteCremationThunk } from "../../api/CremationApiThunk";
 import { useUser } from "@/application/UserProvider";
+import { useAddToCard } from "@/shared/hooks/useAddToCard";
 
 type CremationCardProps = {
   cremation: CremationType;
@@ -14,6 +15,7 @@ type CremationCardProps = {
 export default function CremationCard({ cremation }: CremationCardProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const addToCard = useAddToCard();
   const { user } = useUser();
   const isAdmin = user?.id === 1;
   const formattedPrice = new Intl.NumberFormat("ru-RU").format(
@@ -46,8 +48,12 @@ export default function CremationCard({ cremation }: CremationCardProps) {
           )} */}
         </div>
         <div className="cremation-card-actions">
-          <button type="button" className="cremation-card-button">
-            Заказать
+          <button
+            type="button"
+            className="cremation-card-button"
+            onClick={() => void addToCard({ cremationId: Number(cremation.id) })}
+          >
+            В корзину
           </button>
           <button
             type="button"

@@ -4,6 +4,7 @@ import { classicReducer } from "@/entities/classic/slice/classicSlice";
 import { cremationReducer } from "@/entities/cremation/slice/cremationSlice";
 import { shopReducer } from "@/entities/shop/slice/shopSlice";
 import { islamicReducer } from "@/entities/islamic/slice/islamicSlice";
+import { cardReducer } from "@/entities/card/slice/cardSlice";
 
 // создаём store - глобальное хранилище данных
 export const store = configureStore({
@@ -13,6 +14,7 @@ export const store = configureStore({
     classic: classicReducer,
     shop: shopReducer,
     islamic: islamicReducer,
+    card: cardReducer,
   },
 });
 
