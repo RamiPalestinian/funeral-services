@@ -55,10 +55,10 @@ export default function Header({ user, setUser }: HeaderProps) {
               <div className="dropdown">
                 <button className="dropbtn">Наши услуги</button>
                 <div className="dropdown-content">
-                  <a href="/classic">Традиционные похороны</a>
-                  <a href="/islamic">Исламские похороны</a>
-                  <a href="/cremation">Кремация</a>
-                  <a href="/shop">Ритуальный магазин</a>
+                  <Link href="/classic">Традиционные похороны</Link>
+                  <Link href="/islamic">Исламские похороны</Link>
+                  <Link href="/cremation">Кремация</Link>
+                  <Link href="/shop">Ритуальный магазин</Link>
                 </div>
               </div>
               <button

@@ -143,7 +143,7 @@ export default function OneClassicPage() {
               minLength={3}
               required
             />
-            <input
+            {/* <input
               name="status"
               type="text"
               placeholder="Статус"
@@ -151,7 +151,7 @@ export default function OneClassicPage() {
               onChange={handleChange}
               minLength={3}
               required
-            />
+            /> */}
             <input
               name="price"
               type="number"

@@ -15,8 +15,9 @@ import { useUser } from "@/application/UserProvider";
 export default function CremationPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const cremations = useAppSelector((state) => state.cremation.cremations);
-  const error = useAppSelector((state) => state.cremation.error);
+  const { cremations, error, isLoading } = useAppSelector(
+    (state) => state.cremation,
+  );
   const { user } = useUser();
   const isAdmin = user?.id === 1;
   const [searchQuery, setSearchQuery] = useState("");
@@ -29,9 +30,7 @@ export default function CremationPage() {
     dispatch(getAllCremationsThunk());
   }, [dispatch]);
 
-  const handleCreateSubmit = async (
-    event: React.ChangeEvent<HTMLFormElement>,
-  ) => {
+  const handleCreateSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (user === null) {
@@ -55,57 +54,89 @@ export default function CremationPage() {
   };
 
   return (
-    <div>
-      Кремация человека
+    <section className="cremation-page">
+      <div className="cremation-hero">
+        <p className="cremation-eyebrow">Кремация</p>
+        <div className="cremation-hero-grid">
+          <div className="cremation-hero-copy">
+            <h1>Услуги кремации с полным сопровождением семьи</h1>
+            <p>
+              Берём на себя организацию кремации, оформление документов,
+              согласование времени церемонии и помощь с выбором урны, чтобы
+              прощание прошло спокойно и без лишней нагрузки на близких.
+            </p>
+          </div>
+          <div className="cremation-hero-mark">
+            <img
+              src="https://cdn-icons-png.flaticon.com/256/2920/2920349.png"
+              alt="Кремация"
+            />
+          </div>
+        </div>
+      </div>
+
       {isAdmin && (
-        <form onSubmit={handleCreateSubmit}>
-          <input
-            name="name"
-            type="text"
-            placeholder="Название"
-            minLength={3}
-            required
-          />
-          <input
-            name="category"
-            type="text"
-            placeholder="Категория"
-            minLength={3}
-            required
-          />
-          <input
-            name="price"
-            type="number"
-            placeholder="Цена"
-            min={0}
-            required
-          />
-          <input
-            name="image"
-            type="url"
-            placeholder="Ссылка на изображение"
-            required
-          />
-          <textarea
-            name="description"
-            placeholder="Описание"
-            minLength={10}
-            required
-          />
-          {error && <p>{error}</p>}
-          <button type="submit" disabled={!user}>
-            Создать похороны
-          </button>
-        </form>
+        <div className="cremation-form-wrap">
+          <form className="cremation-form" onSubmit={handleCreateSubmit}>
+            <input
+              className="cremation-form-input"
+              name="name"
+              type="text"
+              placeholder="Название"
+              minLength={3}
+              required
+            />
+            <input
+              className="cremation-form-input"
+              name="category"
+              type="text"
+              placeholder="Категория"
+              minLength={3}
+              required
+            />
+            <input
+              className="cremation-form-input"
+              name="price"
+              type="number"
+              placeholder="Цена"
+              min={0}
+              required
+            />
+            <input
+              className="cremation-form-input"
+              name="image"
+              type="url"
+              placeholder="Ссылка на изображение"
+              required
+            />
+            <textarea
+              className="cremation-form-textarea"
+              name="description"
+              placeholder="Описание"
+              minLength={10}
+              required
+            />
+            <button className="cremation-form-button" type="submit" disabled={!user || isLoading}>
+              {isLoading ? "Создание..." : "Создать услугу"}
+            </button>
+          </form>
+          {error && <p className="cremation-form-error">{error}</p>}
+        </div>
       )}
-      <input
-        type="search"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="Поиск по названию"
-        aria-label="Поиск услуг по названию"
-      />
-      <div>
+
+      <div className="cremation-filter-bar">
+        <span className="cremation-filter-label">Фильтрация</span>
+        <input
+          className="cremation-search"
+          type="search"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Поиск по названию"
+          aria-label="Поиск услуг по названию"
+        />
+      </div>
+
+      <div className="cremation-grid">
         {filteredCremations.map((cremation: CremationType) => (
           <CremationCard key={cremation.id} cremation={cremation} />
         ))}
@@ -117,6 +148,6 @@ export default function CremationPage() {
       >
         Назад на главную
       </button>
-    </div>
+    </section>
   );
 }

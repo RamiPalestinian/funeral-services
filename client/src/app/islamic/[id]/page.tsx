@@ -142,7 +142,7 @@ export default function OneIslamicPage() {
               minLength={3}
               required
             />
-            <input
+            {/* <input
               name="status"
               type="text"
               placeholder="Статус"
@@ -150,7 +150,7 @@ export default function OneIslamicPage() {
               onChange={handleChange}
               minLength={3}
               required
-            />
+            /> */}
             <input
               name="price"
               type="number"

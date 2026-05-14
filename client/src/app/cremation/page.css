@@ -1,0 +1,437 @@
+.cremation-page {
+  display: grid;
+  gap: 30px;
+  padding: 18px 0 28px;
+  position: relative;
+  isolation: isolate;
+}
+
+.cremation-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(18, 20, 22, 0.78) 0%,
+      rgba(18, 20, 22, 0.88) 44%,
+      rgba(18, 20, 22, 0.95) 100%
+    ),
+    url("https://img.magnific.com/free-photo/top-view-black-bow-dark-wall_179666-39971.jpg?semt=ais_hybrid&w=740&q=80");
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+}
+
+.cremation-page::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 84px 84px;
+  opacity: 0.16;
+}
+
+.cremation-hero {
+  position: relative;
+  display: grid;
+  gap: 18px;
+  padding: 30px 28px;
+  border-radius: 30px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top right, rgba(125, 151, 168, 0.14), transparent 28%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01)),
+    var(--bg-panel);
+  box-shadow: var(--shadow-xl);
+}
+
+.cremation-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 72px 72px;
+  opacity: 0.18;
+}
+
+.cremation-eyebrow {
+  position: relative;
+  z-index: 1;
+  color: var(--accent-terracotta);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.cremation-hero-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 24px;
+  align-items: end;
+}
+
+.cremation-hero-copy {
+  display: grid;
+  gap: 16px;
+}
+
+.cremation-hero-copy h1 {
+  max-width: 12ch;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  font-size: clamp(2.2rem, 4.6vw, 4.2rem);
+  font-weight: 400;
+  line-height: 0.94;
+  color: var(--accent-stone);
+}
+
+.cremation-hero-copy p {
+  max-width: 56ch;
+  color: var(--text-muted);
+  line-height: 1.82;
+}
+
+.cremation-hero-mark {
+  display: grid;
+  justify-items: end;
+}
+
+.cremation-hero-mark img {
+  width: 280px;
+  height: 280px;
+  object-fit: contain;
+  opacity: 0.78;
+  filter: grayscale(1) brightness(1.15);
+}
+
+.cremation-form-wrap {
+  display: grid;
+  gap: 12px;
+}
+
+.cremation-form {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  padding: 18px;
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01)),
+    var(--bg-panel);
+  box-shadow: var(--shadow-md);
+}
+
+.cremation-form-input,
+.cremation-form-textarea {
+  min-width: 0;
+  border: 1px solid rgba(214, 204, 189, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-main);
+  font: inherit;
+  outline: none;
+  padding: 13px 14px;
+}
+
+.cremation-form-input::placeholder,
+.cremation-form-textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.cremation-form-textarea {
+  grid-column: 1 / -1;
+  min-height: 110px;
+  resize: vertical;
+}
+
+.cremation-form-button {
+  min-height: 46px;
+  width: fit-content;
+  border: 1px solid rgba(214, 204, 189, 0.12);
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, rgba(125, 151, 168, 0.94), rgba(94, 112, 124, 0.94));
+  color: #f6f1e8;
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  padding: 0 18px;
+  text-transform: uppercase;
+}
+
+.cremation-form-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.cremation-form-error {
+  align-self: center;
+  color: #ffd7d7;
+  line-height: 1.5;
+}
+
+.cremation-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01)),
+    var(--bg-panel);
+  box-shadow: var(--shadow-md);
+}
+
+.cremation-filter-label {
+  flex-shrink: 0;
+  color: var(--accent-terracotta);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.cremation-search {
+  width: 100%;
+  min-height: 50px;
+  padding: 0 16px;
+  border: 1px solid rgba(214, 204, 189, 0.12);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-main);
+  outline: none;
+}
+
+.cremation-search::placeholder {
+  color: var(--text-muted);
+}
+
+.cremation-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.cremation-detail-page {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.9fr) minmax(0, 1.1fr);
+  gap: 24px;
+  align-items: stretch;
+  padding: 18px 0 28px;
+}
+
+.cremation-detail-media,
+.cremation-detail-body {
+  min-width: 0;
+  border-radius: 28px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01)),
+    var(--bg-panel);
+  box-shadow: var(--shadow-xl);
+}
+
+.cremation-detail-media {
+  min-height: 520px;
+}
+
+.cremation-detail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cremation-detail-body {
+  padding: 32px 30px;
+  display: grid;
+  align-content: start;
+  gap: 18px;
+}
+
+.cremation-detail-title {
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 400;
+  line-height: 0.96;
+  color: var(--accent-stone);
+}
+
+.cremation-detail-description {
+  color: var(--text-muted);
+  line-height: 1.82;
+  max-width: 56ch;
+}
+
+.cremation-detail-meta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cremation-detail-meta span {
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 1px rgba(214, 204, 189, 0.08);
+  color: var(--text-main);
+}
+
+.cremation-update-form {
+  display: grid;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.cremation-update-form input,
+.cremation-update-form textarea {
+  min-width: 0;
+  border: 1px solid rgba(214, 204, 189, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-main);
+  font: inherit;
+  outline: none;
+  padding: 13px 14px;
+}
+
+.cremation-update-form input::placeholder,
+.cremation-update-form textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.cremation-update-form textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.cremation-update-form button {
+  min-height: 46px;
+  width: fit-content;
+  border: 1px solid rgba(214, 204, 189, 0.12);
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, rgba(125, 151, 168, 0.94), rgba(94, 112, 124, 0.94));
+  color: #f6f1e8;
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  padding: 0 18px;
+  text-transform: uppercase;
+}
+
+.cremation-update-form button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.cremation-update-actions,
+.cremation-detail-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cremation-update-form .cremation-update-button-secondary {
+  background: transparent;
+  color: var(--text-main);
+}
+
+.cremation-update-error {
+  color: #ffd7d7;
+  line-height: 1.5;
+}
+
+.cremation-back-link {
+  width: fit-content;
+  border: none;
+  background: transparent;
+  color: var(--text-main);
+  cursor: pointer;
+  padding: 0 0 10px;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  position: relative;
+}
+
+.cremation-back-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0.2);
+  transform-origin: left center;
+  transition: transform 0.35s ease;
+}
+
+.cremation-back-link:hover::after {
+  transform: scaleX(1);
+}
+
+@media (max-width: 980px) {
+  .cremation-hero-grid,
+  .cremation-detail-page {
+    grid-template-columns: 1fr;
+  }
+
+  .cremation-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cremation-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cremation-hero-copy h1 {
+    max-width: none;
+  }
+
+  .cremation-hero-mark {
+    justify-items: start;
+  }
+}
+
+@media (max-width: 640px) {
+  .cremation-page,
+  .cremation-detail-page {
+    gap: 22px;
+    padding-top: 10px;
+  }
+
+  .cremation-hero,
+  .cremation-detail-body {
+    padding: 22px 18px;
+    border-radius: 24px;
+  }
+
+  .cremation-detail-media {
+    min-height: 340px;
+  }
+
+  .cremation-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cremation-form {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+
+  .cremation-filter-bar {
+    display: grid;
+  }
+}
