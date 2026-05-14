@@ -1,14 +1,18 @@
 import "./ClassicCard.css";
 import type { ClassicType } from "@/entities/classic/model";
 import { useRouter } from "next/navigation";
-// import Image from "next/image";
+import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
+// import { UserType } from "@/entities/user/model";
+import { deleteClassicThunk } from "../../api/ClassicApiThunk";
 
 type ClassicCardProps = {
+  // user: UserType | null,
   classic: ClassicType | null;
 };
 
-export default function ClassicCard({ classic }: ClassicCardProps) {
+export default function ClassicCard({ classic  }: ClassicCardProps) {
   const router = useRouter();
+  const dispatch = useAppDispatch()
 
   if (!classic) {
     return null; // или можно отобразить заглушку, если данных нет
@@ -45,6 +49,7 @@ export default function ClassicCard({ classic }: ClassicCardProps) {
           >
             Подробнее
           </button>
+          <button className="classic-card-button" onClick={() => dispatch(deleteClassicThunk(classic.id))}>Удалить</button>
         </div>
       </div>
     </article>
