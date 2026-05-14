@@ -47,7 +47,7 @@ export default function Header({ user, setUser }: HeaderProps) {
                 Контакты
               </Link>
               <Link
-                href="/auth"
+                href="/"
                 className="navlink navlink-accent"
                 onClick={handleLogout}
               >
