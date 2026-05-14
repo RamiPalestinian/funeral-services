@@ -5,7 +5,7 @@ export type CremationType = {
   price: number;
   image: string;
   category: string;
-  status: string;
+  status?: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -16,7 +16,7 @@ export type CreateCremationPayload = {
   price: number;
   image: string;
   category: string;
-  status: string;
+  status?: string;
   userId: number;
 };
 

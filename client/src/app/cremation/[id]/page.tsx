@@ -1,30 +1,33 @@
 "use client";
 
 import "./page.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import {
   getCremationByIdThunk,
   updateCremationThunk,
 } from "@/entities/cremation/api/CremationApiThunk";
+import { useUser } from "@/application/UserProvider";
 
 export default function CremationByIdPage() {
   const dispatch = useAppDispatch();
-
   const router = useRouter();
-
   const { id } = useParams();
+  const [editing, setEditing] = useState(false);
+  const { user } = useUser();
+  const isAdmin = user?.id === 1;
 
   const cremation = useAppSelector((state) =>
     state.cremation.cremations.find((el) => el.id === Number(id)),
   );
 
-  const updateCremation = (event: React.ChangeEvent<HTMLFormElement>) => {
+  const updateCremation = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
-    dispatch(
+
+    await dispatch(
       updateCremationThunk({
         id: Number(id),
         name: String(formData.get("name")),
@@ -35,6 +38,7 @@ export default function CremationByIdPage() {
         status: String(formData.get("status")),
       }),
     );
+    setEditing(false);
   };
 
   useEffect(() => {
@@ -53,20 +57,33 @@ export default function CremationByIdPage() {
         <p>{cremation.description}</p>
         <p>{cremation.price}</p>
         <p>{cremation.category}</p>
-        <p>{cremation.status}</p>
-        <input name="name" type="text" defaultValue={cremation.name} />
-        <input
-          name="description"
-          type="text"
-          defaultValue={cremation.description}
-        />
-        <input name="price" type="number" defaultValue={cremation.price} />
-        <input name="image" type="text" defaultValue={cremation.image} />
-        <input name="category" type="text" defaultValue={cremation.category} />
-        <input name="status" type="text" defaultValue={cremation.status} />
-        <button type="submit">Сохранить</button>
+        {editing && (
+          <div className="cremation-edit-fields">
+            <input name="name" type="text" defaultValue={cremation.name} />
+            <input
+              name="description"
+              type="text"
+              defaultValue={cremation.description}
+            />
+            <input name="price" type="number" defaultValue={cremation.price} />
+            <input name="image" type="text" defaultValue={cremation.image} />
+            <input
+              name="category"
+              type="text"
+              defaultValue={cremation.category}
+            />
+            <input
+              name="status"
+              type="text"
+              defaultValue={cremation.status ?? ""}
+            />
+            <button type="submit">Сохранить</button>
+            <button type="button" onClick={() => setEditing(false)}>
+              Отмена
+            </button>
+          </div>
+        )}
       </form>
-
       <button
         type="button"
         className="cremation-back-link"
@@ -74,6 +91,16 @@ export default function CremationByIdPage() {
       >
         Назад
       </button>
+      {isAdmin && !editing && (
+        <button
+          type="button"
+          onClick={() => {
+            setEditing(true);
+          }}
+        >
+          Изменить
+        </button>
+      )}
     </div>
   );
 }
