@@ -7,6 +7,7 @@ import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { useRouter } from "next/navigation";
 import { UserType } from "@/entities/user/model";
 import { CardDateMeta } from "@/shared/ui/CardDateMeta/CardDateMeta";
+import { formatPriceRUB } from "@/shared/lib/formatPriceRUB";
 import React from "react";
 
 type Props = { card: CardType; user: UserType };
@@ -55,7 +56,9 @@ function CardCard({ card, user }: Props) {
           <div className="card-line-detail">
             <p className="card-line-description">{item.description}</p>
             <div className="card-line-meta">
-              <span className="card-line-price">{item.price} ₽</span>
+              <span className="card-line-price">
+                {formatPriceRUB(item.price)} ₽
+              </span>
               <span className="card-line-price">{item.category ?? "—"}</span>
             </div>
           </div>

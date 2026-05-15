@@ -6,6 +6,7 @@ import type { IslamicType } from "@/entities/islamic/model";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { useRouter } from "next/navigation";
 import { CardDateMeta } from "@/shared/ui/CardDateMeta/CardDateMeta";
+import { formatPriceRUB } from "@/shared/lib/formatPriceRUB";
 import React, { useCallback } from "react";
 
 type IslamicCardProps = {
@@ -44,7 +45,7 @@ function IslamicCard({ islamic, onAddToCard }: IslamicCardProps) {
         <h4 className="islamic-card-title">{islamic.name}</h4>
         <p className="islamic-card-description">{islamic.description}</p>
         <div className="islamic-card-meta">
-          <span className="islamic-card-price">{islamic.price} ₽</span>
+          <span className="islamic-card-price">{formatPriceRUB(islamic.price)} ₽</span>
           {/* <span className="islamic-card-status">{islamic.status}</span> */}
         </div>
         <div className="islamic-card-actions">

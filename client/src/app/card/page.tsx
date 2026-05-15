@@ -6,6 +6,7 @@ import CardCard from "@/entities/card/ui/CardCard/CardCard";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { getAllCardsThunk } from "@/entities/card/api/CardApiThunk";
+import { formatPriceRUB } from "@/shared/lib/formatPriceRUB";
 import { useEffect, useState } from "react";
 import type { CardType } from "@/entities/card/model";
 
@@ -143,7 +144,7 @@ export default function CardPage() {
               </span>
             </div>
             <span className="cart-total-price">
-              {totalPrice} ₽
+              {formatPriceRUB(totalPrice)} ₽
             </span>
           </div>
 

@@ -7,6 +7,7 @@ import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { deleteShopThunk } from "../../api/ShopApiThunk";
 import { useUser } from "@/application/UserProvider";
 import { CardDateMeta } from "@/shared/ui/CardDateMeta/CardDateMeta";
+import { formatPriceRUB } from "@/shared/lib/formatPriceRUB";
 import React from "react";
 
 type ShopCardProps = {
@@ -40,7 +41,7 @@ function ShopCard({ shop, onAddToCard }: ShopCardProps) {
         <h2 className="shop-card-title">{shop.name}</h2>
         <p className="shop-card-description">{shop.description}</p>
         <div className="shop-card-meta">
-          <span className="shop-card-price">{shop.price} ₽</span>
+          <span className="shop-card-price">{formatPriceRUB(shop.price)} ₽</span>
           {/* <span className="shop-card-status">{shop.status}</span> */}
         </div>
         <div className="shop-card-actions">

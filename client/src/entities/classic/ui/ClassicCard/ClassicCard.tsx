@@ -6,6 +6,7 @@ import type { ClassicType } from "@/entities/classic/model";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { useRouter } from "next/navigation";
 import { CardDateMeta } from "@/shared/ui/CardDateMeta/CardDateMeta";
+import { formatPriceRUB } from "@/shared/lib/formatPriceRUB";
 import Image from "next/image";
 
 type ClassicCardProps = {
@@ -41,7 +42,7 @@ function ClassicCard({ classic, onAddToCard }: ClassicCardProps) {
         <h4 className="classic-card-title">{classic.name}</h4>
         <p className="classic-card-description">{classic.description}</p>
         <div className="classic-card-meta">
-          <span className="classic-card-price">{classic.price} ₽</span>
+          <span className="classic-card-price">{formatPriceRUB(classic.price)} ₽</span>
           {/* <span className="classic-card-status">{classic.status}</span> */}
         </div>
         <div className="classic-card-actions">
