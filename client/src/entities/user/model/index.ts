@@ -20,6 +20,15 @@ export type UserRegisterData = UserLoginData & {
     name: string;
 }
 
+export type UpdateUserData = {
+    name: string;
+}
+
+export type ChangePasswordData = {
+    currentPassword: string;
+    newPassword: string;
+}
+
 export type UserStateType ={
     user: UserType | null;
     isLoading : boolean;

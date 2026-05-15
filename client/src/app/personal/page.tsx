@@ -1,16 +1,39 @@
 "use client";
 import "./page.css";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/application/UserProvider";
-
+import { useAppSelector } from "@/shared/hooks/useReduxHooks";
+import EditNameForm from "@/features/profile/ui/EditNameForm/EditNameForm";
+import ChangePasswordForm from "@/features/profile/ui/ChangePasswordForm/ChangePasswordForm";
 
 export default function Personal() {
   const router = useRouter();
-  const {user} = useUser();
-  const registrationDate = user?.createdAt
-    ? new Date(user.createdAt).toLocaleDateString('ru-RU')
-    : 'Дата не указана';
+  const { user, setUser } = useUser();
+  const { isInitialized } = useAppSelector((state) => state.user);
 
+  const registrationDate = user?.createdAt
+    ? new Date(user.createdAt).toLocaleDateString("ru-RU")
+    : "Дата не указана";
+
+  useEffect(() => {
+    if (!isInitialized) return;
+    if (!user) {
+      router.replace("/auth");
+    }
+  }, [isInitialized, user, router]);
+
+  if (!isInitialized) {
+    return (
+      <main className="personal-page">
+        <p className="personal-loading">Проверка входа…</p>
+      </main>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <main className="personal-page">
@@ -18,10 +41,10 @@ export default function Personal() {
         <p className="personal-eyebrow">Личный кабинет</p>
         <h1>Личный кабинет</h1>
         <div className="personal-profile-card">
-          <div className="personal-avatar">{user?.name?.[0] ?? "?"}</div>
+          <div className="personal-avatar">{user.name?.[0] ?? "?"}</div>
           <div>
-            <h2>Добро пожаловать, {user?.name}!</h2>
-            <p>Ваш email: {user?.email}</p>
+            <h2>Добро пожаловать, {user.name}!</h2>
+            <p>Ваш email: {user.email}</p>
           </div>
           <small>Дата регистрации: {registrationDate}</small>
         </div>
@@ -33,16 +56,28 @@ export default function Personal() {
           <h3>Перейти к услугам</h3>
         </div>
         <div className="personal-service-grid">
-          <button onClick={() => router.push("/islamic")}>Исламские</button>
-          <button onClick={() => router.push("/cremation")}>Кремация</button>
-          <button onClick={() => router.push("/classic")}>Классические</button>
-          <button onClick={() => router.push("/shop")}>Магазин</button>
+          <button type="button" onClick={() => router.push("/islamic")}>
+            Исламские
+          </button>
+          <button type="button" onClick={() => router.push("/cremation")}>
+            Кремация
+          </button>
+          <button type="button" onClick={() => router.push("/classic")}>
+            Классические
+          </button>
+          <button type="button" onClick={() => router.push("/shop")}>
+            Магазин
+          </button>
         </div>
       </section>
 
       <section className="personal-section personal-shortcuts">
-        <button onClick={() => router.push("/card")}>Перейти в корзину</button>
-        <button onClick={() => router.push("/home")}>Вернуться на главную</button>
+        <button type="button" onClick={() => router.push("/card")}>
+          Перейти в корзину
+        </button>
+        <button type="button" onClick={() => router.push("/home")}>
+          Вернуться на главную
+        </button>
       </section>
 
       <section className="personal-section personal-edit">
@@ -51,14 +86,8 @@ export default function Personal() {
           <h3>Редактировать профиль</h3>
         </div>
         <div className="personal-edit-grid">
-          <article>
-            <span>Имя</span>
-            <p>изменить Имя</p>
-          </article>
-          <article>
-            <span>Пароль</span>
-            <p>изменить Пароль</p>
-          </article>
+          <EditNameForm user={user} setUser={setUser} />
+          <ChangePasswordForm />
         </div>
       </section>
     </main>

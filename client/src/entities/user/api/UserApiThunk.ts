@@ -1,6 +1,6 @@
 import { axiosInstance, setAccessToken } from "@/shared/lib/axiosInstance";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { UserLoginData, UserRegisterData, UserType, UserWithTokenType } from "../model";
+import { ChangePasswordData, UpdateUserData, UserLoginData, UserRegisterData, UserType, UserWithTokenType } from "../model";
 import { AxiosError } from "axios";
 
 const USER_THUNK_NAMES = {
@@ -9,6 +9,8 @@ const USER_THUNK_NAMES = {
     LOGOUT : "user/logout",
     REFRESH : "user/refresh",
     DELETE_ACCOUNT: "user/deleteAccount",
+    UPDATE_PROFILE: "user/updateProfile",
+    CHANGE_PASSWORD: "user/changePassword",
 } as const;
 
 const USER_API_URLS = {
@@ -17,6 +19,8 @@ const USER_API_URLS = {
     LOGOUT : "/auth/logout",
     REFRESH : "/auth/refresh",
     DELETE_ACCOUNT: (userId: number) => `/users/${userId}`,
+    UPDATE_PROFILE: "/users/me",
+    CHANGE_PASSWORD: "/users/me/password",
 } as const;
 
 type AuthErrorResponse = {
@@ -103,6 +107,42 @@ export const logoutThunk = createAsyncThunk<null, void, {rejectValue: string}>(
             return rejectWithValue(extractErrorMessage(error, 'Ошибка при выходе из системы'));
         }
     }
+);
+
+export const updateProfileThunk = createAsyncThunk<UserType, UpdateUserData, { rejectValue: string }>(
+    USER_THUNK_NAMES.UPDATE_PROFILE,
+    async (userData, { rejectWithValue }) => {
+        try {
+            const { data } = await axiosInstance.patch<{ user: UserType }>(
+                USER_API_URLS.UPDATE_PROFILE,
+                userData,
+            );
+
+            if (data.user) {
+                return data.user;
+            }
+
+            return rejectWithValue('Ошибка при обновлении профиля');
+        } catch (error) {
+            return rejectWithValue(extractErrorMessage(error, 'Ошибка при обновлении профиля'));
+        }
+    },
+);
+
+export const changePasswordThunk = createAsyncThunk<string, ChangePasswordData, { rejectValue: string }>(
+    USER_THUNK_NAMES.CHANGE_PASSWORD,
+    async (passwordData, { rejectWithValue }) => {
+        try {
+            const { data } = await axiosInstance.patch<{ message: string }>(
+                USER_API_URLS.CHANGE_PASSWORD,
+                passwordData,
+            );
+
+            return data.message ?? 'Пароль успешно изменён';
+        } catch (error) {
+            return rejectWithValue(extractErrorMessage(error, 'Ошибка при смене пароля'));
+        }
+    },
 );
 
 export const deleteUserAccountThunk = createAsyncThunk<number, number, { rejectValue: string }>(
