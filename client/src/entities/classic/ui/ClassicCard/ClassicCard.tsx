@@ -6,6 +6,7 @@ import type { ClassicType } from "@/entities/classic/model";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
+import Image from "next/image";
 
 type ClassicCardProps = {
   classic: ClassicType | null;
@@ -39,7 +40,7 @@ function ClassicCard({ classic, onAddToCard }: ClassicCardProps) {
     <article className="classic-card">
       <small className="classic-card-date">Добавлено: {calculateDate}</small>
       <div className="classic-card-media">
-        <img
+        <Image
           className="classic-card-image"
           src={classic.image}
           alt={classic.name}

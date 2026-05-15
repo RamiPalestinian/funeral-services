@@ -17,7 +17,6 @@ export default function Classic() {
   //вытаскиваем юзера и инициализацию
   const { user, isInitialized } = useAppSelector((state) => state.user);
 
-
   const isAdmin = user?.id === 1;
   const [newClassic, setNewClassic] = useState({
     name: "",
@@ -38,17 +37,6 @@ export default function Classic() {
   useEffect(() => {
     dispatch(fetchClassicThunk());
   }, [dispatch]);
-    //защита сраницы
-  useEffect(() => {
-    if (isInitialized && !user) {
-      router.replace("/auth");
-    }
-  }, [isInitialized, user]);
-
-  if (isInitialized && !user) {
-    return null;
-  }
-
 
   const handleAddToCard = useCallback(
     async (classicServiceId: number) => {
@@ -104,6 +92,17 @@ export default function Classic() {
           : "Не удалось создать услугу. Проверь поля формы.",
       );
     }
+  }
+
+  //защита сраницы
+  useEffect(() => {
+    if (isInitialized && !user) {
+      router.replace("/auth");
+    }
+  }, [isInitialized, user]);
+
+  if (isInitialized && !user) {
+    return null;
   }
 
   return (
