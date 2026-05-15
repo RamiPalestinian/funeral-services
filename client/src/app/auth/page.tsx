@@ -6,6 +6,7 @@ import { useUser } from "@/application/UserProvider";
 import { useState } from "react";
 
 
+
 export default function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(false);
   const { user, setUser } = useUser();

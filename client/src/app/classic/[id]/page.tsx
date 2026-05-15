@@ -10,6 +10,7 @@ import {
   fetchClassicByIdThunk,
   updateClassicThunk,
 } from "@/entities/classic/api/ClassicApiThunk";
+import Image from "next/image";
 
 const initialFormState = {
   name: "",
@@ -25,7 +26,8 @@ export default function OneClassicPage() {
   const { error, isLoading, oneClassic } = useAppSelector(
     (state) => state.classic,
   );
-  const user = useAppSelector((state) => state.user.user);
+  //вытаскиваем юзера и инициализацию
+  const { user, isInitialized } = useAppSelector((state) => state.user);
   const isAdmin = user?.id === 1;
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
@@ -120,6 +122,17 @@ export default function OneClassicPage() {
     }
   };
 
+  //защита сраницы
+  useEffect(() => {
+    if (isInitialized && !user) {
+      router.replace("/auth");
+    }
+  }, [isInitialized, user]);
+
+  if (isInitialized && !user) {
+    return null;
+  }
+
   if (!oneClassic) return null;
 
   const formattedPrice = new Intl.NumberFormat("ru-RU").format(
@@ -129,7 +142,7 @@ export default function OneClassicPage() {
   return (
     <section className="classic-page classic-detail-page">
       <div className="classic-detail-media">
-        <img
+        <Image
           className="classic-detail-image"
           src={oneClassic.image}
           alt={oneClassic.name}

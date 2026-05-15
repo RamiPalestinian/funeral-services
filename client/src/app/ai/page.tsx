@@ -4,6 +4,8 @@ import "./page.css";
 import { useMemo, useState } from "react";
 import { axiosInstance } from "@/shared/lib/axiosInstance";
 import { useAppSelector } from "@/shared/hooks/useReduxHooks";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 type ChatMessage = {
   id: string;
@@ -24,11 +26,13 @@ const initialMessages: ChatMessage[] = [
 ];
 
 export default function AiPage() {
-  const user = useAppSelector((state) => state.user.user);
+  //вытаскиваем юзера и инициализацию
+  const { user, isInitialized } = useAppSelector((state) => state.user);
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
   const [input, setInput] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const chatHistory = useMemo(
     () =>
@@ -102,6 +106,17 @@ export default function AiPage() {
         void sendMessage();
       }
     }
+  }
+
+  //защита сраницы
+  useEffect(() => {
+    if (isInitialized && !user) {
+      router.replace("/auth");
+    }
+  }, [isInitialized, user]);
+
+  if (isInitialized && !user) {
+    return null;
   }
 
   return (
