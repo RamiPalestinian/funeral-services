@@ -54,7 +54,6 @@ export default function Header({ user, setUser }: HeaderProps) {
                 <div className="dropdown-content">
                   <Link href="/personal">Личный кабинет</Link>
                   <Link href="/ai">Обращение</Link>
-                  <Link href="/card">Корзина</Link>
                 </div>
               </div>
               {/* <Link href="/contact" className="navlink">
@@ -89,9 +88,20 @@ export default function Header({ user, setUser }: HeaderProps) {
             </>
           )}
         </div>
-        <div className="nav-hotline">
-          <span>на связи</span>
-          <strong>24 / 7</strong>
+        <div className="nav-aside">
+          <div className="nav-hotline">
+            <span>на связи</span>
+            <strong>24 / 7</strong>
+          </div>
+          <Link href="/card" className="navlink navlink-cart" aria-label="Корзина">
+            <img
+              className="navlink-cart-icon"
+              src="/cart.png"
+              alt="Корзина"
+              width={18}
+              height={18}
+            />
+          </Link>
         </div>
       </nav>
     </header>
