@@ -58,6 +58,11 @@ export class UsersService {
       name: user.name,
       email: user.email,
       avatar: user.avatar,
+      lastName: user.lastName,
+      middleName: user.middleName,
+      phone: user.phone,
+      address: user.address,
+      city: user.city,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     };
@@ -72,6 +77,11 @@ export class UsersService {
       name: string;
       avatar: string | null;
       email: string;
+      lastName: string | null;
+      middleName: string | null;
+      phone: string | null;
+      address: string | null;
+      city: string | null;
     }> = {};
     if (dto.name !== undefined) {
       patch.name = dto.name.trim();
@@ -83,6 +93,22 @@ export class UsersService {
         throw new ConflictException('Этот email уже используется');
       }
       patch.email = email;
+    }
+
+    if (dto.lastName !== undefined) {
+      patch.lastName = dto.lastName.trim() || null;
+    }
+    if (dto.middleName !== undefined) {
+      patch.middleName = dto.middleName.trim() || null;
+    }
+    if (dto.phone !== undefined) {
+      patch.phone = dto.phone.trim() || null;
+    }
+    if (dto.address !== undefined) {
+      patch.address = dto.address.trim() || null;
+    }
+    if (dto.city !== undefined) {
+      patch.city = dto.city.trim() || null;
     }
     if (dto.avatar !== undefined) {
       patch.avatar = dto.avatar.trim();

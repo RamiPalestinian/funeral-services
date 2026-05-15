@@ -1,12 +1,11 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useUser } from '@/application/UserProvider';
-import { useAppDispatch } from '@/shared/hooks/useReduxHooks';
-import { deleteUserAccountThunk } from '@/entities/user/api/UserApiThunk';
-import '../EditNameForm/EditNameForm.css';
-import './DeleteProfileButton.css';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useUser } from "@/application/UserProvider";
+import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
+import { deleteUserAccountThunk } from "@/entities/user/api/UserApiThunk";
+import "./DeleteProfileButton.css";
 
 export default function DeleteProfileButton() {
   const router = useRouter();
@@ -17,7 +16,7 @@ export default function DeleteProfileButton() {
 
   const handleDelete = async () => {
     const confirmed = window.confirm(
-      'Удалить профиль безвозвратно? Все ваши данные и заказы будут удалены.',
+      "Удалить профиль безвозвратно? Все ваши данные и заказы будут удалены.",
     );
 
     if (!confirmed) {
@@ -30,7 +29,7 @@ export default function DeleteProfileButton() {
     try {
       await dispatch(deleteUserAccountThunk()).unwrap();
       setUser(null);
-      router.replace('/home');
+      router.replace("/home");
     } catch (thunkError) {
       setError(thunkError as string);
     } finally {
@@ -41,8 +40,8 @@ export default function DeleteProfileButton() {
   return (
     <div className="personal-delete">
       <p className="personal-delete-text">
-        Удаление аккаунта необратимо. Будут удалены профиль, корзина и все связанные
-        заказы.
+        Удаление аккаунта необратимо. Будут удалены профиль, корзина и все
+        связанные заказы.
       </p>
       {error && <p className="personal-form-error">{error}</p>}
       <button
@@ -51,9 +50,8 @@ export default function DeleteProfileButton() {
         onClick={handleDelete}
         disabled={isDeleting}
       >
-        {isDeleting ? 'Удаление…' : 'Удалить профиль'}
+        {isDeleting ? "Удаление…" : "Удалить профиль"}
       </button>
     </div>
   );
 }
-

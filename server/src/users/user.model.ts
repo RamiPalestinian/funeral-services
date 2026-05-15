@@ -57,6 +57,36 @@ export class User extends Model {
   })
   declare avatar: string | null;
 
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  declare lastName: string | null;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  declare middleName: string | null;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  declare phone: string | null;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  declare address: string | null;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  declare city: string | null;
+
   @CreatedAt
   declare createdAt: Date;
 
