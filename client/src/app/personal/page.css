@@ -1,0 +1,276 @@
+.personal-page {
+  display: grid;
+  gap: 24px;
+  padding: 18px 0 34px;
+  position: relative;
+  isolation: isolate;
+}
+
+.personal-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(18, 20, 22, 0.78) 0%,
+      rgba(18, 20, 22, 0.88) 44%,
+      rgba(18, 20, 22, 0.95) 100%
+    ),
+    url("https://img.magnific.com/free-photo/top-view-black-bow-dark-wall_179666-39971.jpg?semt=ais_hybrid&w=740&q=80");
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+}
+
+.personal-page::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 84px 84px;
+  opacity: 0.16;
+}
+
+.personal-hero,
+.personal-section {
+  width: min(100%, 1040px);
+  margin: 0 auto;
+}
+
+.personal-hero,
+.personal-section {
+  border-radius: 28px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01)),
+    var(--bg-panel);
+  box-shadow: var(--shadow-xl);
+}
+
+.personal-hero {
+  display: grid;
+  gap: 18px;
+  padding: 34px 30px;
+  overflow: hidden;
+  position: relative;
+}
+
+.personal-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at top right, rgba(125, 151, 168, 0.16), transparent 30%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: auto, 72px 72px, 72px 72px;
+  opacity: 0.9;
+}
+
+.personal-eyebrow {
+  position: relative;
+  z-index: 1;
+  color: var(--accent-terracotta);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.personal-hero h1,
+.personal-section-head h3 {
+  position: relative;
+  z-index: 1;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  font-weight: 400;
+  color: var(--accent-stone);
+}
+
+.personal-hero h1 {
+  font-size: clamp(2.3rem, 5vw, 4.4rem);
+  line-height: 0.94;
+}
+
+.personal-profile-card {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  padding: 18px;
+  border: 1px solid rgba(214, 204, 189, 0.1);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.personal-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(135deg, rgba(125, 151, 168, 0.94), rgba(185, 138, 113, 0.82));
+  color: #f6f1e8;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2rem;
+  text-transform: uppercase;
+}
+
+.personal-profile-card h2 {
+  margin-bottom: 6px;
+  color: var(--text-main);
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  font-weight: 500;
+}
+
+.personal-profile-card p,
+.personal-profile-card small {
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.personal-profile-card small {
+  justify-self: end;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 1px rgba(214, 204, 189, 0.08);
+}
+
+.personal-section {
+  display: grid;
+  gap: 18px;
+  padding: 24px;
+}
+
+.personal-section-head {
+  display: grid;
+  gap: 8px;
+}
+
+.personal-section-head h3 {
+  font-size: clamp(1.45rem, 2.2vw, 2.1rem);
+}
+
+.personal-service-grid,
+.personal-edit-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.personal-page button {
+  min-width: 0;
+  min-height: 52px;
+  border: 1px solid rgba(214, 204, 189, 0.12);
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, rgba(125, 151, 168, 0.94), rgba(94, 112, 124, 0.94));
+  color: #f6f1e8;
+  cursor: pointer;
+  padding: 0 18px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.personal-page button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(214, 204, 189, 0.24);
+  box-shadow: 0 14px 24px rgba(10, 12, 14, 0.2);
+}
+
+.personal-shortcuts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+.personal-shortcuts button {
+  background: transparent;
+  color: var(--text-main);
+}
+
+.personal-edit-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.personal-edit-grid article {
+  min-width: 0;
+  display: grid;
+  gap: 10px;
+  padding: 20px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 1px rgba(214, 204, 189, 0.08);
+}
+
+.personal-edit-grid span {
+  color: var(--accent-terracotta);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.personal-edit-grid p {
+  color: var(--text-main);
+  font-size: 1rem;
+}
+
+@media (max-width: 980px) {
+  .personal-service-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .personal-profile-card {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .personal-profile-card small {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+}
+
+@media (max-width: 640px) {
+  .personal-page {
+    gap: 18px;
+    padding-top: 10px;
+  }
+
+  .personal-hero,
+  .personal-section {
+    border-radius: 24px;
+    padding: 20px 16px;
+  }
+
+  .personal-profile-card,
+  .personal-service-grid,
+  .personal-edit-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .personal-avatar {
+    width: 56px;
+    height: 56px;
+  }
+
+  .personal-shortcuts {
+    padding: 0;
+  }
+}
