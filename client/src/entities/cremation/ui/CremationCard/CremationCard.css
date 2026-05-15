@@ -1,7 +1,7 @@
 .cremation-card {
   min-width: 0;
   display: grid;
-  grid-template-rows: 190px 1fr;
+  grid-template-rows: auto 190px 1fr;
   border-radius: 28px;
   overflow: hidden;
   background:
@@ -14,12 +14,17 @@
   display: grid;
   place-items: center;
   overflow: hidden;
+  min-height: 0;
+  width: 100%;
 }
 
 .cremation-card-image {
   width: 82%;
   height: 82%;
+  max-width: 82%;
+  max-height: 82%;
   object-fit: contain;
+  object-position: center;
   display: block;
   transform: translateY(-10px);
   transition: transform 0.5s ease;
@@ -122,7 +127,7 @@
 
 @media (max-width: 640px) {
   .cremation-card {
-    grid-template-rows: 210px 1fr;
+    grid-template-rows: auto 210px 1fr;
     border-radius: 22px;
   }
 

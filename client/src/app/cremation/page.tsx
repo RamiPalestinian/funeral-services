@@ -1,7 +1,7 @@
 "use client";
 
 import "./page.css";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import CremationCard from "@/entities/cremation/ui/CremationCard/CremationCard";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
@@ -11,7 +11,6 @@ import {
   getAllCremationsThunk,
 } from "@/entities/cremation/api/CremationApiThunk";
 import type { CremationType } from "@/entities/cremation/model";
-import { useUser } from "@/application/UserProvider";
 
 export default function CremationPage() {
   const router = useRouter();
@@ -19,7 +18,8 @@ export default function CremationPage() {
   const { cremations, error, isLoading } = useAppSelector(
     (state) => state.cremation,
   );
-  const { user } = useUser();
+  const { user, isInitialized } = useAppSelector((state) => state.user);
+
   const isAdmin = user?.id === 1;
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -31,42 +31,56 @@ export default function CremationPage() {
     dispatch(getAllCremationsThunk());
   }, [dispatch]);
 
-  const handleAddToCard = async (cremationId: number) => {
-    if (!user) {
-      router.push("/auth");
-      return;
+  const handleAddToCard = useCallback(
+    async (cremationId: number) => {
+      if (!user) {
+        router.push("/auth");
+        return;
+      }
+      try {
+        await dispatch(createCardThunk({ cremationId })).unwrap();
+      } catch {
+        console.log("Ошибка при добавлении в корзину");
+      }
+    },
+    [user, router, dispatch],
+  );
+
+  const handleCreateSubmit = useCallback(
+    async (event: React.ChangeEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      if (user === null) {
+        return;
+      }
+
+      const formData = new FormData(event.currentTarget);
+
+      await dispatch(
+        createCremationThunk({
+          name: String(formData.get("name")),
+          description: String(formData.get("description")),
+          price: Number(formData.get("price")),
+          image: String(formData.get("image")),
+          category: String(formData.get("category")),
+          status: String(formData.get("status")),
+          userId: user.id,
+        }),
+      );
+      event.currentTarget.reset();
+    },
+    [user, dispatch],
+  );
+
+  useEffect(() => {
+    if (isInitialized && !user) {
+      router.replace("/auth");
     }
-    try {
-      await dispatch(createCardThunk({ cremationId })).unwrap();
-    } catch {
-      console.log("Ошибка при добавлении в корзину");
-    }
-  };
+  }, [isInitialized, user]);
 
-  const handleCreateSubmit = async (
-    event: React.ChangeEvent<HTMLFormElement>,
-  ) => {
-    event.preventDefault();
-
-    if (user === null) {
-      return;
-    }
-
-    const formData = new FormData(event.currentTarget);
-
-    await dispatch(
-      createCremationThunk({
-        name: String(formData.get("name")),
-        description: String(formData.get("description")),
-        price: Number(formData.get("price")),
-        image: String(formData.get("image")),
-        category: String(formData.get("category")),
-        status: String(formData.get("status")),
-        userId: user.id,
-      }),
-    );
-    event.currentTarget.reset();
-  };
+  if (isInitialized && !user) {
+    return null;
+  }
 
   return (
     <section className="cremation-page">

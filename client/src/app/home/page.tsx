@@ -1,10 +1,21 @@
 "use client";
 import "./page.css";
 import { useRouter } from "next/navigation";
+import { useAppSelector } from "@/shared/hooks/useReduxHooks";
+import { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();
-  
+
+  const { user, isInitialized } = useAppSelector((state) => state.user);
+  useEffect(() => {
+    if (isInitialized && !user) {
+      router.replace("/auth");
+    }
+  }, [isInitialized, user]);
+  if (isInitialized && !user) {
+    return null;
+  }
   return (
     <div className="home-page">
       <section className="home-intro">
@@ -28,7 +39,6 @@ export default function Home() {
       </section>
 
       <section className="home-services">
-
         <div className="home-services-grid">
           <article className="home-service-card">
             <span>01</span>
@@ -38,9 +48,7 @@ export default function Home() {
               (гусль), заворачивание в саван (кафан), джаназа-намаз,
               сопровождение до кладбища.
             </p>
-            <button onClick={() => router.push('/islamic')}>
-              Подробнее
-            </button>
+            <button onClick={() => router.push("/islamic")}>Подробнее</button>
           </article>
 
           <article className="home-service-card">
@@ -50,21 +58,17 @@ export default function Home() {
               Традиционная церемония прощания: подготовка тела, организация
               зала, траурный транспорт, помощь в выборе места захоронения.
             </p>
-            <button onClick={() => router.push('/classic')}>
-              Подробнее
-            </button>
+            <button onClick={() => router.push("/classic")}>Подробнее</button>
           </article>
 
           <article className="home-service-card">
             <span>03</span>
             <h3>Кремация</h3>
             <p>
-              Организация кремации с возможностью хранения урны в колумбарии
-              или захоронения урны с прахом.
+              Организация кремации с возможностью хранения урны в колумбарии или
+              захоронения урны с прахом.
             </p>
-            <button onClick={() => router.push('/cremation')}>
-              Подробнее
-            </button>
+            <button onClick={() => router.push("/cremation")}>Подробнее</button>
           </article>
 
           <article className="home-service-card">
@@ -74,9 +78,7 @@ export default function Home() {
               Круглосуточный магазин ритуальных товаров: гробы, венки,
               памятники, ритуальная одежда и аксессуары.
             </p>
-            <button onClick={() => router.push('/shop')}>
-              Подробнее
-            </button>
+            <button onClick={() => router.push("/shop")}>Подробнее</button>
           </article>
         </div>
       </section>
@@ -116,7 +118,7 @@ export default function Home() {
             <a href="tel:+79991234567">+7 (999) 123-45-67</a>
             <button
               className="home-link-button"
-              onClick={() => router.push('/contact')}
+              onClick={() => router.push("/contact")}
             >
               Перейти в контакты
             </button>

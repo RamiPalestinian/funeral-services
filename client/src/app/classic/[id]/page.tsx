@@ -135,10 +135,6 @@ export default function OneClassicPage() {
 
   if (!oneClassic) return null;
 
-  const formattedPrice = new Intl.NumberFormat("ru-RU").format(
-    oneClassic.price,
-  );
-
   return (
     <section className="classic-page classic-detail-page">
       <div className="classic-detail-media">
@@ -155,7 +151,7 @@ export default function OneClassicPage() {
         <h1 className="classic-detail-title">{oneClassic.name}</h1>
         <p className="classic-detail-description">{oneClassic.description}</p>
         <div className="classic-detail-meta">
-          <span>{formattedPrice} ₽</span>
+          <span>{oneClassic.price} ₽</span>
           {/* <span>{oneClassic.status}</span> */}
         </div>
         {isAdmin && isEditing && (

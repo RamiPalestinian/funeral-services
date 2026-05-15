@@ -1,7 +1,7 @@
 "use client";
 
 import "./page.css";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ShopCard from "@/entities/shop/ui/ShopCard/ShopCard";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
@@ -11,13 +11,12 @@ import {
   getAllShopsThunk,
 } from "@/entities/shop/api/ShopApiThunk";
 import type { ShopType } from "@/entities/shop/model";
-import { useUser } from "@/application/UserProvider";
 
 export default function ShopPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { shops, error, isLoading } = useAppSelector((state) => state.shop);
-  const { user } = useUser();
+  const { user, isInitialized } = useAppSelector((state) => state.user);
   const isAdmin = user?.id === 1;
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -29,42 +28,56 @@ export default function ShopPage() {
     dispatch(getAllShopsThunk());
   }, [dispatch]);
 
-  const handleAddToCard = async (serviceId: number) => {
-    if (!user) {
-      router.push("/auth");
-      return;
+  const handleAddToCard = useCallback(
+    async (serviceId: number) => {
+      if (!user) {
+        router.push("/auth");
+        return;
+      }
+      try {
+        await dispatch(createCardThunk({ serviceId })).unwrap();
+      } catch {
+        console.log("Ошибка при добавлении в корзину");
+      }
+    },
+    [user, router, dispatch],
+  );
+
+  const handleCreateSubmit = useCallback(
+    async (event: React.ChangeEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      if (user === null) {
+        return;
+      }
+
+      const formData = new FormData(event.currentTarget);
+
+      await dispatch(
+        createShopThunk({
+          name: String(formData.get("name")),
+          description: String(formData.get("description")),
+          price: Number(formData.get("price")),
+          image: String(formData.get("image")),
+          category: String(formData.get("category")),
+          status: String(formData.get("status")),
+          userId: user.id,
+        }),
+      );
+      event.currentTarget.reset();
+    },
+    [user, dispatch],
+  );
+
+  useEffect(() => {
+    if (isInitialized && !user) {
+      router.replace("/auth");
     }
-    try {
-      await dispatch(createCardThunk({ serviceId })).unwrap();
-    } catch {
-      console.log("Ошибка при добавлении в корзину");
-    }
-  };
+  }, [isInitialized, user]);
 
-  const handleCreateSubmit = async (
-    event: React.ChangeEvent<HTMLFormElement>,
-  ) => {
-    event.preventDefault();
-
-    if (user === null) {
-      return;
-    }
-
-    const formData = new FormData(event.currentTarget);
-
-    await dispatch(
-      createShopThunk({
-        name: String(formData.get("name")),
-        description: String(formData.get("description")),
-        price: Number(formData.get("price")),
-        image: String(formData.get("image")),
-        category: String(formData.get("category")),
-        status: String(formData.get("status")),
-        userId: user.id,
-      }),
-    );
-    event.currentTarget.reset();
-  };
+  if (isInitialized && !user) {
+    return null;
+  }
 
   return (
     <section className="shop-page">

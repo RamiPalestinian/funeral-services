@@ -6,6 +6,8 @@ import { deleteCardThunk } from "../../api/CardApiThunk";
 import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { useRouter } from "next/navigation";
 import { UserType } from "@/entities/user/model";
+import { CardDateMeta } from "@/shared/ui/CardDateMeta/CardDateMeta";
+import React from "react";
 
 type Props = { card: CardType; user: UserType };
 
@@ -21,14 +23,7 @@ function lineKind(c: CardType): string {
   return "Позиция";
 }
 
-function formatRUB(value: unknown): string {
-  const n = typeof value === "number" ? value : Number(value ?? NaN);
-  return Number.isFinite(n)
-    ? `${new Intl.NumberFormat("ru-RU").format(n)} ₽`
-    : "—";
-}
-
-export default function CardCard({ card, user }: Props) {
+function CardCard({ card, user }: Props) {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const item = lineItem(card);
@@ -37,20 +32,7 @@ export default function CardCard({ card, user }: Props) {
 
   return (
     <article className="card-line">
-      {card.createdAt ? (
-        <p className="card-line-added">
-          <span className="card-line-added-label">Добавлено</span>
-          <time dateTime={card.createdAt}>
-            {new Date(card.createdAt).toLocaleString("ru-RU", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-          </time>
-        </p>
-      ) : null}
+      <CardDateMeta createdAt={card.createdAt} />
       <div className="card-line-media">
         {item?.image ? (
           <img
@@ -73,7 +55,7 @@ export default function CardCard({ card, user }: Props) {
           <div className="card-line-detail">
             <p className="card-line-description">{item.description}</p>
             <div className="card-line-meta">
-              <span className="card-line-price">{formatRUB(item.price)}</span>
+              <span className="card-line-price">{item.price} ₽</span>
               <span className="card-line-price">{item.category ?? "—"}</span>
             </div>
           </div>
@@ -102,3 +84,5 @@ export default function CardCard({ card, user }: Props) {
     </article>
   );
 }
+
+export default React.memo(CardCard);

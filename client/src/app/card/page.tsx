@@ -44,10 +44,15 @@ export default function CardPage() {
     cardSearchText(card).includes(searchQuery.trim().toLowerCase()),
   );
 
-  const totalPrice = cards.reduce((acc, card) => {
-    const item = lineItem(card);
-    return acc + Number(item?.price ?? 0);
-  }, 0);
+  const totalPrice = cards.reduce(
+    (acc, card) =>
+      acc +
+      Number(card.service?.price ?? 0) +
+      Number(card.islamic?.price ?? 0) +
+      Number(card.classicService?.price ?? 0) +
+      Number(card.cremation?.price ?? 0),
+    0,
+  );
 
   const showCartContent = isInitialized && user;
 
@@ -138,7 +143,7 @@ export default function CardPage() {
               </span>
             </div>
             <span className="cart-total-price">
-              {new Intl.NumberFormat("ru-RU").format(totalPrice)} ₽
+              {totalPrice} ₽
             </span>
           </div>
 

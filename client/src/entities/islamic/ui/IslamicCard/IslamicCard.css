@@ -10,28 +10,21 @@
   box-shadow: var(--shadow-md);
 }
 
-.islamic-card-date {
-  display: block;
-  margin: 0;
-  padding: 12px 18px 10px;
-  border-bottom: 1px solid rgba(214, 204, 189, 0.08);
-  color: var(--text-dim);
-  font-size: 11px;
-  line-height: 1.45;
-  letter-spacing: 0.03em;
-}
-
 .islamic-card-media {
-  position: relative;
-  overflow: hidden;
   display: grid;
   place-items: center;
+  overflow: hidden;
+  min-height: 0;
+  width: 100%;
 }
 
 .islamic-card-image {
   width: 82%;
   height: 82%;
+  max-width: 82%;
+  max-height: 82%;
   object-fit: contain;
+  object-position: center;
   display: block;
   transform: translateY(-10px);
   transition: transform 0.5s ease;
@@ -119,11 +112,6 @@
   .islamic-card {
     grid-template-rows: auto 210px 1fr;
     border-radius: 22px;
-  }
-
-  .islamic-card-date {
-    padding: 10px 14px 8px;
-    font-size: 10px;
   }
 
   .islamic-card-body {
