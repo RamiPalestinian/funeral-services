@@ -9,6 +9,7 @@ import {
   fetchClassicThunk,
 } from "@/entities/classic/api/ClassicApiThunk";
 import { useEffect, useState } from "react";
+import { useCallback } from "react";
 
 export default function Classic() {
   const router = useRouter();

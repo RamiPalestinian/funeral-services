@@ -3,14 +3,30 @@ import "./page.css";
 import SignUpForm from "@/features/auth/ui/SignUpForm/SignUpForm";
 import SignInForm from "@/features/auth/ui/SignInForm/SignInForm";
 import { useUser } from "@/application/UserProvider";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAppSelector } from "@/shared/hooks/useReduxHooks";
+import { useRouter } from "next/navigation";
 
 
 
 export default function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(false);
-  const { user, setUser } = useUser();
+  const { setUser } = useUser();
 
+  const router = useRouter();
+
+  const {user, isInitialized} = useAppSelector((state) => state.user);
+
+   //защита сраницы
+   useEffect(() => {
+    if (isInitialized && user) {
+      router.replace("/home");
+    }
+  }, [isInitialized, user]);
+
+  if (isInitialized && user) {
+    return null;
+  }
 
   return (
     <div className="auth-page">

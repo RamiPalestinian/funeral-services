@@ -85,7 +85,7 @@ module.exports = {
         name: 'Копка могилы',
         description: 'Ручная или механизированная копка могилы.',
         price: 12000,
-        image: 'https://haron64.ru/wp-content/uploads/2023/10/kopka-mogily.jpg',
+        image: 'https://pohoroni21.ru/wp-content/uploads/2021/02/kopka-mogil.jpg',
         category: 'Захоронение',
         status: 'active',
         userId: 1,
