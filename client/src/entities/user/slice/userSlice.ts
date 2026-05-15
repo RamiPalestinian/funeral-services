@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { initialUserState, UserStateType } from "../model";
-import { deleteUserAccountThunk, loginThunk, logoutThunk, refreshTokenThunk, registerThunk } from "../api/UserApiThunk";
+import { changePasswordThunk, deleteUserAccountThunk, loginThunk, logoutThunk, refreshTokenThunk, registerThunk, updateProfileThunk } from "../api/UserApiThunk";
 
 const userSlice = createSlice({
     name: 'user',
@@ -60,6 +60,29 @@ const userSlice = createSlice({
             state.isLoading = false;
             state.isInitialized = true;
             state.error = action.payload ?? 'Ошибка при выходе пользователя';
+        })
+
+        //updateProfileThunk
+        builder.addCase(updateProfileThunk.pending, (state) => {state.isLoading = true})
+        builder.addCase(updateProfileThunk.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.user = action.payload;
+            state.error = null;
+        })
+        builder.addCase(updateProfileThunk.rejected,(state, action) => {
+            state.isLoading = false;
+            state.error = action.payload ?? 'Ошибка при обновлении профиля';
+        })
+
+        //changePasswordThunk
+        builder.addCase(changePasswordThunk.pending, (state) => {state.isLoading = true})
+        builder.addCase(changePasswordThunk.fulfilled, (state) => {
+            state.isLoading = false;
+            state.error = null;
+        })
+        builder.addCase(changePasswordThunk.rejected,(state, action) => {
+            state.isLoading = false;
+            state.error = action.payload ?? 'Ошибка при смене пароля';
         })
 
         //deleteUserAccountThunk

@@ -102,4 +102,37 @@ export class UserValidator {
 
     return { isValid: true, error: null };
   }
+
+  static validateName(name: string): ValidationResult {
+    if (!name || typeof name !== 'string' || name.trim().length < 3) {
+      return { isValid: false, error: 'Имя должно содержать не менее 3 символов' };
+    }
+
+    return { isValid: true, error: null };
+  }
+
+  static validatePasswordChange(data: {
+    currentPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+  }): ValidationResult {
+    const { currentPassword, newPassword, confirmPassword } = data;
+
+    if (!currentPassword || currentPassword.trim().length === 0) {
+      return { isValid: false, error: 'Введите текущий пароль' };
+    }
+
+    if (!this.validatePassword(newPassword)) {
+      return {
+        isValid: false,
+        error: 'Новый пароль не соответствует критериям валидации',
+      };
+    }
+
+    if (newPassword !== confirmPassword) {
+      return { isValid: false, error: 'Пароли не совпадают' };
+    }
+
+    return { isValid: true, error: null };
+  }
 }
