@@ -1,11 +1,25 @@
-import { Controller, Post, Body, HttpCode, HttpStatus, BadRequestException, InternalServerErrorException, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  InternalServerErrorException,
+  Logger,
+  Post,
+} from '@nestjs/common';
 import { AiService } from './ai.service';
 
-class GetAiResponseDto {
-  title: string;
-  text: string;
-  style?: string;
-}
+type ChatHistoryMessageDto = {
+  role: 'user' | 'assistant';
+  content: string;
+};
+
+type ChatRequestDto = {
+  message: string;
+  userName?: string;
+  history?: ChatHistoryMessageDto[];
+};
 
 @Controller('ai')
 export class AiController {
@@ -13,45 +27,41 @@ export class AiController {
 
   constructor(private readonly aiService: AiService) {}
 
-  @Post('response')
+  @Post('chat')
   @HttpCode(HttpStatus.OK)
-  async getAiResponse(@Body() dto: GetAiResponseDto) {
-    const { title, text, style } = dto;
+  async chat(@Body() dto: ChatRequestDto) {
+    const message = dto.message?.trim();
 
-    // Проверка на наличие обязательных полей
-    if (!title || !text) {
-      throw new BadRequestException('Заголовок и текст обязательны');
+    if (!message) {
+      throw new BadRequestException('Сообщение обязательно');
     }
 
-    // Проверка на длину полей
-    if (text.length > 500 || title.length > 100) {
+    if (message.length > 1000) {
       throw new BadRequestException(
-        'Заголовок и текст не должны превышать 100 и 500 символов соответственно'
+        'Сообщение не должно превышать 1000 символов',
       );
     }
 
     try {
-      const result = await this.aiService.generateText({ title, text, style });
-
-      if (!result) {
-        throw new InternalServerErrorException('Ошибка при генерации текста');
-      }
+      const reply = await this.aiService.sendMessage({
+        message,
+        userName: dto.userName,
+        history: dto.history ?? [],
+      });
 
       return {
         statusCode: 200,
         message: 'Ответ получен',
-        data: result,
+        data: {
+          reply,
+          assistantName: 'Ваш личный помощник',
+        },
         error: null,
       };
     } catch (error) {
-      this.logger.error('==== AiController.getAiResponse ====');
+      this.logger.error('==== AiController.chat ====');
       this.logger.error(error);
-
-      if (error instanceof BadRequestException || error instanceof InternalServerErrorException) {
-        throw error;
-      }
-
-      throw new InternalServerErrorException('Внутренняя ошибка сервера');
+      throw new InternalServerErrorException('Не удалось получить ответ');
     }
   }
 }
