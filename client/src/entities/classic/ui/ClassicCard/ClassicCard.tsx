@@ -3,22 +3,17 @@
 import "./ClassicCard.css";
 import { deleteClassicThunk } from "@/entities/classic/api/ClassicApiThunk";
 import type { ClassicType } from "@/entities/classic/model";
-import {
-  useAddToCard,
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/hooks/useReduxHooks";
+import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { useRouter } from "next/navigation";
 
 type ClassicCardProps = {
-  // user: UserType | null,
   classic: ClassicType | null;
+  onAddToCard: () => void;
 };
 
-export default function ClassicCard({ classic  }: ClassicCardProps) {
+export default function ClassicCard({ classic, onAddToCard }: ClassicCardProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const addToCard = useAddToCard();
   const user = useAppSelector((state) => state.user.user);
   const isAdmin = user?.id === 1;
 
@@ -51,7 +46,7 @@ export default function ClassicCard({ classic  }: ClassicCardProps) {
           <button
             type="button"
             className="classic-card-button"
-            onClick={() => void addToCard({ classicServiceId: classic.id })}
+            onClick={onAddToCard}
           >
             В корзину
           </button>

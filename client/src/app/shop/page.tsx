@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ShopCard from "@/entities/shop/ui/ShopCard/ShopCard";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
+import { createCardThunk } from "@/entities/card/api/CardApiThunk";
 import {
   createShopThunk,
   getAllShopsThunk,
@@ -27,6 +28,18 @@ export default function ShopPage() {
   useEffect(() => {
     dispatch(getAllShopsThunk());
   }, [dispatch]);
+
+  const handleAddToCard = async (serviceId: number) => {
+    if (!user) {
+      router.push("/auth");
+      return;
+    }
+    try {
+      await dispatch(createCardThunk({ serviceId })).unwrap();
+    } catch {
+      console.log("Ошибка при добавлении в корзину");
+    }
+  };
 
   const handleCreateSubmit = async (
     event: React.ChangeEvent<HTMLFormElement>,
@@ -143,7 +156,11 @@ export default function ShopPage() {
 
       <div className="shop-grid">
         {filteredShops.map((shop: ShopType) => (
-          <ShopCard key={shop.id} shop={shop} />
+          <ShopCard
+            key={shop.id}
+            shop={shop}
+            onAddToCard={() => void handleAddToCard(shop.id)}
+          />
         ))}
       </div>
       <button
