@@ -27,18 +27,11 @@ function formatRUB(value: unknown): string {
     : "—";
 }
 
-function footerUserText(card: CardType): string {
-  if (card.user?.name) return card.user.name;
-  if (card.userId != null) return String(card.userId);
-  return "—";
-}
-
 export default function CardCard({ card }: Props) {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const user = useAppSelector((state) => state.user.user);
   const item = lineItem(card);
-  const userLine = footerUserText(card);
   const canRemove =
     user != null && card.userId != null && card.userId === user.id;
 
@@ -73,9 +66,6 @@ export default function CardCard({ card }: Props) {
         ) : (
           <p className="card-line-description">Нет данных по позиции.</p>
         )}
-        <div className="card-line-meta card-line-meta--user">
-          <span className="card-line-price">Пользователь: {userLine}</span>
-        </div>
         <div className="card-line-actions">
           <button
             type="button"
