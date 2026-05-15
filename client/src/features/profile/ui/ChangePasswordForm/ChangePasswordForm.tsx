@@ -5,7 +5,6 @@ import FormInput from '@/shared/ui/FormInput/FormInput';
 import { UserValidator } from '@/entities/user/model/UserValidator';
 import { useAppDispatch } from '@/shared/hooks/useReduxHooks';
 import { changePasswordThunk } from '@/entities/user/api/UserApiThunk';
-import '../EditNameForm/EditNameForm.css';
 
 const initialValue = {
   currentPassword: '',

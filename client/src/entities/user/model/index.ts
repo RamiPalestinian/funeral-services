@@ -3,6 +3,12 @@ export type UserType = {
   name: string;
   email: string;
   avatar?: string | null;
+  lastName?: string | null;
+  firstName?: string | null;
+  middleName?: string | null;
+  phone?: string | null;
+  address?: string | null;
+  city?: string | null;
   createdAt?: string;
   updatedAt?: string;
 };
@@ -25,6 +31,12 @@ export type UpdateUserData = {
   name?: string;
   email?: string;
   avatar?: string;
+  lastName?: string;
+  firstName?: string;
+  middleName?: string;
+  phone?: string;
+  address?: string;
+  city?: string;
 };
 
 export type ChangePasswordData = {
