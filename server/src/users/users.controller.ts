@@ -1,13 +1,15 @@
 import {
   Body,
   Controller,
+  Delete,
   HttpCode,
   HttpStatus,
   Patch,
   Req,
+  Res,
   UseGuards,
 } from '@nestjs/common';
-import type { Request } from 'express';
+import type { Request, Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -39,5 +41,15 @@ export class UsersController {
       dto.currentPassword,
       dto.newPassword,
     );
+  }
+
+  @Delete('me')
+  @HttpCode(HttpStatus.OK)
+  deleteAccount(
+    @Req() req: Request & { user: JwtRequestUser },
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    res.clearCookie('refreshToken');
+    return this.usersService.deleteAccount(req.user.userId);
   }
 }

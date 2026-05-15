@@ -38,17 +38,17 @@ export default function Classic() {
     dispatch(fetchClassicThunk());
   }, [dispatch]);
 
-  const handleAddToCard = async (classicServiceId: number) => {
-    if (!user) {
-      router.push("/auth");
-      return;
-    }
-    try {
-      await dispatch(createCardThunk({ classicServiceId })).unwrap();
-    } catch {
-      console.log("Ошибка при добавлении в корзину");
-    }
-  };
+  const handleAddToCard = useCallback(async (classicServiceId: number) => {
+  if (!user) {
+    router.push("/auth");
+    return;
+  }
+  try {
+    await dispatch(createCardThunk({ classicServiceId })).unwrap();
+  } catch {
+    console.log("Ошибка при добавлении в корзину");
+  }
+}, [user, router, dispatch]);
 
   const handleNewClassic = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -191,7 +191,7 @@ export default function Classic() {
           <ClassicCard
             key={classic.id}
             classic={classic}
-            onAddToCard={() => void handleAddToCard(classic.id)}
+            onAddToCard={handleAddToCard}
           />
         ))}
       </div>

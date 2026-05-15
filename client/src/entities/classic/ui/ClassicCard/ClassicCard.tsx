@@ -1,21 +1,33 @@
 "use client";
-
+import React from "react";
 import "./ClassicCard.css";
 import { deleteClassicThunk } from "@/entities/classic/api/ClassicApiThunk";
 import type { ClassicType } from "@/entities/classic/model";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { useRouter } from "next/navigation";
+import { useMemo } from "react";
 
 type ClassicCardProps = {
   classic: ClassicType | null;
-  onAddToCard: () => void;
+  onAddToCard: (id: number) => void;
 };
 
-export default function ClassicCard({ classic, onAddToCard }: ClassicCardProps) {
+function ClassicCard({ classic, onAddToCard }: ClassicCardProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.user);
   const isAdmin = user?.id === 1;
+
+  // const calculateDate = useMemo(() => {
+  //    if (!classic?.createdAt) return "Дата не указана";
+  //   return new Date(classic.createdAt).toLocaleString("ru-RU");
+  // }, [classic.createdAt])
+
+  const calculateDate = useMemo(() => {
+  if (!classic) return "Дата не указана";
+  if (!classic.createdAt) return "Дата не указана";
+  return new Date(classic.createdAt).toLocaleString("ru-RU");
+}, [classic]);
 
   if (!classic) {
     return null; // или можно отобразить заглушку, если данных нет
@@ -25,6 +37,7 @@ export default function ClassicCard({ classic, onAddToCard }: ClassicCardProps) 
 
   return (
     <article className="classic-card">
+      <small className="classic-card-date">Добавлено: {calculateDate}</small>
       <div className="classic-card-media">
         <img
           className="classic-card-image"
@@ -46,7 +59,7 @@ export default function ClassicCard({ classic, onAddToCard }: ClassicCardProps) 
           <button
             type="button"
             className="classic-card-button"
-            onClick={onAddToCard}
+            onClick={() => onAddToCard(classic.id)}
           >
             В корзину
           </button>
@@ -71,3 +84,5 @@ export default function ClassicCard({ classic, onAddToCard }: ClassicCardProps) 
     </article>
   );
 }
+
+export default React.memo(ClassicCard)

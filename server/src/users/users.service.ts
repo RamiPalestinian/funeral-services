@@ -7,6 +7,11 @@ import {
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import * as bcrypt from 'bcrypt';
+import { Card } from 'src/card/card.model';
+import { ClassicService } from 'src/classic-service/classicService.model';
+import { Cremation } from 'src/cremations/cremations.model';
+import { Islamic } from 'src/islamic/islamic.model';
+import { Service } from 'src/services/services.model';
 import { User } from './user.model';
 
 type CreateUserPayload = {
@@ -18,8 +23,18 @@ type CreateUserPayload = {
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(User) // ← Декоратор: говорит NestJS, что нужно внедрить
-    private readonly userModel: typeof User, // ← Свойство класса: тип - модель User
+    @InjectModel(User)
+    private readonly userModel: typeof User,
+    @InjectModel(Card)
+    private readonly cardModel: typeof Card,
+    @InjectModel(Service)
+    private readonly serviceModel: typeof Service,
+    @InjectModel(Islamic)
+    private readonly islamicModel: typeof Islamic,
+    @InjectModel(ClassicService)
+    private readonly classicServiceModel: typeof ClassicService,
+    @InjectModel(Cremation)
+    private readonly cremationModel: typeof Cremation,
   ) {}
 
   //создание пользователя
@@ -96,5 +111,22 @@ export class UsersService {
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     await user.update({ password: hashedPassword });
     return { message: 'Пароль успешно изменён' };
+  }
+
+  async deleteAccount(id: number) {
+    const user = await this.findUserById(id);
+
+    if (!user) {
+      throw new NotFoundException('Пользователь не найден');
+    }
+
+    await this.cardModel.destroy({ where: { userId: id } });
+    await this.serviceModel.destroy({ where: { userId: id } });
+    await this.islamicModel.destroy({ where: { userId: id } });
+    await this.classicServiceModel.destroy({ where: { userId: id } });
+    await this.cremationModel.destroy({ where: { userId: id } });
+    await user.destroy();
+
+    return { message: 'Аккаунт удалён' };
   }
 }

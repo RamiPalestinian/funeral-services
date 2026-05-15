@@ -8,6 +8,7 @@ import EditNameForm from "@/features/profile/ui/EditNameForm/EditNameForm";
 import EditEmailForm from "@/features/profile/ui/EditEmailForm/EditEmailForm";
 import ProfileAvatarEditor from "@/features/profile/ui/ProfileAvatarEditor/ProfileAvatarEditor";
 import ChangePasswordForm from "@/features/profile/ui/ChangePasswordForm/ChangePasswordForm";
+import DeleteProfileButton from "@/features/profile/ui/DeleteProfileButton/DeleteProfileButton";
 
 export default function Personal() {
   const router = useRouter();
@@ -58,26 +59,50 @@ export default function Personal() {
           <h3>Перейти к услугам</h3>
         </div>
         <div className="personal-service-grid">
-          <button type="button" onClick={() => router.push("/islamic")}>
+          <button
+            type="button"
+            className="personal-btn personal-btn--nav"
+            onClick={() => router.push("/islamic")}
+          >
             Исламские
           </button>
-          <button type="button" onClick={() => router.push("/cremation")}>
+          <button
+            type="button"
+            className="personal-btn personal-btn--nav"
+            onClick={() => router.push("/cremation")}
+          >
             Кремация
           </button>
-          <button type="button" onClick={() => router.push("/classic")}>
+          <button
+            type="button"
+            className="personal-btn personal-btn--nav"
+            onClick={() => router.push("/classic")}
+          >
             Классические
           </button>
-          <button type="button" onClick={() => router.push("/shop")}>
+          <button
+            type="button"
+            className="personal-btn personal-btn--nav"
+            onClick={() => router.push("/shop")}
+          >
             Магазин
           </button>
         </div>
       </section>
 
       <section className="personal-section personal-shortcuts">
-        <button type="button" onClick={() => router.push("/card")}>
+        <button
+          type="button"
+          className="personal-btn personal-btn--link"
+          onClick={() => router.push("/card")}
+        >
           Перейти в корзину
         </button>
-        <button type="button" onClick={() => router.push("/home")}>
+        <button
+          type="button"
+          className="personal-btn personal-btn--link"
+          onClick={() => router.push("/home")}
+        >
           Вернуться на главную
         </button>
       </section>
@@ -92,6 +117,14 @@ export default function Personal() {
           <EditEmailForm user={user} setUser={setUser} />
           <ChangePasswordForm />
         </div>
+      </section>
+
+      <section className="personal-section personal-danger">
+        <div className="personal-section-head">
+          <p className="personal-eyebrow">Аккаунт</p>
+          <h3>Удаление профиля</h3>
+        </div>
+        <DeleteProfileButton />
       </section>
     </main>
   );
