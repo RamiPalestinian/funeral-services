@@ -6,27 +6,26 @@ import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { deleteCremationThunk } from "../../api/CremationApiThunk";
 import { useUser } from "@/application/UserProvider";
+import { CardDateMeta } from "@/shared/ui/CardDateMeta/CardDateMeta";
+import React from "react";
 
 type CremationCardProps = {
   cremation: CremationType;
   onAddToCard: () => void;
 };
 
-export default function CremationCard({ cremation, onAddToCard }: CremationCardProps) {
+function CremationCard({ cremation, onAddToCard }: CremationCardProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { user } = useUser();
   const isAdmin = user?.id === 1;
-  const formattedPrice = new Intl.NumberFormat("ru-RU").format(
-    cremation.price,
-  );
-
   const handleDelete = () => {
     dispatch(deleteCremationThunk(Number(cremation.id)));
   };
 
   return (
     <article className="cremation-card">
+      <CardDateMeta createdAt={cremation.createdAt} />
       <div className="cremation-card-media">
         <img
           className="cremation-card-image"
@@ -41,7 +40,7 @@ export default function CremationCard({ cremation, onAddToCard }: CremationCardP
         <h2 className="cremation-card-title">{cremation.name}</h2>
         <p className="cremation-card-description">{cremation.description}</p>
         <div className="cremation-card-meta">
-          <span className="cremation-card-price">{formattedPrice} ₽</span>
+          <span className="cremation-card-price">{cremation.price} ₽</span>
           {/* {cremation.status && (
             <span className="cremation-card-status">{cremation.status}</span>
           )} */}
@@ -75,3 +74,5 @@ export default function CremationCard({ cremation, onAddToCard }: CremationCardP
     </article>
   );
 }
+
+export default React.memo(CremationCard);

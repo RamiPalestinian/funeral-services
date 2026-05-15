@@ -30,8 +30,7 @@ export default function CardByIdPage() {
   const { id } = useParams<{ id: string }>();
   const numericId = Number(id);
   const { cards, isLoading, error } = useAppSelector((state) => state.card);
-  const user = useAppSelector((state) => state.user.user);
-  const { isInitialized } = useAppSelector((state) => state.user);
+  const { user, isInitialized } = useAppSelector((state) => state.user);
 
   const card = cards.find((c) => c.id === numericId);
   const item = card ? lineItem(card) : null;
@@ -141,14 +140,7 @@ export default function CardByIdPage() {
           <>
             <p className="cremation-detail-description">{item.description}</p>
             <div className="cremation-detail-meta">
-              <span>
-                {new Intl.NumberFormat("ru-RU").format(
-                  typeof item.price === "number"
-                    ? item.price
-                    : Number(item.price),
-                )}{" "}
-                ₽
-              </span>
+              <span>{item.price} ₽</span>
               {item.category ? <span>{item.category}</span> : null}
             </div>
           </>

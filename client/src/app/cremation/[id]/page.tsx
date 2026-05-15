@@ -2,7 +2,7 @@
 
 import "../page.css";
 import "@/entities/cremation/ui/CremationCard/CremationCard.css";
-import { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { createCardThunk } from "@/entities/card/api/CardApiThunk";
@@ -10,7 +10,6 @@ import {
   getCremationByIdThunk,
   updateCremationThunk,
 } from "@/entities/cremation/api/CremationApiThunk";
-import { useUser } from "@/application/UserProvider";
 
 const initialFormState = {
   name: "",
@@ -21,25 +20,26 @@ const initialFormState = {
   status: "",
 };
 
-export default function CremationByIdPage() {
+function CremationByIdPage() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { id } = useParams<{ id: string }>();
-  const { user } = useUser();
-  const isAdmin = user?.id === 1;
   const { cremations, error, isLoading } = useAppSelector(
     (state) => state.cremation,
   );
+  const { user, isInitialized } = useAppSelector((state) => state.user);
   const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState(initialFormState);
 
   const cremation = cremations.find((el) => el.id === Number(id));
 
+  const isAdmin = user?.id === 1;
+
   useEffect(() => {
     dispatch(getCremationByIdThunk(Number(id)));
   }, [dispatch, id]);
 
-  const handleAddToCard = async () => {
+  const handleAddToCard = useCallback(async () => {
     if (!user) {
       router.push("/auth");
       return;
@@ -49,7 +49,7 @@ export default function CremationByIdPage() {
     } catch {
       console.log("Ошибка при добавлении в корзину");
     }
-  };
+  }, [user, router, dispatch, id]);
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -62,7 +62,7 @@ export default function CremationByIdPage() {
     }));
   };
 
-  const handleStartEdit = () => {
+  const handleStartEdit = useCallback(() => {
     if (!cremation) {
       return;
     }
@@ -76,24 +76,37 @@ export default function CremationByIdPage() {
       status: cremation.status ?? "",
     });
     setEditing(true);
-  };
+  }, [cremation]);
 
-  const updateCremation = async (event: React.ChangeEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const updateCremation = useCallback(
+    async (event: React.ChangeEvent<HTMLFormElement>) => {
+      event.preventDefault();
 
-    await dispatch(
-      updateCremationThunk({
-        id: Number(id),
-        name: formData.name,
-        description: formData.description,
-        price: Number(formData.price),
-        image: formData.image,
-        category: formData.category,
-        status: formData.status,
-      }),
-    );
-    setEditing(false);
-  };
+      await dispatch(
+        updateCremationThunk({
+          id: Number(id),
+          name: formData.name,
+          description: formData.description,
+          price: Number(formData.price),
+          image: formData.image,
+          category: formData.category,
+          status: formData.status,
+        }),
+      );
+      setEditing(false);
+    },
+    [dispatch, id, formData],
+  );
+
+  useEffect(() => {
+    if (isInitialized && !user) {
+      router.replace("/auth");
+    }
+  }, [isInitialized, user]);
+
+  if (isInitialized && !user) {
+    return null;
+  }
 
   if (!cremation) {
     return null;
@@ -115,9 +128,7 @@ export default function CremationByIdPage() {
         <h1 className="cremation-detail-title">{cremation.name}</h1>
         <p className="cremation-detail-description">{cremation.description}</p>
         <div className="cremation-detail-meta">
-          <span>
-            {new Intl.NumberFormat("ru-RU").format(cremation.price)} ₽
-          </span>
+          <span>{cremation.price} ₽</span>
           {/* {cremation.status && <span>{cremation.status}</span>} */}
         </div>
         {isAdmin && editing && (
@@ -218,3 +229,5 @@ export default function CremationByIdPage() {
     </section>
   );
 }
+
+export default React.memo(CremationByIdPage);

@@ -2,7 +2,7 @@
 
 import "../page.css";
 import "@/entities/shop/ui/ShopCard/ShopCard.css";
-import { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { createCardThunk } from "@/entities/card/api/CardApiThunk";
@@ -10,7 +10,6 @@ import {
   getShopByIdThunk,
   updateShopThunk,
 } from "@/entities/shop/api/ShopApiThunk";
-import { useUser } from "@/application/UserProvider";
 
 const initialFormState = {
   name: "",
@@ -21,14 +20,14 @@ const initialFormState = {
   status: "",
 };
 
-export default function ShopByIdPage() {
+function ShopByIdPage() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { id } = useParams<{ id: string }>();
-  const { user } = useUser();
+  const { user, isInitialized } = useAppSelector((state) => state.user);
   const isAdmin = user?.id === 1;
 
-  const handleAddToCard = async () => {
+  const handleAddToCard = useCallback(async () => {
     if (!user) {
       router.push("/auth");
       return;
@@ -38,7 +37,7 @@ export default function ShopByIdPage() {
     } catch {
       console.log("Ошибка при добавлении в корзину");
     }
-  };
+  }, [user, router, dispatch, id]);
 
   const { shops, error, isLoading } = useAppSelector((state) => state.shop);
   const [formData, setFormData] = useState(initialFormState);
@@ -61,7 +60,7 @@ export default function ShopByIdPage() {
     }));
   };
 
-  const handleStartEdit = () => {
+  const handleStartEdit = useCallback(() => {
     if (!shop) {
       return;
     }
@@ -75,28 +74,41 @@ export default function ShopByIdPage() {
       status: shop.status,
     });
     setEditing(true);
-  };
+  }, [shop]);
 
   const handleCancelEdit = () => {
     setEditing(false);
   };
 
-  const updateShop = async (event: React.ChangeEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const updateShop = useCallback(
+    async (event: React.ChangeEvent<HTMLFormElement>) => {
+      event.preventDefault();
 
-    await dispatch(
-      updateShopThunk({
-        id: Number(id),
-        name: formData.name,
-        description: formData.description,
-        price: Number(formData.price),
-        image: formData.image,
-        category: formData.category,
-        status: formData.status,
-      }),
-    );
-    setEditing(false);
-  };
+      await dispatch(
+        updateShopThunk({
+          id: Number(id),
+          name: formData.name,
+          description: formData.description,
+          price: Number(formData.price),
+          image: formData.image,
+          category: formData.category,
+          status: formData.status,
+        }),
+      );
+      setEditing(false);
+    },
+    [dispatch, id, formData],
+  );
+
+  useEffect(() => {
+    if (isInitialized && !user) {
+      router.replace("/auth");
+    }
+  }, [isInitialized, user]);
+
+  if (isInitialized && !user) {
+    return null;
+  }
 
   if (!shop) {
     return null;
@@ -118,7 +130,7 @@ export default function ShopByIdPage() {
         <h1 className="shop-detail-title">{shop.name}</h1>
         <p className="shop-detail-description">{shop.description}</p>
         <div className="shop-detail-meta">
-          <span>{new Intl.NumberFormat("ru-RU").format(shop.price)} ₽</span>
+          <span>{shop.price} ₽</span>
           {/* <span>{shop.status}</span> */}
         </div>
         {isAdmin && editing && (
@@ -220,3 +232,5 @@ export default function ShopByIdPage() {
     </section>
   );
 }
+
+export default React.memo(ShopByIdPage);

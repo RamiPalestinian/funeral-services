@@ -5,6 +5,7 @@ import { deleteIslamicThunk } from "@/entities/islamic/api/IslamicApiThunk";
 import type { IslamicType } from "@/entities/islamic/model";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { useRouter } from "next/navigation";
+import { CardDateMeta } from "@/shared/ui/CardDateMeta/CardDateMeta";
 import React, { useCallback } from "react";
 
 type IslamicCardProps = {
@@ -21,7 +22,6 @@ function IslamicCard({ islamic, onAddToCard }: IslamicCardProps) {
   if (!islamic) {
     return null; // или можно отобразить заглушку, если данных нет
   }
-  const formattedPrice = new Intl.NumberFormat("ru-RU").format(islamic.price);
 
   const handleDelete = useCallback(() => {
     void dispatch(deleteIslamicThunk(islamic.id));
@@ -29,20 +29,7 @@ function IslamicCard({ islamic, onAddToCard }: IslamicCardProps) {
 
   return (
     <article className="islamic-card">
-      {islamic.createdAt ? (
-        <p className="islamic-card-added">
-          <span className="islamic-card-added-label">Добавлено</span>
-          <time dateTime={islamic.createdAt}>
-            {new Date(islamic.createdAt).toLocaleString("ru-RU", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-          </time>
-        </p>
-      ) : null}
+      <CardDateMeta createdAt={islamic.createdAt} />
       <div className="islamic-card-media">
         <img
           className="islamic-card-image"
@@ -57,7 +44,7 @@ function IslamicCard({ islamic, onAddToCard }: IslamicCardProps) {
         <h4 className="islamic-card-title">{islamic.name}</h4>
         <p className="islamic-card-description">{islamic.description}</p>
         <div className="islamic-card-meta">
-          <span className="islamic-card-price">{formattedPrice} ₽</span>
+          <span className="islamic-card-price">{islamic.price} ₽</span>
           {/* <span className="islamic-card-status">{islamic.status}</span> */}
         </div>
         <div className="islamic-card-actions">

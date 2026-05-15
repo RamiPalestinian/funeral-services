@@ -10,57 +10,21 @@
   box-shadow: var(--shadow-md);
 }
 
-.islamic-card-added {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin: 0;
-  padding: 11px 18px;
-  border-bottom: 1px solid var(--line-soft);
-  background:
-    linear-gradient(
-      90deg,
-      rgba(214, 199, 181, 0.06),
-      rgba(255, 255, 255, 0.02) 48%,
-      rgba(139, 159, 146, 0.05)
-    );
-  color: var(--text-dim);
-  font-size: 12px;
-  line-height: 1.5;
-}
-
-.islamic-card-added-label {
-  flex-shrink: 0;
-  color: var(--accent-terracotta);
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  opacity: 0.92;
-}
-
-.islamic-card-added time {
-  color: var(--accent-stone);
-  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
-  font-size: 13px;
-  font-weight: 400;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.02em;
-  text-align: right;
-}
-
 .islamic-card-media {
-  position: relative;
-  overflow: hidden;
   display: grid;
   place-items: center;
-  background: rgba(255, 255, 255, 0.03);
+  overflow: hidden;
+  min-height: 0;
+  width: 100%;
 }
 
 .islamic-card-image {
   width: 82%;
   height: 82%;
+  max-width: 82%;
+  max-height: 82%;
   object-fit: contain;
+  object-position: center;
   display: block;
   transform: translateY(-10px);
   transition: transform 0.5s ease;
@@ -155,13 +119,12 @@
 
 @media (max-width: 640px) {
   .islamic-card {
-    grid-template-rows: auto 160px 1fr;
+    grid-template-rows: auto 210px 1fr;
+    border-radius: 22px;
   }
 
-  .islamic-card-added {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
+  .islamic-card-body {
+    padding: 16px;
   }
 
   .islamic-card-added time {

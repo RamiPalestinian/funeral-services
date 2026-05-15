@@ -5,6 +5,7 @@ import { deleteClassicThunk } from "@/entities/classic/api/ClassicApiThunk";
 import type { ClassicType } from "@/entities/classic/model";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { useRouter } from "next/navigation";
+import { CardDateMeta } from "@/shared/ui/CardDateMeta/CardDateMeta";
 import Image from "next/image";
 
 type ClassicCardProps = {
@@ -22,24 +23,10 @@ function ClassicCard({ classic, onAddToCard }: ClassicCardProps) {
     return null; // или можно отобразить заглушку, если данных нет
   }
 
-  const formattedPrice = new Intl.NumberFormat("ru-RU").format(classic.price);
 
   return (
     <article className="classic-card">
-      {classic.createdAt ? (
-        <p className="classic-card-added">
-          <span className="classic-card-added-label">Добавлено</span>
-          <time dateTime={classic.createdAt}>
-            {new Date(classic.createdAt).toLocaleString("ru-RU", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-          </time>
-        </p>
-      ) : null}
+      <CardDateMeta createdAt={classic.createdAt} />
       <div className="classic-card-media">
         <Image
           className="classic-card-image"
@@ -54,7 +41,7 @@ function ClassicCard({ classic, onAddToCard }: ClassicCardProps) {
         <h4 className="classic-card-title">{classic.name}</h4>
         <p className="classic-card-description">{classic.description}</p>
         <div className="classic-card-meta">
-          <span className="classic-card-price">{formattedPrice} ₽</span>
+          <span className="classic-card-price">{classic.price} ₽</span>
           {/* <span className="classic-card-status">{classic.status}</span> */}
         </div>
         <div className="classic-card-actions">
@@ -87,4 +74,4 @@ function ClassicCard({ classic, onAddToCard }: ClassicCardProps) {
   );
 }
 
-export default React.memo(ClassicCard)
+export default React.memo(ClassicCard);

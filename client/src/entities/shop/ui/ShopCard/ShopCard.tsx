@@ -6,25 +6,26 @@ import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { deleteShopThunk } from "../../api/ShopApiThunk";
 import { useUser } from "@/application/UserProvider";
+import { CardDateMeta } from "@/shared/ui/CardDateMeta/CardDateMeta";
+import React from "react";
 
 type ShopCardProps = {
   shop: ShopType;
   onAddToCard: () => void;
 };
 
-export default function ShopCard({ shop, onAddToCard }: ShopCardProps) {
+function ShopCard({ shop, onAddToCard }: ShopCardProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { user } = useUser();
   const isAdmin = user?.id === 1;
-  const formattedPrice = new Intl.NumberFormat("ru-RU").format(shop.price);
-
   const handleDelete = () => {
     dispatch(deleteShopThunk(Number(shop.id)));
   };
 
   return (
     <article className="shop-card">
+      <CardDateMeta createdAt={shop.createdAt} />
       <div className="shop-card-media">
         <img
           className="shop-card-image"
@@ -39,7 +40,7 @@ export default function ShopCard({ shop, onAddToCard }: ShopCardProps) {
         <h2 className="shop-card-title">{shop.name}</h2>
         <p className="shop-card-description">{shop.description}</p>
         <div className="shop-card-meta">
-          <span className="shop-card-price">{formattedPrice} ₽</span>
+          <span className="shop-card-price">{shop.price} ₽</span>
           {/* <span className="shop-card-status">{shop.status}</span> */}
         </div>
         <div className="shop-card-actions">
@@ -71,3 +72,5 @@ export default function ShopCard({ shop, onAddToCard }: ShopCardProps) {
     </article>
   );
 }
+
+export default React.memo(ShopCard);
