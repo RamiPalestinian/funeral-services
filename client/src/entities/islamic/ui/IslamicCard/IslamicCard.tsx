@@ -3,21 +3,17 @@
 import "./IslamicCard.css";
 import { deleteIslamicThunk } from "@/entities/islamic/api/IslamicApiThunk";
 import type { IslamicType } from "@/entities/islamic/model";
-import {
-  useAddToCard,
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/hooks/useReduxHooks";
+import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { useRouter } from "next/navigation";
 
 type IslamicCardProps = {
   islamic: IslamicType | null;
+  onAddToCard: () => void;
 };
 
-export default function IslamicCard({ islamic }: IslamicCardProps) {
+export default function IslamicCard({ islamic, onAddToCard }: IslamicCardProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const addToCard = useAddToCard();
   const user = useAppSelector((state) => state.user.user);
   const isAdmin = user?.id === 1;
 
@@ -53,7 +49,7 @@ export default function IslamicCard({ islamic }: IslamicCardProps) {
           <button
             type="button"
             className="islamic-card-button"
-            onClick={() => void addToCard({ islamicId: islamic.id })}
+            onClick={onAddToCard}
           >
             В корзину
           </button>

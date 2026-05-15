@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import CremationCard from "@/entities/cremation/ui/CremationCard/CremationCard";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
+import { createCardThunk } from "@/entities/card/api/CardApiThunk";
 import {
   createCremationThunk,
   getAllCremationsThunk,
@@ -29,6 +30,18 @@ export default function CremationPage() {
   useEffect(() => {
     dispatch(getAllCremationsThunk());
   }, [dispatch]);
+
+  const handleAddToCard = async (cremationId: number) => {
+    if (!user) {
+      router.push("/auth");
+      return;
+    }
+    try {
+      await dispatch(createCardThunk({ cremationId })).unwrap();
+    } catch {
+      console.log("Ошибка при добавлении в корзину");
+    }
+  };
 
   const handleCreateSubmit = async (
     event: React.ChangeEvent<HTMLFormElement>,
@@ -144,7 +157,11 @@ export default function CremationPage() {
 
       <div className="cremation-grid">
         {filteredCremations.map((cremation: CremationType) => (
-          <CremationCard key={cremation.id} cremation={cremation} />
+          <CremationCard
+            key={cremation.id}
+            cremation={cremation}
+            onAddToCard={() => void handleAddToCard(cremation.id)}
+          />
         ))}
       </div>
       <button

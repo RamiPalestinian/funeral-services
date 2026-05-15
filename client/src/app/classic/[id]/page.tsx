@@ -2,13 +2,10 @@
 
 import "../page.css";
 import "@/entities/classic/ui/ClassicCard/ClassicCard.css";
-import { type ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import {
-  useAddToCard,
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/hooks/useReduxHooks";
+import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
+import { createCardThunk } from "@/entities/card/api/CardApiThunk";
 import {
   fetchClassicByIdThunk,
   updateClassicThunk,
@@ -32,8 +29,24 @@ export default function OneClassicPage() {
   const isAdmin = user?.id === 1;
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
-  const addToCard = useAddToCard();
   const [formData, setFormData] = useState(initialFormState);
+
+  const handleAddToCard = async () => {
+    if (!user) {
+      router.push("/auth");
+      return;
+    }
+    if (!oneClassic) {
+      return;
+    }
+    try {
+      await dispatch(
+        createCardThunk({ classicServiceId: oneClassic.id }),
+      ).unwrap();
+    } catch {
+      console.log("Ошибка при добавлении в корзину");
+    }
+  };
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
@@ -43,7 +56,7 @@ export default function OneClassicPage() {
   }, [dispatch, id]);
 
   const handleChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = event.target;
 
@@ -210,7 +223,7 @@ export default function OneClassicPage() {
           <button
             type="button"
             className="classic-card-button"
-            onClick={() => void addToCard({ classicServiceId: oneClassic.id })}
+            onClick={() => void handleAddToCard()}
           >
             В корзину
           </button>

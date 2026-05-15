@@ -2,13 +2,10 @@
 
 import "../page.css";
 import "@/entities/cremation/ui/CremationCard/CremationCard.css";
-import { type ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import {
-  useAddToCard,
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/hooks/useReduxHooks";
+import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
+import { createCardThunk } from "@/entities/card/api/CardApiThunk";
 import {
   getCremationByIdThunk,
   updateCremationThunk,
@@ -30,7 +27,6 @@ export default function CremationByIdPage() {
   const { id } = useParams<{ id: string }>();
   const { user } = useUser();
   const isAdmin = user?.id === 1;
-  const addToCard = useAddToCard();
   const { cremations, error, isLoading } = useAppSelector(
     (state) => state.cremation,
   );
@@ -43,8 +39,20 @@ export default function CremationByIdPage() {
     dispatch(getCremationByIdThunk(Number(id)));
   }, [dispatch, id]);
 
+  const handleAddToCard = async () => {
+    if (!user) {
+      router.push("/auth");
+      return;
+    }
+    try {
+      await dispatch(createCardThunk({ cremationId: Number(id) })).unwrap();
+    } catch {
+      console.log("Ошибка при добавлении в корзину");
+    }
+  };
+
   const handleChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = event.target;
 
@@ -201,7 +209,7 @@ export default function CremationByIdPage() {
           <button
             type="button"
             className="cremation-card-button"
-            onClick={() => void addToCard({ cremationId: Number(id) })}
+            onClick={() => void handleAddToCard()}
           >
             В корзину
           </button>

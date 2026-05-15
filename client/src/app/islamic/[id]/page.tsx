@@ -1,13 +1,10 @@
 "use client";
 
 import "../page.css";
-import { type ChangeEvent, type FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import {
-  useAddToCard,
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/hooks/useReduxHooks";
+import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
+import { createCardThunk } from "@/entities/card/api/CardApiThunk";
 import {
   fetchIslamicByIdThunk,
   updateIslamicThunk,
@@ -31,8 +28,22 @@ export default function OneIslamicPage() {
   const isAdmin = user?.id === 1;
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
-  const addToCard = useAddToCard();
   const [formData, setFormData] = useState(initialFormState);
+
+  const handleAddToCard = async () => {
+    if (!user) {
+      router.push("/auth");
+      return;
+    }
+    if (!oneIslamic) {
+      return;
+    }
+    try {
+      await dispatch(createCardThunk({ islamicId: oneIslamic.id })).unwrap();
+    } catch {
+      console.log("Ошибка при добавлении в корзину");
+    }
+  };
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
@@ -42,7 +53,7 @@ export default function OneIslamicPage() {
   }, [dispatch, id]);
 
   const handleChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = event.target;
 
@@ -83,7 +94,7 @@ export default function OneIslamicPage() {
     setIsEditing(false);
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!oneIslamic) {
@@ -211,17 +222,14 @@ export default function OneIslamicPage() {
             Назад
           </button>
           {isAdmin && (
-            <button
-              className="islamic-card-button"
-              onClick={handleStartEdit}
-            >
+            <button className="islamic-card-button" onClick={handleStartEdit}>
               Изменить
             </button>
           )}
           <button
             type="button"
             className="islamic-card-button"
-            onClick={() => void addToCard({ islamicId: oneIslamic.id })}
+            onClick={() => void handleAddToCard()}
           >
             В корзину
           </button>
