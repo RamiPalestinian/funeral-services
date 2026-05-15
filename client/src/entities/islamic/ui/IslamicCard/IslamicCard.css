@@ -10,15 +10,43 @@
   box-shadow: var(--shadow-md);
 }
 
-.islamic-card-date {
-  display: block;
+.islamic-card-added {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   margin: 0;
-  padding: 12px 18px 10px;
-  border-bottom: 1px solid rgba(214, 204, 189, 0.08);
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--line-soft);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(214, 199, 181, 0.06),
+      rgba(255, 255, 255, 0.02) 48%,
+      rgba(139, 159, 146, 0.05)
+    );
   color: var(--text-dim);
-  font-size: 11px;
-  line-height: 1.45;
-  letter-spacing: 0.03em;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.islamic-card-added-label {
+  flex-shrink: 0;
+  color: var(--accent-terracotta);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  opacity: 0.92;
+}
+
+.islamic-card-added time {
+  color: var(--accent-stone);
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  font-size: 13px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  text-align: right;
 }
 
 .islamic-card-media {
@@ -26,6 +54,7 @@
   overflow: hidden;
   display: grid;
   place-items: center;
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .islamic-card-image {
@@ -55,6 +84,7 @@
 }
 
 .islamic-card-title {
+  margin: 0;
   font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
   font-size: 1.28rem;
   font-weight: 400;
@@ -63,6 +93,7 @@
 }
 
 .islamic-card-description {
+  margin: 0;
   color: var(--text-muted);
   line-height: 1.74;
 }
@@ -110,27 +141,30 @@
 }
 
 .islamic-card-button-danger {
-  border-color: rgba(183, 70, 70, 0.34);
-  background: rgba(183, 70, 70, 0.14);
-  color: #ffd7d7;
+  border-color: rgba(179, 110, 98, 0.28);
+  background:
+    linear-gradient(135deg, rgba(122, 72, 64, 0.96), rgba(84, 44, 39, 0.96));
+  color: #f5eae3;
+}
+
+.islamic-card-button-danger:hover {
+  border-color: rgba(206, 141, 128, 0.46);
+  background:
+    linear-gradient(135deg, rgba(137, 80, 71, 0.98), rgba(98, 48, 43, 0.98));
 }
 
 @media (max-width: 640px) {
   .islamic-card {
-    grid-template-rows: auto 210px 1fr;
-    border-radius: 22px;
+    grid-template-rows: auto 160px 1fr;
   }
 
-  .islamic-card-date {
-    padding: 10px 14px 8px;
-    font-size: 10px;
+  .islamic-card-added {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
   }
 
-  .islamic-card-body {
-    padding: 16px;
-  }
-
-  .islamic-card-actions {
-    display: grid;
+  .islamic-card-added time {
+    text-align: left;
   }
 }

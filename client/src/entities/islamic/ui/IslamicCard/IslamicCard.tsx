@@ -5,7 +5,7 @@ import { deleteIslamicThunk } from "@/entities/islamic/api/IslamicApiThunk";
 import type { IslamicType } from "@/entities/islamic/model";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { useRouter } from "next/navigation";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback } from "react";
 
 type IslamicCardProps = {
   islamic: IslamicType | null;
@@ -23,19 +23,26 @@ function IslamicCard({ islamic, onAddToCard }: IslamicCardProps) {
   }
   const formattedPrice = new Intl.NumberFormat("ru-RU").format(islamic.price);
 
-  const formatDate = useMemo(() => {
-    if (!islamic) return "Дата не указана";
-    if (!islamic.createdAt) return "Дата не указана";
-    return new Date(islamic.createdAt).toLocaleString("ru-RU");
-  }, [islamic]);
-
   const handleDelete = useCallback(() => {
     void dispatch(deleteIslamicThunk(islamic.id));
   }, [dispatch, islamic.id]);
 
   return (
     <article className="islamic-card">
-      <small className="islamic-card-date">Добавлено: {formatDate}</small>
+      {islamic.createdAt ? (
+        <p className="islamic-card-added">
+          <span className="islamic-card-added-label">Добавлено</span>
+          <time dateTime={islamic.createdAt}>
+            {new Date(islamic.createdAt).toLocaleString("ru-RU", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </time>
+        </p>
+      ) : null}
       <div className="islamic-card-media">
         <img
           className="islamic-card-image"

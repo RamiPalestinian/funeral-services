@@ -5,7 +5,6 @@ import { deleteClassicThunk } from "@/entities/classic/api/ClassicApiThunk";
 import type { ClassicType } from "@/entities/classic/model";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { useRouter } from "next/navigation";
-import { useMemo } from "react";
 import Image from "next/image";
 
 type ClassicCardProps = {
@@ -19,17 +18,6 @@ function ClassicCard({ classic, onAddToCard }: ClassicCardProps) {
   const user = useAppSelector((state) => state.user.user);
   const isAdmin = user?.id === 1;
 
-  // const calculateDate = useMemo(() => {
-  //    if (!classic?.createdAt) return "Дата не указана";
-  //   return new Date(classic.createdAt).toLocaleString("ru-RU");
-  // }, [classic.createdAt])
-
-  const calculateDate = useMemo(() => {
-  if (!classic) return "Дата не указана";
-  if (!classic.createdAt) return "Дата не указана";
-  return new Date(classic.createdAt).toLocaleString("ru-RU");
-}, [classic]);
-
   if (!classic) {
     return null; // или можно отобразить заглушку, если данных нет
   }
@@ -38,7 +26,20 @@ function ClassicCard({ classic, onAddToCard }: ClassicCardProps) {
 
   return (
     <article className="classic-card">
-      <small className="classic-card-date">Добавлено: {calculateDate}</small>
+      {classic.createdAt ? (
+        <p className="classic-card-added">
+          <span className="classic-card-added-label">Добавлено</span>
+          <time dateTime={classic.createdAt}>
+            {new Date(classic.createdAt).toLocaleString("ru-RU", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </time>
+        </p>
+      ) : null}
       <div className="classic-card-media">
         <Image
           className="classic-card-image"
