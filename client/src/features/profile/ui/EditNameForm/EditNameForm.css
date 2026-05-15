@@ -1,6 +1,8 @@
 .personal-edit-card {
   min-width: 0;
+  height: 100%;
   display: grid;
+  grid-template-rows: auto 1fr;
   gap: 14px;
   padding: 20px;
   border-radius: 22px;
@@ -16,8 +18,10 @@
 }
 
 .personal-edit-form {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 12px;
+  min-height: 100%;
 }
 
 .personal-form-error,
@@ -35,8 +39,13 @@
   color: #a8d4b0;
 }
 
-.personal-form-button {
-  min-height: 48px;
+.personal-edit-form .personal-form-button {
+  width: 100%;
+  height: 52px;
+  min-height: 52px;
+  margin-top: auto;
+  flex-shrink: 0;
+  box-sizing: border-box;
   border: 1px solid rgba(214, 204, 189, 0.12);
   border-radius: 999px;
   background:
@@ -53,12 +62,12 @@
     opacity 0.25s ease;
 }
 
-.personal-form-button:hover:not(:disabled) {
+.personal-edit-form .personal-form-button:hover:not(:disabled) {
   transform: translateY(-1px);
   box-shadow: 0 14px 24px rgba(10, 12, 14, 0.2);
 }
 
-.personal-form-button:disabled {
+.personal-edit-form .personal-form-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }

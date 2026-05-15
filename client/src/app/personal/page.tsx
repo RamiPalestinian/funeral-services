@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@/application/UserProvider";
 import { useAppSelector } from "@/shared/hooks/useReduxHooks";
 import EditNameForm from "@/features/profile/ui/EditNameForm/EditNameForm";
+import EditEmailForm from "@/features/profile/ui/EditEmailForm/EditEmailForm";
+import ProfileAvatarEditor from "@/features/profile/ui/ProfileAvatarEditor/ProfileAvatarEditor";
 import ChangePasswordForm from "@/features/profile/ui/ChangePasswordForm/ChangePasswordForm";
 
 export default function Personal() {
@@ -41,7 +43,7 @@ export default function Personal() {
         <p className="personal-eyebrow">Личный кабинет</p>
         <h1>Личный кабинет</h1>
         <div className="personal-profile-card">
-          <div className="personal-avatar">{user.name?.[0] ?? "?"}</div>
+          <ProfileAvatarEditor user={user} setUser={setUser} />
           <div>
             <h2>Добро пожаловать, {user.name}!</h2>
             <p>Ваш email: {user.email}</p>
@@ -87,6 +89,7 @@ export default function Personal() {
         </div>
         <div className="personal-edit-grid">
           <EditNameForm user={user} setUser={setUser} />
+          <EditEmailForm user={user} setUser={setUser} />
           <ChangePasswordForm />
         </div>
       </section>

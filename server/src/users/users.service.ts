@@ -1,8 +1,10 @@
 import {
+  ConflictException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import * as bcrypt from 'bcrypt';
 import { User } from './user.model';
@@ -40,46 +42,59 @@ export class UsersService {
       id: user.id,
       name: user.name,
       email: user.email,
+      avatar: user.avatar,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     };
   }
 
-  async updateProfile(id: number, name: string) {
+  async updateProfile(id: number, dto: UpdateUserDto) {
     const user = await this.findUserById(id);
-
     if (!user) {
       throw new NotFoundException('Пользователь не найден');
     }
-
-    await user.update({ name: name.trim() });
-
+    const patch: Partial<{
+      name: string;
+      avatar: string | null;
+      email: string;
+    }> = {};
+    if (dto.name !== undefined) {
+      patch.name = dto.name.trim();
+    }
+    if (dto.email !== undefined) {
+      const email = dto.email.toLowerCase().trim();
+      const busy = await this.findByEmail(email);
+      if (busy && busy.id !== id) {
+        throw new ConflictException('Этот email уже используется');
+      }
+      patch.email = email;
+    }
+    if (dto.avatar !== undefined) {
+      patch.avatar = dto.avatar.trim();
+    }
+    if (Object.keys(patch).length > 0) {
+      await user.update(patch);
+    }
     return { user: this.toSafeUser(user) };
   }
-
   async changePassword(
     id: number,
     currentPassword: string,
     newPassword: string,
   ) {
     const user = await this.findUserById(id);
-
     if (!user) {
       throw new NotFoundException('Пользователь не найден');
     }
-
     const isPasswordValid = await bcrypt.compare(
       currentPassword,
       user.password,
     );
-
     if (!isPasswordValid) {
       throw new UnauthorizedException('Неверный текущий пароль');
     }
-
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     await user.update({ password: hashedPassword });
-
     return { message: 'Пароль успешно изменён' };
   }
 }

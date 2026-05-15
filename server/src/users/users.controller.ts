@@ -25,7 +25,7 @@ export class UsersController {
     @Body() dto: UpdateUserDto,
     @Req() req: Request & { user: JwtRequestUser },
   ) {
-    return this.usersService.updateProfile(req.user.userId, dto.name);
+    return this.usersService.updateProfile(req.user.userId, dto);
   }
 
   @Patch('me/password')
