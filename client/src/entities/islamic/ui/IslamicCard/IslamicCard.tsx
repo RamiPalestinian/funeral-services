@@ -5,13 +5,14 @@ import { deleteIslamicThunk } from "@/entities/islamic/api/IslamicApiThunk";
 import type { IslamicType } from "@/entities/islamic/model";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { useRouter } from "next/navigation";
+import React, { useCallback, useMemo } from "react";
 
 type IslamicCardProps = {
   islamic: IslamicType | null;
   onAddToCard: () => void;
 };
 
-export default function IslamicCard({ islamic, onAddToCard }: IslamicCardProps) {
+function IslamicCard({ islamic, onAddToCard }: IslamicCardProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.user);
@@ -22,12 +23,19 @@ export default function IslamicCard({ islamic, onAddToCard }: IslamicCardProps) 
   }
   const formattedPrice = new Intl.NumberFormat("ru-RU").format(islamic.price);
 
-  const handleDelete = () => {
+  const formatDate = useMemo(() => {
+    if (!islamic) return "Дата не указана";
+    if (!islamic.createdAt) return "Дата не указана";
+    return new Date(islamic.createdAt).toLocaleString("ru-RU");
+  }, [islamic]);
+
+  const handleDelete = useCallback(() => {
     void dispatch(deleteIslamicThunk(islamic.id));
-  };
+  }, [dispatch, islamic.id]);
 
   return (
     <article className="islamic-card">
+      <small className="islamic-card-date">Добавлено: {formatDate}</small>
       <div className="islamic-card-media">
         <img
           className="islamic-card-image"
@@ -75,3 +83,4 @@ export default function IslamicCard({ islamic, onAddToCard }: IslamicCardProps) 
     </article>
   );
 }   
+export default React.memo(IslamicCard);

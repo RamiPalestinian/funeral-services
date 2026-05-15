@@ -8,7 +8,9 @@ import {
   createIslamicThunk,
   fetchIslamicThunk,
 } from "@/entities/islamic/api/IslamicApiThunk";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";  
+import { useUser } from "@/application/UserProvider";
 
 const initialFormState = {
   name: "",
@@ -22,9 +24,11 @@ const initialFormState = {
 export default function Islamic() {
   const router = useRouter();
 
+
   const dispatch = useAppDispatch();
   const { error, islamics } = useAppSelector((state) => state.islamic);
-  const user = useAppSelector((state) => state.user.user);
+  const { isInitialized } = useAppSelector((state) => state.user);
+  const { user } = useUser();
   const isAdmin = user?.id === 1;
   const [formData, setFormData] = useState(initialFormState);
   const [searchQuery, setSearchQuery] = useState("");
@@ -34,10 +38,17 @@ export default function Islamic() {
   );
 
   useEffect(() => {
+    if (!isInitialized) return;
+    if (!user) {
+      router.replace(CLIENT_ROUTES.AUTH);
+    }
+  }, [isInitialized, user, router]);
+
+  useEffect(() => {
     dispatch(fetchIslamicThunk());
   }, [dispatch]);
 
-  const handleAddToCard = async (islamicId: number) => {
+  const handleAddToCard = useCallback(async (islamicId: number) => {
     if (!user) {
       router.push("/auth");
       return;
@@ -47,9 +58,9 @@ export default function Islamic() {
     } catch {
       console.log("Ошибка при добавлении в корзину");
     }
-  };
+  }, [user, router, dispatch]);
 
-  const handleChange = (
+  const handleChange = useCallback((
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = event.target;
@@ -58,9 +69,9 @@ export default function Islamic() {
       ...prev,
       [name]: value,
     }));
-  };
+  }, []);
 
-  const handleSubmit = async (event: React.ChangeEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback(async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!user) {
@@ -79,8 +90,7 @@ export default function Islamic() {
     } catch {
       // Ошибка уже записывается в islamic slice.
     }
-  };
-
+  }, [user, dispatch, formData]);
   return (
     <section className="islamic-page">
       <div className="islamic-hero">
