@@ -150,11 +150,12 @@ export default function CremationByIdPage() {
               required
             />
             <input
+              className="cremation-form-input-wide"
               name="image"
               type="url"
               value={formData.image}
               onChange={handleChange}
-              placeholder="Ссылка на изображение"
+              placeholder="Добавить фото"
               required
             />
             <textarea

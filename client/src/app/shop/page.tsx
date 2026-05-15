@@ -104,10 +104,10 @@ export default function ShopPage() {
               required
             />
             <input
-              className="shop-form-input"
+              className="shop-form-input shop-form-input-wide"
               name="image"
               type="url"
-              placeholder="Ссылка на изображение"
+              placeholder="Добавить фото"
               required
             />
             <textarea

@@ -35,7 +35,9 @@ export default function Classic() {
     dispatch(fetchClassicThunk());
   }, [dispatch]);
 
-  const handleNewClassic = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNewClassic = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = event.target;
     setFormError("");
 
@@ -113,10 +115,10 @@ export default function Classic() {
               className="classic-form-input"
               type="text"
               onChange={handleNewClassic}
-              name="description"
-              value={newClassic.description}
-              placeholder="Описание"
-              minLength={10}
+              name="category"
+              value={newClassic.category}
+              placeholder="Категория"
+              minLength={3}
               required
             />
             <input
@@ -130,25 +132,23 @@ export default function Classic() {
               required
             />
             <input
-              className="classic-form-input"
-              type="text"
+              className="classic-form-input classic-form-input-wide"
+              type="url"
               onChange={handleNewClassic}
               name="image"
               value={newClassic.image}
-              placeholder="Ссылка на изображение"
+              placeholder="Добавить фото"
               required
             />
-            <input
-              className="classic-form-input"
-              type="text"
+            <textarea
+              className="classic-form-input classic-form-textarea"
               onChange={handleNewClassic}
-              name="category"
-              value={newClassic.category}
-              placeholder="Категория"
-              minLength={3}
+              name="description"
+              value={newClassic.description}
+              placeholder="Описание"
+              minLength={10}
               required
             />
-
             <button className="classic-form-button" type="submit">
               Создать
             </button>

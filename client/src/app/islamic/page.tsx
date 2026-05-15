@@ -7,7 +7,7 @@ import {
   createIslamicThunk,
   fetchIslamicThunk,
 } from "@/entities/islamic/api/IslamicApiThunk";
-import { type ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const initialFormState = {
   name: "",
@@ -128,9 +128,10 @@ export default function Islamic() {
             required
           />
           <input
+            className="islamic-form-input-wide"
             name="image"
             type="url"
-            placeholder="Ссылка на изображение"
+            placeholder="Добавить фото"
             value={formData.image}
             onChange={handleChange}
             required

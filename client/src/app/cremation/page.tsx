@@ -105,10 +105,10 @@ export default function CremationPage() {
               required
             />
             <input
-              className="cremation-form-input"
+              className="cremation-form-input cremation-form-input-wide"
               name="image"
               type="url"
-              placeholder="Ссылка на изображение"
+              placeholder="Добавить фото"
               required
             />
             <textarea

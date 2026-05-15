@@ -151,11 +151,12 @@ export default function ShopByIdPage() {
               required
             />
             <input
+              className="shop-form-input-wide"
               name="image"
               type="url"
               value={formData.image}
               onChange={handleChange}
-              placeholder="Ссылка на изображение"
+              placeholder="Добавить фото"
               required
             />
             <textarea
