@@ -1,0 +1,109 @@
+.mentors-page {
+  padding-bottom: 32px;
+}
+
+.mentors-hero-grid {
+  align-items: center;
+}
+
+.mentors-hero-mark {
+  display: grid;
+  place-items: center;
+  min-height: 200px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 1px rgba(214, 204, 189, 0.1);
+}
+
+.mentors-hero-symbol {
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  font-size: clamp(3rem, 8vw, 5rem);
+  color: var(--accent-stone);
+  opacity: 0.85;
+  line-height: 1;
+}
+
+.mentors-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.mentor-card {
+  padding: 28px 26px;
+  border-radius: 28px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+    var(--bg-panel);
+  box-shadow: var(--shadow-xl);
+}
+
+.mentor-card--yura {
+  border-top: 3px solid rgba(125, 151, 168, 0.55);
+}
+
+.mentor-card--taras {
+  border-top: 3px solid rgba(185, 138, 113, 0.65);
+}
+
+.mentor-card-eyebrow {
+  margin: 0 0 10px;
+  color: var(--accent-terracotta);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.mentor-card-name {
+  margin: 0 0 16px;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 400;
+  line-height: 1.05;
+  color: var(--accent-stone);
+}
+
+.mentor-card-text {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.82;
+  font-size: 15px;
+}
+
+.mentors-quote {
+  margin: 0;
+  padding: 24px 28px;
+  border-radius: 28px;
+  border-left: 3px solid var(--accent-terracotta);
+  background:
+    radial-gradient(circle at right, rgba(179, 110, 98, 0.1), transparent 40%),
+    var(--bg-panel);
+  box-shadow: var(--shadow-md);
+}
+
+.mentors-quote p {
+  margin: 0;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  line-height: 1.6;
+  color: var(--accent-stone);
+}
+
+.mentors-quote footer {
+  display: block;
+  margin-top: 14px;
+  color: var(--text-dim);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.mentors-back {
+  margin-top: 8px;
+}
+
+@media (max-width: 768px) {
+  .mentors-grid {
+    grid-template-columns: 1fr;
+  }
+}
