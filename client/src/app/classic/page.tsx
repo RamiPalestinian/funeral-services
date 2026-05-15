@@ -48,7 +48,7 @@ export default function Classic() {
     }
   };
 
-  const handleNewClassic = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNewClassic = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
     setFormError("");
 
