@@ -7,6 +7,7 @@ import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { deleteCremationThunk } from "../../api/CremationApiThunk";
 import { useUser } from "@/application/UserProvider";
 import { CardDateMeta } from "@/shared/ui/CardDateMeta/CardDateMeta";
+import { formatPriceRUB } from "@/shared/lib/formatPriceRUB";
 import React from "react";
 
 type CremationCardProps = {
@@ -40,7 +41,9 @@ function CremationCard({ cremation, onAddToCard }: CremationCardProps) {
         <h2 className="cremation-card-title">{cremation.name}</h2>
         <p className="cremation-card-description">{cremation.description}</p>
         <div className="cremation-card-meta">
-          <span className="cremation-card-price">{cremation.price} ₽</span>
+          <span className="cremation-card-price">
+            {formatPriceRUB(cremation.price)} ₽
+          </span>
           {/* {cremation.status && (
             <span className="cremation-card-status">{cremation.status}</span>
           )} */}
