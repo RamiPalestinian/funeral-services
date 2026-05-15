@@ -3,10 +3,11 @@
 import "./CardCard.css";
 import type { CardType } from "../../model";
 import { deleteCardThunk } from "../../api/CardApiThunk";
-import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
+import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { useRouter } from "next/navigation";
+import { UserType } from "@/entities/user/model";
 
-type Props = { card: CardType };
+type Props = { card: CardType; user: UserType };
 
 function lineItem(c: CardType) {
   return c.service ?? c.cremation ?? c.islamic ?? c.classicService;
@@ -27,16 +28,29 @@ function formatRUB(value: unknown): string {
     : "—";
 }
 
-export default function CardCard({ card }: Props) {
+export default function CardCard({ card, user }: Props) {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const user = useAppSelector((state) => state.user.user);
   const item = lineItem(card);
   const canRemove =
     user != null && card.userId != null && card.userId === user.id;
 
   return (
     <article className="card-line">
+      {card.createdAt ? (
+        <p className="card-line-added">
+          <span className="card-line-added-label">Добавлено</span>
+          <time dateTime={card.createdAt}>
+            {new Date(card.createdAt).toLocaleString("ru-RU", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </time>
+        </p>
+      ) : null}
       <div className="card-line-media">
         {item?.image ? (
           <img

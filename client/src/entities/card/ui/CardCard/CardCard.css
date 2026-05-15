@@ -1,13 +1,52 @@
 .card-line {
   min-width: 0;
   display: grid;
-  grid-template-rows: 190px 1fr;
+  grid-template-rows: auto 190px 1fr;
   border-radius: 28px;
   overflow: hidden;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01)),
     var(--bg-panel);
   box-shadow: var(--shadow-md);
+}
+
+.card-line-added {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--line-soft);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(214, 199, 181, 0.06),
+      rgba(255, 255, 255, 0.02) 48%,
+      rgba(139, 159, 146, 0.05)
+    );
+  color: var(--text-dim);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.card-line-added-label {
+  flex-shrink: 0;
+  color: var(--accent-terracotta);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  opacity: 0.92;
+}
+
+.card-line-added time {
+  color: var(--accent-stone);
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  font-size: 13px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  text-align: right;
 }
 
 .card-line-media {
@@ -126,6 +165,16 @@
 
 @media (max-width: 640px) {
   .card-line {
-    grid-template-rows: 160px 1fr;
+    grid-template-rows: auto 160px 1fr;
+  }
+
+  .card-line-added {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .card-line-added time {
+    text-align: left;
   }
 }

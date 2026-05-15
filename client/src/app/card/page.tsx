@@ -118,7 +118,9 @@ export default function CardPage() {
       <div className="shop-grid">
         {showCartContent &&
           !isLoading &&
-          filteredCards.map((card) => <CardCard key={card.id} card={card} />)}
+          filteredCards.map((card) => (
+            <CardCard key={card.id} card={card} user={user} />
+          ))}
       </div>
 
       {showCartContent && !isLoading && cards.length > 0 ? (
@@ -144,9 +146,9 @@ export default function CardPage() {
             <button
               type="button"
               className="cart-checkout-btn"
-              onClick={() => router.push("/taras")}
+              onClick={() => router.push("/tarasAndYra")}
             >
-              Оформить заказ
+              оформить заказ
             </button>
             <button
               type="button"
