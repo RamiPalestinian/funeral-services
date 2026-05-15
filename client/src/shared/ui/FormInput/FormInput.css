@@ -1,18 +1,22 @@
-.group {
+.auth-form-input-group {
   position: relative;
   width: 100%;
   min-width: 0;
 }
 
-.group .form-input {
+.auth-form-input-group .auth-form-input {
   width: 100%;
   min-height: 62px;
   padding: 30px 0 12px;
+  appearance: none;
+  -webkit-appearance: none;
   border: none;
   border-bottom: 1px solid rgba(214, 204, 189, 0.18);
   border-radius: 0;
   background: transparent;
   color: var(--text-main);
+  font: inherit;
+  letter-spacing: normal;
   outline: none;
   box-shadow: none;
   transition:
@@ -20,12 +24,12 @@
     transform 0.3s ease;
 }
 
-.group .form-input:focus {
+.auth-form-input-group .auth-form-input:focus {
   border-color: rgba(125, 151, 168, 0.94);
   transform: translateX(2px);
 }
 
-.group .form-input-label {
+.auth-form-input-group .auth-form-input-label {
   position: absolute;
   left: 0;
   top: 24px;
@@ -39,16 +43,14 @@
     letter-spacing 0.22s ease;
 }
 
-.group .form-input:focus ~ .form-input-label,
-.group .form-input:not(:placeholder-shown) ~ .form-input-label,
-.group .form-input-label.shrink {
+.auth-form-input-group .auth-form-input:focus ~ .auth-form-input-label,
+.auth-form-input-group
+  .auth-form-input:not(:placeholder-shown)
+  ~ .auth-form-input-label,
+.auth-form-input-group .auth-form-input-label.shrink {
   top: 4px;
   font-size: 11px;
   color: var(--accent-blue);
   letter-spacing: 0.18em;
   text-transform: uppercase;
-}
-
-.group input[type='password'] {
-  letter-spacing: 0.12em;
 }
