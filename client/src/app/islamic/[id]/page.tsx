@@ -9,6 +9,9 @@ import {
   fetchIslamicByIdThunk,
   updateIslamicThunk,
 } from "@/entities/islamic/api/IslamicApiThunk";
+import { useCallback } from "react";
+import { useUser } from "@/application/UserProvider";
+import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 
 const initialFormState = {
   name: "",
@@ -20,17 +23,24 @@ const initialFormState = {
 };
 
 export default function OneIslamicPage() {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const { error, isLoading, oneIslamic } = useAppSelector(
     (state) => state.islamic,
   );
-  const user = useAppSelector((state) => state.user.user);
+  const { isInitialized } = useAppSelector((state) => state.user);
+  const { user } = useUser();
+  useEffect(() => {
+    if (!isInitialized) return;
+    if (!user) {
+      router.replace(CLIENT_ROUTES.AUTH);
+    }
+  }, [isInitialized, user, router]);
   const isAdmin = user?.id === 1;
-  const { id } = useParams<{ id: string }>();
-  const router = useRouter();
+  const { id } = useParams<{ id: string }>(); 
   const [formData, setFormData] = useState(initialFormState);
 
-  const handleAddToCard = async () => {
+  const handleAddToCard = useCallback(async () => {
     if (!user) {
       router.push("/auth");
       return;
@@ -43,7 +53,7 @@ export default function OneIslamicPage() {
     } catch {
       console.log("Ошибка при добавлении в корзину");
     }
-  };
+  }, [user, router, dispatch, oneIslamic]); 
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
@@ -52,7 +62,7 @@ export default function OneIslamicPage() {
     }
   }, [dispatch, id]);
 
-  const handleChange = (
+  const handleChange = useCallback((
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = event.target;
@@ -61,9 +71,9 @@ export default function OneIslamicPage() {
       ...prev,
       [name]: value,
     }));
-  };
+  }, []);
 
-  const handleStartEdit = () => {
+  const handleStartEdit = useCallback(() => {
     if (!oneIslamic) {
       return;
     }
@@ -77,9 +87,9 @@ export default function OneIslamicPage() {
       status: oneIslamic.status ?? "",
     });
     setIsEditing(true);
-  };
+  }, [oneIslamic]);
 
-  const handleCancelEdit = () => {
+  const handleCancelEdit = useCallback(() => {
     if (oneIslamic) {
       setFormData({
         name: oneIslamic.name,
@@ -92,9 +102,9 @@ export default function OneIslamicPage() {
     }
 
     setIsEditing(false);
-  };
+  }, [oneIslamic]);
 
-  const handleSubmit = async (event: React.ChangeEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback(async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!oneIslamic) {
@@ -115,7 +125,7 @@ export default function OneIslamicPage() {
     } catch {
       // Ошибка уже записывается в islamic slice.
     }
-  };
+  }, [dispatch, oneIslamic, formData]);
 
   if (!oneIslamic) return null;
 
@@ -162,15 +172,6 @@ export default function OneIslamicPage() {
               minLength={3}
               required
             />
-            {/* <input
-              name="status"
-              type="text"
-              placeholder="Статус"
-              value={formData.status}
-              onChange={handleChange}
-              minLength={3}
-              required
-            /> */}
             <input
               name="price"
               type="number"
