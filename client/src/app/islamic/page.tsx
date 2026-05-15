@@ -141,9 +141,10 @@ export default function Islamic() {
             required
           />
           <input
+            className="islamic-form-input-wide"
             name="image"
             type="url"
-            placeholder="Ссылка на изображение"
+            placeholder="Добавить фото"
             value={formData.image}
             onChange={handleChange}
             required

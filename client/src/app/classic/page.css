@@ -177,6 +177,16 @@
   color: var(--text-muted);
 }
 
+.classic-form-input-wide,
+.classic-form-textarea {
+  grid-column: 1 / -1;
+}
+
+.classic-form-textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
 .classic-form-button {
   min-height: 46px;
   width: fit-content;

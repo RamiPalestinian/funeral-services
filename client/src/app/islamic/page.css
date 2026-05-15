@@ -180,6 +180,10 @@
   resize: vertical;
 }
 
+.islamic-form-input-wide {
+  grid-column: 1 / -1;
+}
+
 .islamic-create-form button {
   min-height: 46px;
   width: fit-content;
