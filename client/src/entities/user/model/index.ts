@@ -1,10 +1,11 @@
 export type UserType = {
-    id: number;
-    name: string;
-    email: string;
-    createdAt?: string;
-    updatedAt?: string;
-}
+  id: number;
+  name: string;
+  email: string;
+  avatar?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+};
 
 export type UserWithTokenType = {
   user: UserType;
@@ -12,33 +13,35 @@ export type UserWithTokenType = {
 };
 
 export type UserLoginData = {
-    email: string;
-    password: string;
-}
+  email: string;
+  password: string;
+};
 
 export type UserRegisterData = UserLoginData & {
-    name: string;
-}
+  name: string;
+};
 
 export type UpdateUserData = {
-    name: string;
-}
+  name?: string;
+  email?: string;
+  avatar?: string;
+};
 
 export type ChangePasswordData = {
-    currentPassword: string;
-    newPassword: string;
-}
+  currentPassword: string;
+  newPassword: string;
+};
 
-export type UserStateType ={
-    user: UserType | null;
-    isLoading : boolean;
-    error: string | null;
-    isInitialized: boolean;
-}
+export type UserStateType = {
+  user: UserType | null;
+  isLoading: boolean;
+  error: string | null;
+  isInitialized: boolean;
+};
 
 export const initialUserState: UserStateType = {
-    user: null,
-    isLoading: false,
-    error: null,
-    isInitialized: false,
+  user: null,
+  isLoading: false,
+  error: null,
+  isInitialized: false,
 };

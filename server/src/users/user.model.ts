@@ -51,6 +51,12 @@ export class User extends Model {
   })
   declare password: string;
 
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  declare avatar: string | null;
+
   @CreatedAt
   declare createdAt: Date;
 

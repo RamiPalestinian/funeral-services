@@ -4,9 +4,11 @@ import ClassicCard from "@/entities/classic/ui/ClassicCard/ClassicCard";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { createCardThunk } from "@/entities/card/api/CardApiThunk";
-import { fetchClassicThunk } from "@/entities/classic/api/ClassicApiThunk";
-import { useCallback, useEffect, useState } from "react";
-import { createClassicThunk } from "@/entities/classic/api/ClassicApiThunk";
+import {
+  createClassicThunk,
+  fetchClassicThunk,
+} from "@/entities/classic/api/ClassicApiThunk";
+import { useEffect, useState } from "react";
 
 export default function Classic() {
   const router = useRouter();
@@ -19,7 +21,7 @@ export default function Classic() {
   const [newClassic, setNewClassic] = useState({
     name: "",
     description: "",
-    price: 0,
+    price: "",
     image: "",
     category: "",
     status: "active",
@@ -48,13 +50,15 @@ export default function Classic() {
   }
 }, [user, router, dispatch]);
 
-   const handleNewClassic = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleNewClassic = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = event.target;
     setFormError("");
 
     setNewClassic((prev) => ({
       ...prev,
-      [name]: name === "price" ? Number(value) : value,
+      [name]: value,
     }));
   };
 
@@ -65,13 +69,14 @@ export default function Classic() {
       await dispatch(
         createClassicThunk({
           ...newClassic,
+          price: Number(newClassic.price),
           userId: user?.id ?? 1,
         }),
       ).unwrap();
       setNewClassic({
         name: "",
         description: "",
-        price: 0,
+        price: "",
         image: "",
         category: "",
         status: "active",
