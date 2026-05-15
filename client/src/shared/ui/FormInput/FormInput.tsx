@@ -1,6 +1,6 @@
 import './FormInput.css';
 import type { InputHTMLAttributes } from 'react';
-
+import {useId} from 'react';
 //  Расширяем стандартные пропсы input
 type FormInputProps = {
   label?: string;
@@ -14,11 +14,12 @@ const FormInput = ({ label, ...otherProps } : FormInputProps) => {
       ? 'shrink auth-form-input-label'
       : 'auth-form-input-label';
 
+      const id = useId();
   return (
     <div className="auth-form-input-group">
-      <input className="auth-form-input" {...otherProps} autoComplete="off" />
+      <input className="auth-form-input" {...otherProps} autoComplete="off" id={id} />
       {label && (
-        <label className={inputLabelClassName} htmlFor="displayName">
+        <label className={inputLabelClassName} htmlFor={id}>
           {label}
         </label>
       )}
