@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { createCardThunk } from "@/entities/card/api/CardApiThunk";
 import { fetchClassicThunk } from "@/entities/classic/api/ClassicApiThunk";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { createClassicThunk } from "@/entities/classic/api/ClassicApiThunk";
 
 export default function Classic() {
@@ -36,17 +36,17 @@ export default function Classic() {
     dispatch(fetchClassicThunk());
   }, [dispatch]);
 
-  const handleAddToCard = async (classicServiceId: number) => {
-    if (!user) {
-      router.push("/auth");
-      return;
-    }
-    try {
-      await dispatch(createCardThunk({ classicServiceId })).unwrap();
-    } catch {
-      console.log("Ошибка при добавлении в корзину");
-    }
-  };
+  const handleAddToCard = useCallback(async (classicServiceId: number) => {
+  if (!user) {
+    router.push("/auth");
+    return;
+  }
+  try {
+    await dispatch(createCardThunk({ classicServiceId })).unwrap();
+  } catch {
+    console.log("Ошибка при добавлении в корзину");
+  }
+}, [user, router, dispatch]);
 
    const handleNewClassic = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
@@ -186,7 +186,7 @@ export default function Classic() {
           <ClassicCard
             key={classic.id}
             classic={classic}
-            onAddToCard={() => void handleAddToCard(classic.id)}
+            onAddToCard={handleAddToCard}
           />
         ))}
       </div>
