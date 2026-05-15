@@ -6,7 +6,7 @@ import CardCard from "@/entities/card/ui/CardCard/CardCard";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { getAllCardsThunk } from "@/entities/card/api/CardApiThunk";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import type { CardType } from "@/entities/card/model";
 
 function lineItem(c: CardType) {
@@ -40,11 +40,14 @@ export default function CardPage() {
     void dispatch(getAllCardsThunk());
   }, [dispatch, isInitialized, user, router]);
 
-  const filteredCards = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase();
-    if (!q) return cards;
-    return cards.filter((card) => cardSearchText(card).includes(q));
-  }, [cards, searchQuery]);
+  const filteredCards = cards.filter((card) =>
+    cardSearchText(card).includes(searchQuery.trim().toLowerCase()),
+  );
+
+  const totalPrice = cards.reduce((acc, card) => {
+    const item = lineItem(card);
+    return acc + Number(item?.price ?? 0);
+  }, 0);
 
   const showCartContent = isInitialized && user;
 
@@ -118,13 +121,51 @@ export default function CardPage() {
           filteredCards.map((card) => <CardCard key={card.id} card={card} />)}
       </div>
 
-      <button
-        type="button"
-        className="shop-back-link"
-        onClick={() => router.push("/home")}
-      >
-        Назад на главную
-      </button>
+      {showCartContent && !isLoading && cards.length > 0 ? (
+        <div className="cart-footer">
+          <div className="cart-total">
+            <div className="cart-total-copy">
+              <span className="cart-total-label">Итого к оплате</span>
+              <span className="cart-total-count">
+                {cards.length}{" "}
+                {cards.length === 1
+                  ? "позиция"
+                  : cards.length < 5
+                    ? "позиции"
+                    : "позиций"}
+              </span>
+            </div>
+            <span className="cart-total-price">
+              {new Intl.NumberFormat("ru-RU").format(totalPrice)} ₽
+            </span>
+          </div>
+
+          <div className="cart-actions">
+            <button
+              type="button"
+              className="cart-checkout-btn"
+              onClick={() => router.push("/taras")}
+            >
+              Оформить заказ
+            </button>
+            <button
+              type="button"
+              className="shop-back-link cart-back-link"
+              onClick={() => router.push("/home")}
+            >
+              Назад на главную
+            </button>
+          </div>
+        </div>
+      ) : (
+        <button
+          type="button"
+          className="shop-back-link cart-back-link"
+          onClick={() => router.push("/home")}
+        >
+          Назад на главную
+        </button>
+      )}
     </section>
   );
 }
