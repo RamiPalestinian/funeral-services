@@ -14,7 +14,10 @@ export default function Classic() {
   const { classics, error: classicError } = useAppSelector(
     (state) => state.classic,
   );
-  const user = useAppSelector((state) => state.user.user);
+  //вытаскиваем юзера и инициализацию
+  const { user, isInitialized } = useAppSelector((state) => state.user);
+
+
   const isAdmin = user?.id === 1;
   const [newClassic, setNewClassic] = useState({
     name: "",
@@ -35,20 +38,36 @@ export default function Classic() {
   useEffect(() => {
     dispatch(fetchClassicThunk());
   }, [dispatch]);
+    //защита сраницы
+  useEffect(() => {
+    if (isInitialized && !user) {
+      router.replace("/auth");
+    }
+  }, [isInitialized, user]);
 
-  const handleAddToCard = useCallback(async (classicServiceId: number) => {
-  if (!user) {
-    router.push("/auth");
-    return;
+  if (isInitialized && !user) {
+    return null;
   }
-  try {
-    await dispatch(createCardThunk({ classicServiceId })).unwrap();
-  } catch {
-    console.log("Ошибка при добавлении в корзину");
-  }
-}, [user, router, dispatch]);
 
-   const handleNewClassic = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+
+  const handleAddToCard = useCallback(
+    async (classicServiceId: number) => {
+      if (!user) {
+        router.push("/auth");
+        return;
+      }
+      try {
+        await dispatch(createCardThunk({ classicServiceId })).unwrap();
+      } catch {
+        console.log("Ошибка при добавлении в корзину");
+      }
+    },
+    [user, router, dispatch],
+  );
+
+  const handleNewClassic = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = event.target;
     setFormError("");
 
