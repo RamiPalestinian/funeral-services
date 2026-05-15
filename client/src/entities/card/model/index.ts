@@ -27,6 +27,12 @@ export type CreateCardPayload = {
   cremationId?: number;
 };
 
+export type AddToCardRef =
+  | { serviceId: number }
+  | { cremationId: number }
+  | { islamicId: number }
+  | { classicServiceId: number };
+
 export type CardStateType = {
   cards: CardType[];
   isLoading: boolean;

@@ -2,13 +2,10 @@
 
 import "../page.css";
 import "@/entities/shop/ui/ShopCard/ShopCard.css";
-import { type ChangeEvent, type FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import {
-  useAddToCard,
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/hooks/useReduxHooks";
+import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
+import { createCardThunk } from "@/entities/card/api/CardApiThunk";
 import {
   getShopByIdThunk,
   updateShopThunk,
@@ -29,8 +26,20 @@ export default function ShopByIdPage() {
   const router = useRouter();
   const { id } = useParams<{ id: string }>();
   const { user } = useUser();
-  const addToCard = useAddToCard();
   const isAdmin = user?.id === 1;
+
+  const handleAddToCard = async () => {
+    if (!user) {
+      router.push("/auth");
+      return;
+    }
+    try {
+      await dispatch(createCardThunk({ serviceId: Number(id) })).unwrap();
+    } catch {
+      console.log("Ошибка при добавлении в корзину");
+    }
+  };
+
   const { shops, error, isLoading } = useAppSelector((state) => state.shop);
   const [formData, setFormData] = useState(initialFormState);
   const [editing, setEditing] = useState(false);
@@ -42,7 +51,7 @@ export default function ShopByIdPage() {
   }, [dispatch, id]);
 
   const handleChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = event.target;
 
@@ -72,7 +81,7 @@ export default function ShopByIdPage() {
     setEditing(false);
   };
 
-  const updateShop = async (event: FormEvent<HTMLFormElement>) => {
+  const updateShop = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     await dispatch(
@@ -201,7 +210,7 @@ export default function ShopByIdPage() {
           <button
             type="button"
             className="shop-card-button"
-            onClick={() => void addToCard({ serviceId: Number(id) })}
+            onClick={() => void handleAddToCard()}
           >
             В корзину
           </button>

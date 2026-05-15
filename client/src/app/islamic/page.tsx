@@ -3,11 +3,12 @@ import "./page.css";
 import IslamicCard from "@/entities/islamic/ui/IslamicCard/IslamicCard";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
+import { createCardThunk } from "@/entities/card/api/CardApiThunk";
 import {
   createIslamicThunk,
   fetchIslamicThunk,
 } from "@/entities/islamic/api/IslamicApiThunk";
-import { type ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const initialFormState = {
   name: "",
@@ -35,6 +36,18 @@ export default function Islamic() {
   useEffect(() => {
     dispatch(fetchIslamicThunk());
   }, [dispatch]);
+
+  const handleAddToCard = async (islamicId: number) => {
+    if (!user) {
+      router.push("/auth");
+      return;
+    }
+    try {
+      await dispatch(createCardThunk({ islamicId })).unwrap();
+    } catch {
+      console.log("Ошибка при добавлении в корзину");
+    }
+  };
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -162,7 +175,11 @@ export default function Islamic() {
       </div>
       <div className="islamic-grid">
         {filteredIslamics.map((islamic) => (
-          <IslamicCard key={islamic.id} islamic={islamic} />
+          <IslamicCard
+            key={islamic.id}
+            islamic={islamic}
+            onAddToCard={() => void handleAddToCard(islamic.id)}
+          />
         ))}
       </div>
       <button
