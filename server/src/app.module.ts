@@ -10,6 +10,8 @@ import { IslamicModule } from './islamic/islamic.module';
 import { ClassicServiceModule } from './classic-service/classic-service.module';
 import { CremationsModule } from './cremations/cremations.module';
 import { CardModule } from './card/card.module';
+import { AiController } from './ai/ai.controller';
+import { AiService } from './ai/ai.service';
 
 @Module({
   imports: [
@@ -41,7 +43,7 @@ import { CardModule } from './card/card.module';
     CremationsModule,
     CardModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, AiController],
+  providers: [AppService, AiService],
 })
 export class AppModule {}
