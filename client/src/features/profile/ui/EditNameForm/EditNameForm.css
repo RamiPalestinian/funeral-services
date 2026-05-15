@@ -1,6 +1,8 @@
 .personal-edit-card {
   min-width: 0;
-  display: grid;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   gap: 14px;
   padding: 20px;
   border-radius: 22px;
@@ -16,7 +18,9 @@
 }
 
 .personal-edit-form {
-  display: grid;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   gap: 12px;
 }
 
@@ -36,26 +40,29 @@
 }
 
 .personal-form-button {
-  min-height: 48px;
-  border: 1px solid rgba(214, 204, 189, 0.12);
-  border-radius: 999px;
-  background:
-    linear-gradient(135deg, rgba(125, 151, 168, 0.94), rgba(94, 112, 124, 0.94));
-  color: #f6f1e8;
+  margin-top: auto;
+  align-self: flex-start;
+  min-height: 42px;
+  padding: 10px 22px;
+  border: 1px solid rgba(185, 138, 113, 0.38);
+  border-radius: 10px;
+  background: rgba(185, 138, 113, 0.12);
+  color: var(--accent-stone);
   cursor: pointer;
-  padding: 0 18px;
-  font-size: 12px;
-  letter-spacing: 0.08em;
+  font-size: 11px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
     transform 0.25s ease,
-    box-shadow 0.25s ease,
     opacity 0.25s ease;
 }
 
 .personal-form-button:hover:not(:disabled) {
+  border-color: rgba(185, 138, 113, 0.58);
+  background: rgba(185, 138, 113, 0.22);
   transform: translateY(-1px);
-  box-shadow: 0 14px 24px rgba(10, 12, 14, 0.2);
 }
 
 .personal-form-button:disabled {

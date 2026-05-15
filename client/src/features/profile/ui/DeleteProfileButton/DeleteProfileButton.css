@@ -1,0 +1,33 @@
+.personal-delete {
+  display: grid;
+  gap: 12px;
+}
+
+.personal-delete-text {
+  margin: 0;
+  max-width: 52ch;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.personal-btn--danger {
+  width: fit-content;
+  min-height: 42px;
+  padding: 10px 22px;
+  border: 1px solid rgba(193, 140, 127, 0.45);
+  border-radius: 10px;
+  background: rgba(193, 140, 127, 0.1);
+  color: #e8b4aa;
+}
+
+.personal-btn--danger:hover:not(:disabled) {
+  border-color: rgba(193, 140, 127, 0.7);
+  background: rgba(193, 140, 127, 0.2);
+  color: #f3d0c8;
+}
+
+.personal-btn--danger:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
