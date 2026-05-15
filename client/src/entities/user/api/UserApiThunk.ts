@@ -18,7 +18,7 @@ const USER_API_URLS = {
     LOGIN : "/auth/login",
     LOGOUT : "/auth/logout",
     REFRESH : "/auth/refresh",
-    DELETE_ACCOUNT: (userId: number) => `/users/${userId}`,
+    DELETE_ACCOUNT: '/users/me',
     UPDATE_PROFILE: "/users/me",
     CHANGE_PASSWORD: "/users/me/password",
 } as const;
@@ -145,17 +145,15 @@ export const changePasswordThunk = createAsyncThunk<string, ChangePasswordData, 
     },
 );
 
-export const deleteUserAccountThunk = createAsyncThunk<number, number, { rejectValue: string }>(
+export const deleteUserAccountThunk = createAsyncThunk<void, void, { rejectValue: string }>(
     USER_THUNK_NAMES.DELETE_ACCOUNT,
-    async (userId, { rejectWithValue }) => {
+    async (_, { rejectWithValue }) => {
         try {
-            await axiosInstance.delete(
-                USER_API_URLS.DELETE_ACCOUNT(userId),
-            );
-
-            return userId;
+            await axiosInstance.delete(USER_API_URLS.DELETE_ACCOUNT);
+            setAccessToken('');
+            return;
         } catch (error) {
-            return rejectWithValue(extractErrorMessage(error, "Ошибка при удалении пользователя"));
+            return rejectWithValue(extractErrorMessage(error, 'Ошибка при удалении аккаунта'));
         }
     },
 );
