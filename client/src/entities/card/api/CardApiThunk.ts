@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { CardType, CreateCardPayload } from "../model";
+import { CardType, CreateCardPayload, MockCheckoutResult } from "../model";
 import { axiosInstance } from "@/shared/lib/axiosInstance";
 import { AxiosError } from "axios";
 
@@ -8,6 +8,7 @@ const CARD_THUNK_NAMES = {
   GET_CARD_BY_ID: "card/getCardById",
   DELETE_CARD: "card/deleteCard",
   CREATE_CARD: "card/createCard",
+  CHECKOUT_MOCK: "card/checkoutMOCK",
 } as const;
 
 const CARD_API_URLS = {
@@ -15,6 +16,7 @@ const CARD_API_URLS = {
   GET_CARD_BY_ID: (id: number) => `/card/${id}`,
   DELETE_CARD: (id: number) => `/card/${id}`,
   CREATE_CARD: "/card",
+  CHECKOUT_MOCK: "/card/mock-checkout",
 } as const;
 
 export const createCardThunk = createAsyncThunk<
@@ -102,6 +104,28 @@ export const deleteCardThunk = createAsyncThunk<
   } catch (error) {
     return rejectWithValue(
       (error as AxiosError).message ?? "Ошибка при удалении карты по id",
+    );
+  }
+});
+
+export const mockCheckoutThunk = createAsyncThunk<
+  MockCheckoutResult,
+  void,
+  { rejectValue: string }
+>(CARD_THUNK_NAMES.CHECKOUT_MOCK, async (_, { rejectWithValue }) => {
+  try {
+    const { data, status } = await axiosInstance.post<MockCheckoutResult>(
+      CARD_API_URLS.CHECKOUT_MOCK,
+    );
+
+    if (status === 200) {
+      return data;
+    }
+
+    return rejectWithValue("Ошибка при оплате");
+  } catch (error) {
+    return rejectWithValue(
+      (error as AxiosError).message ?? "Ошибка при оплате",
     );
   }
 });

@@ -108,4 +108,33 @@ export class CardService {
     }
     return result;
   }
+
+  async clearCartForUser(userId: number) {
+    const cards = await this.findAllForUser(userId);
+
+    if (cards.length === 0) {
+      throw new NotFoundException('Cart is empty');
+    }
+
+    let total = 0;
+    for (const card of cards) {
+      const price =
+        card.service?.price ??
+        card.islamic?.price ??
+        card.classicService?.price ??
+        card.cremation?.price ??
+        0;
+
+      total += Number(price);
+    }
+
+    await this.cardModel.destroy({ where: { userId } });
+
+    return {
+      success: true,
+      message: 'Тестовая оплата прошла успешно',
+      total,
+      items: cards.length,
+    };
+  }
 }

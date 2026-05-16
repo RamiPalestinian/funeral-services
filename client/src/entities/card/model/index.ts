@@ -33,6 +33,13 @@ export type AddToCardRef =
   | { islamicId: number }
   | { classicServiceId: number };
 
+export type MockCheckoutResult = {
+  success: boolean;
+  message: string;
+  total: number;
+  items: number;
+};
+
 export type CardStateType = {
   cards: CardType[];
   isLoading: boolean;
