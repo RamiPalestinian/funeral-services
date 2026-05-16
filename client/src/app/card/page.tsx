@@ -5,15 +5,8 @@ import "./page.css";
 import CardCard from "@/entities/card/ui/CardCard/CardCard";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
-<<<<<<< Updated upstream
 import { getAllCardsThunk } from "@/entities/card/api/CardApiThunk";
 import { formatPriceRUB } from "@/shared/lib/formatPriceRUB";
-=======
-import {
-  getAllCardsThunk,
-  mockCheckoutThunk,
-} from "@/entities/card/api/CardApiThunk";
->>>>>>> Stashed changes
 import { useEffect, useState } from "react";
 import type { CardType } from "@/entities/card/model";
 
