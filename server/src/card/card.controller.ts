@@ -53,9 +53,9 @@ export class CardController {
     return this.cardService.deleteForUser(id, req.user.userId);
   }
 
-  @Post('clear')
+  @Post('mock-checkout')
   @HttpCode(HttpStatus.OK)
-  clearCart(@Req() req: Request & { user: JwtRequestUser }) {
-    return this.cardService.clearCartForUser(req.user.userId);
+  mockCheckout(@Req() req: Request & { user: JwtRequestUser }) {
+    return this.cardService.mockCheckoutForUser(req.user.userId);
   }
 }

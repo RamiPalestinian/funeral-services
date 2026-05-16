@@ -33,9 +33,6 @@ export class Islamic extends Model<Islamic> {
   @Column({ type: DataType.STRING, allowNull: false })
   declare category: string;
 
-  @Column({ type: DataType.STRING, allowNull: false })
-  declare status: string;
-
   //ForeignKey
   @ForeignKey(() => User)
   @Column({ type: DataType.INTEGER, allowNull: false, field: 'userId' })

@@ -37,16 +37,15 @@ function CremationCard({ cremation, onAddToCard }: CremationCardProps) {
         />
       </div>
       <div className="cremation-card-body">
-        <p className="cremation-card-kicker">{cremation.category}</p>
         <h2 className="cremation-card-title">{cremation.name}</h2>
         <p className="cremation-card-description">{cremation.description}</p>
         <div className="cremation-card-meta">
+          <span className="cremation-card-category">
+            {cremation.category}
+          </span>
           <span className="cremation-card-price">
             {formatPriceRUB(cremation.price)} ₽
           </span>
-          {/* {cremation.status && (
-            <span className="cremation-card-status">{cremation.status}</span>
-          )} */}
         </div>
         <div className="cremation-card-actions">
           <button

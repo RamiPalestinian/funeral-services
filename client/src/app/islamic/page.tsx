@@ -18,7 +18,6 @@ const initialFormState = {
   price: "",
   image: "",
   category: "",
-  status: "",
 };
 
 export default function Islamic() {
@@ -132,15 +131,6 @@ export default function Islamic() {
             minLength={3}
             required
           />
-          {/* <input
-            name="status"
-            type="text"
-            placeholder="Статус"
-            value={formData.status}
-            onChange={handleChange}
-            minLength={3}
-            required
-          /> */}
           <input
             name="price"
             type="number"

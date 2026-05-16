@@ -20,7 +20,6 @@ const catalogAttributes = [
   'price',
   'category',
   'image',
-  'status',
 ] as const;
 
 @Injectable()
@@ -109,7 +108,7 @@ export class CardService {
     return result;
   }
 
-  async clearCartForUser(userId: number) {
+  async mockCheckoutForUser(userId: number) {
     const cards = await this.findAllForUser(userId);
 
     if (cards.length === 0) {
@@ -128,11 +127,9 @@ export class CardService {
       total += Number(price);
     }
 
-    await this.cardModel.destroy({ where: { userId } });
-
     return {
       success: true,
-      message: 'Тестовая оплата прошла успешно',
+      message: 'Оплата прошла успешно',
       total,
       items: cards.length,
     };

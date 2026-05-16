@@ -32,9 +32,4 @@ export class UpdateIslamicDto {
   @IsString()
   @MinLength(3)
   category?: string;
-
-  @IsOptional()
-  @IsString()
-  @MinLength(3)
-  status?: string;
 }

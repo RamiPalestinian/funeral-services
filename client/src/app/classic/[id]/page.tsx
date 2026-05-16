@@ -18,7 +18,6 @@ const initialFormState = {
   price: "",
   image: "",
   category: "",
-  status: "",
 };
 
 export default function OneClassicPage() {
@@ -79,7 +78,6 @@ export default function OneClassicPage() {
       price: String(oneClassic.price),
       image: oneClassic.image,
       category: oneClassic.category ?? "",
-      status: oneClassic.status ?? "",
     });
     setIsEditing(true);
   };
@@ -92,7 +90,6 @@ export default function OneClassicPage() {
         price: String(oneClassic.price),
         image: oneClassic.image,
         category: oneClassic.category ?? "",
-        status: oneClassic.status ?? "",
       });
     }
 
@@ -152,7 +149,6 @@ export default function OneClassicPage() {
         <p className="classic-detail-description">{oneClassic.description}</p>
         <div className="classic-detail-meta">
           <span>{oneClassic.price} ₽</span>
-          {/* <span>{oneClassic.status}</span> */}
         </div>
         {isAdmin && isEditing && (
           <form className="classic-update-form" onSubmit={handleSubmit}>

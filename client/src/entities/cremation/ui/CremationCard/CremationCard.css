@@ -67,7 +67,10 @@
 }
 
 .cremation-card-price,
-.cremation-card-status {
+.cremation-card-category {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.375rem;
   padding: 9px 12px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.04);

@@ -63,7 +63,6 @@ export default function CremationPage() {
           price: Number(formData.get("price")),
           image: String(formData.get("image")),
           category: String(formData.get("category")),
-          status: String(formData.get("status")),
           userId: user.id,
         }),
       );

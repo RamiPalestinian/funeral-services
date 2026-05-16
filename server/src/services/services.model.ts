@@ -33,9 +33,6 @@ export class Service extends Model {
   @Column({ type: DataType.STRING, allowNull: false })
   declare category: string;
 
-  @Column({ type: DataType.STRING, allowNull: false })
-  declare status: string;
-
   //ForeignKey
   @ForeignKey(() => User)
   @Column({ type: DataType.INTEGER, allowNull: false })

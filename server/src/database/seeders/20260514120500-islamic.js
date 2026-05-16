@@ -12,7 +12,6 @@ module.exports = {
         image:
           'https://images.unsplash.com/photo-1556795786-55954805c0b6?auto=format&fit=crop&w=1200&q=80',
         category: 'Стандарт',
-        status: 'available',
         userId: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -25,7 +24,6 @@ module.exports = {
         image:
           'https://islamdag.ru/sites/default/files/styles/large/public/img/2022/fatava/islamreligiya2201.jpg?itok=TmoJXWkO',
         category: 'Комплекс',
-        status: 'available',
         userId: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -38,7 +36,6 @@ module.exports = {
         image:
           'https://images.unsplash.com/photo-1594970484212-523a969e091e?auto=format&fit=crop&w=1200&q=80',
         category: 'Подготовка',
-        status: 'available',
         userId: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -51,7 +48,6 @@ module.exports = {
         image:
           'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1200&q=80',
         category: 'Транспорт',
-        status: 'available',
         userId: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -64,7 +60,6 @@ module.exports = {
         image:
           'https://musulmanin.com/wp-content/uploads/2014/02/prinyala-islam.jpg',
         category: 'Захоронение',
-        status: 'available',
         userId: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -77,7 +72,6 @@ module.exports = {
         image:
           'https://images.unsplash.com/photo-1575293924982-20b9240aa155?auto=format&fit=crop&w=1200&q=80',
         category: 'Обряд',
-        status: 'available',
         userId: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -90,7 +84,6 @@ module.exports = {
         image:
           'https://images.unsplash.com/photo-1655555828192-63a403ad69db?auto=format&fit=crop&w=1200&q=80',
         category: 'Документы',
-        status: 'available',
         userId: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -103,7 +96,6 @@ module.exports = {
         image:
           'https://images.unsplash.com/photo-1707327314218-d8cc8ad4b574?auto=format&fit=crop&w=1200&q=80',
         category: 'Семейный',
-        status: 'available',
         userId: 1,
         createdAt: new Date(),
         updatedAt: new Date(),

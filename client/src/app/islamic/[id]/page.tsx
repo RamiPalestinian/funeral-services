@@ -19,7 +19,6 @@ const initialFormState = {
   price: "",
   image: "",
   category: "",
-  status: "",
 };
 
 export default function OneIslamicPage() {
@@ -84,7 +83,6 @@ export default function OneIslamicPage() {
       price: String(oneIslamic.price),
       image: oneIslamic.image,
       category: oneIslamic.category ?? "",
-      status: oneIslamic.status ?? "",
     });
     setIsEditing(true);
   }, [oneIslamic]);
@@ -97,7 +95,6 @@ export default function OneIslamicPage() {
         price: String(oneIslamic.price),
         image: oneIslamic.image,
         category: oneIslamic.category ?? "",
-        status: oneIslamic.status ?? "",
       });
     }
 
@@ -146,7 +143,6 @@ export default function OneIslamicPage() {
         <p className="islamic-detail-description">{oneIslamic.description}</p>
         <div className="islamic-detail-meta">
           <span>{oneIslamic.price} ₽</span>
-          {/* <span>{oneIslamic.status}</span> */}
         </div>
         {isAdmin && isEditing && (
           <form className="islamic-update-form" onSubmit={handleSubmit}>
