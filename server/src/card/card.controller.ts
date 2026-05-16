@@ -52,4 +52,10 @@ export class CardController {
   ) {
     return this.cardService.deleteForUser(id, req.user.userId);
   }
+
+  @Post('clear')
+  @HttpCode(HttpStatus.OK)
+  clearCart(@Req() req: Request & { user: JwtRequestUser }) {
+    return this.cardService.clearCartForUser(req.user.userId);
+  }
 }

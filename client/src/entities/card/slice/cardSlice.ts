@@ -5,6 +5,7 @@ import {
   getCardByIdThunk,
   deleteCardThunk,
   createCardThunk,
+  mockCheckoutThunk,
 } from "../api/CardApiThunk";
 import {
   logoutThunk,
@@ -82,6 +83,20 @@ const cardSlice = createSlice({
       state.cards = [];
       state.error = null;
       state.isLoading = false;
+    });
+
+    //mockCheckoutThunk
+    builder.addCase(mockCheckoutThunk.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(mockCheckoutThunk.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.error = null;
+      state.cards = [];
+    });
+    builder.addCase(mockCheckoutThunk.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload ?? null;
     });
   },
 });
