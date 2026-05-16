@@ -38,12 +38,13 @@ function ClassicCard({ classic, onAddToCard }: ClassicCardProps) {
         />
       </div>
       <div className="classic-card-body">
-        <p className="classic-card-kicker">{classic.category || "Классика"}</p>
         <h4 className="classic-card-title">{classic.name}</h4>
         <p className="classic-card-description">{classic.description}</p>
         <div className="classic-card-meta">
+          <span className="classic-card-category">
+            {classic.category ?? "Классика"}
+          </span>
           <span className="classic-card-price">{formatPriceRUB(classic.price)} ₽</span>
-          {/* <span className="classic-card-status">{classic.status}</span> */}
         </div>
         <div className="classic-card-actions">
           <button

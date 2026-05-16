@@ -28,10 +28,6 @@ export class CreateIslamicDto {
   @MinLength(3)
   category: string;
 
-  @IsString()
-  @MinLength(3)
-  status: string;
-
   @IsInt()
   userId: number;
 }

@@ -27,7 +27,6 @@ export default function Classic() {
     price: "",
     image: "",
     category: "",
-    status: "active",
     userId: 1,
   });
   const [formError, setFormError] = useState("");
@@ -85,7 +84,6 @@ export default function Classic() {
         price: "",
         image: "",
         category: "",
-        status: "active",
         userId: 1,
       });
       setFormError("");

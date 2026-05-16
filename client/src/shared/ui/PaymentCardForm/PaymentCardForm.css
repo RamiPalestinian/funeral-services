@@ -1,0 +1,63 @@
+.payment-card-form {
+  display: grid;
+  gap: 14px;
+  margin: 18px 0 6px;
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 1px rgba(214, 204, 189, 0.1);
+}
+
+.payment-card-form__title {
+  margin: 0;
+  color: var(--accent-stone);
+  font-size: 14px;
+}
+
+.payment-card-form__field {
+  display: grid;
+  gap: 6px;
+}
+
+.payment-card-form__label {
+  color: var(--text-muted);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.payment-card-form__input {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 14px;
+  border: 1px solid rgba(214, 204, 189, 0.14);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--accent-stone);
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.payment-card-form__input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+.payment-card-form__input:focus {
+  outline: none;
+  border-color: rgba(179, 110, 98, 0.5);
+  box-shadow: 0 0 0 2px rgba(179, 110, 98, 0.15);
+}
+
+.payment-card-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.payment-card-form__hint {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}

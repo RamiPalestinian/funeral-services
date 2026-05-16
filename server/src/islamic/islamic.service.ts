@@ -33,7 +33,6 @@ export class IslamicService {
       price: dto.price,
       image: dto.image,
       category: dto.category,
-      status: dto.status,
       userId: dto.userId,
     } as CreationAttributes<Islamic>);
   }

@@ -15,11 +15,7 @@ import {
 const cardSlice = createSlice({
   name: "card",
   initialState: initialCardState,
-  reducers: {
-    setCards: (state, action) => {
-      state.cards = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     //createCardThunk
     builder.addCase(createCardThunk.pending, (state) => {
@@ -88,19 +84,20 @@ const cardSlice = createSlice({
     //mockCheckoutThunk
     builder.addCase(mockCheckoutThunk.pending, (state) => {
       state.isLoading = true;
+      state.lastCheckout = null;
+      state.error = null;
     });
     builder.addCase(mockCheckoutThunk.fulfilled, (state, action) => {
       state.isLoading = false;
       state.error = null;
-      state.cards = [];
+      state.lastCheckout = action.payload;
     });
     builder.addCase(mockCheckoutThunk.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.payload ?? null;
+      state.lastCheckout = null;
+      state.error = action.payload ?? "Не удалось оплатить";
     });
   },
 });
-
-export const { setCards } = cardSlice.actions;
 
 export const cardReducer = cardSlice.reducer;

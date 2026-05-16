@@ -22,7 +22,7 @@ module.exports = {
 
       serviceId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'services',
           key: 'id',
@@ -31,7 +31,7 @@ module.exports = {
 
       islamicId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'islamic',
           key: 'id',
@@ -40,16 +40,16 @@ module.exports = {
 
       classicServiceId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'classicServices',
           key: 'id',
         },
       },
 
-      cremationId: {  
+      cremationId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'cremations',
           key: 'id',

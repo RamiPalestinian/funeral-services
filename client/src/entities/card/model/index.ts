@@ -44,10 +44,12 @@ export type CardStateType = {
   cards: CardType[];
   isLoading: boolean;
   error: string | null;
+  lastCheckout: MockCheckoutResult | null;
 };
 
 export const initialCardState: CardStateType = {
   cards: [],
   isLoading: false,
   error: null,
+  lastCheckout: null,
 };

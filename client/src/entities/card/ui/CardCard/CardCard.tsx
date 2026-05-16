@@ -10,23 +10,16 @@ import { CardDateMeta } from "@/shared/ui/CardDateMeta/CardDateMeta";
 import { formatPriceRUB } from "@/shared/lib/formatPriceRUB";
 import React from "react";
 
-type Props = { card: CardType; user: UserType };
-
-function lineItem(c: CardType) {
-  return c.service ?? c.cremation ?? c.islamic ?? c.classicService;
-}
-
-function lineKind(c: CardType): string {
-  if (c.service) return "Товар (магазин)";
-  if (c.cremation) return "Кремация";
-  if (c.islamic) return "Исламская услуга";
-  if (c.classicService) return "Классическая услуга";
-  return "Позиция";
-}
-
-function CardCard({ card, user }: Props) {
+function CardCard({ card, user }: { card: CardType; user: UserType }) {
   const dispatch = useAppDispatch();
   const router = useRouter();
+
+  function lineItem(card: CardType) {
+    return (
+      card.service ?? card.cremation ?? card.islamic ?? card.classicService
+    );
+  }
+
   const item = lineItem(card);
   const canRemove =
     user != null && card.userId != null && card.userId === user.id;
@@ -48,7 +41,6 @@ function CardCard({ card, user }: Props) {
         )}
       </div>
       <div className="card-line-body">
-        <p className="card-line-kicker">{lineKind(card)}</p>
         <h4 className="card-line-title">
           {item ? item.name : "Позиция #" + String(card.id)}
         </h4>
@@ -56,10 +48,10 @@ function CardCard({ card, user }: Props) {
           <div className="card-line-detail">
             <p className="card-line-description">{item.description}</p>
             <div className="card-line-meta">
+              <span className="card-line-category">{item.category ?? "—"}</span>
               <span className="card-line-price">
                 {formatPriceRUB(item.price)} ₽
               </span>
-              <span className="card-line-price">{item.category ?? "—"}</span>
             </div>
           </div>
         ) : (

@@ -60,7 +60,6 @@ export default function ShopPage() {
           price: Number(formData.get("price")),
           image: String(formData.get("image")),
           category: String(formData.get("category")),
-          status: String(formData.get("status")),
           userId: user.id,
         }),
       );
@@ -104,7 +103,6 @@ export default function ShopPage() {
       {isAdmin && (
         <div className="shop-form-wrap">
           <form className="shop-form" onSubmit={handleCreateSubmit}>
-            <input type="hidden" name="status" value="В наличии" />
             <input
               className="shop-form-input"
               name="name"

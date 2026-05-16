@@ -17,7 +17,6 @@ const initialFormState = {
   price: "",
   image: "",
   category: "",
-  status: "",
 };
 
 function CremationByIdPage() {
@@ -73,7 +72,6 @@ function CremationByIdPage() {
       price: String(cremation.price),
       image: cremation.image,
       category: cremation.category,
-      status: cremation.status ?? "",
     });
     setEditing(true);
   }, [cremation]);
@@ -90,7 +88,6 @@ function CremationByIdPage() {
           price: Number(formData.price),
           image: formData.image,
           category: formData.category,
-          status: formData.status,
         }),
       );
       setEditing(false);
@@ -129,7 +126,6 @@ function CremationByIdPage() {
         <p className="cremation-detail-description">{cremation.description}</p>
         <div className="cremation-detail-meta">
           <span>{cremation.price} ₽</span>
-          {/* {cremation.status && <span>{cremation.status}</span>} */}
         </div>
         {isAdmin && editing && (
           <form className="cremation-update-form" onSubmit={updateCremation}>
@@ -151,14 +147,6 @@ function CremationByIdPage() {
               minLength={3}
               required
             />
-            {/* <input
-              name="status"
-              type="text"
-              value={formData.status}
-              onChange={handleChange}
-              placeholder="Статус"
-              minLength={3}
-            /> */}
             <input
               name="price"
               type="number"

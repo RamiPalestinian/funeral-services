@@ -5,7 +5,6 @@ export type ShopType = {
   price: number;
   image: string;
   category: string;
-  status: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -16,7 +15,6 @@ export type CreateShopPayload = {
   price: number;
   image: string;
   category: string;
-  status: string;
   userId: number;
 };
 
@@ -27,7 +25,6 @@ export type UpdateShopPayload = {
   price?: number;
   image?: string;
   category?: string;
-  status?: string;
 };
 
 export type ShopStateType = {

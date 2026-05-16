@@ -17,7 +17,6 @@ const initialFormState = {
   price: "",
   image: "",
   category: "",
-  status: "",
 };
 
 function ShopByIdPage() {
@@ -71,7 +70,6 @@ function ShopByIdPage() {
       price: String(shop.price),
       image: shop.image,
       category: shop.category,
-      status: shop.status,
     });
     setEditing(true);
   }, [shop]);
@@ -92,7 +90,6 @@ function ShopByIdPage() {
           price: Number(formData.price),
           image: formData.image,
           category: formData.category,
-          status: formData.status,
         }),
       );
       setEditing(false);
@@ -131,7 +128,6 @@ function ShopByIdPage() {
         <p className="shop-detail-description">{shop.description}</p>
         <div className="shop-detail-meta">
           <span>{shop.price} ₽</span>
-          {/* <span>{shop.status}</span> */}
         </div>
         {isAdmin && editing && (
           <form className="shop-update-form" onSubmit={updateShop}>
@@ -153,15 +149,6 @@ function ShopByIdPage() {
               minLength={3}
               required
             />
-            {/* <input
-              name="status"
-              type="text"
-              value={formData.status}
-              onChange={handleChange}
-              placeholder="Статус"
-              minLength={3}
-              required
-            /> */}
             <input
               name="price"
               type="number"
