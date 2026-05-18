@@ -45,7 +45,7 @@ export default function ContactPage() {
           <article className="contact-detail">
             <span>Telegram</span>
             <a
-              href="https://t.me/+79991234567"
+              href="https://t.me/+79991234568"
               target="_blank"
               rel="noopener noreferrer"
             >
