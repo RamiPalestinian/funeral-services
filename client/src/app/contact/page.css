@@ -176,6 +176,12 @@
 .contact-detail a {
   color: var(--accent-blue);
   font-size: 1.15rem;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.contact-detail a:hover {
+  color: var(--accent-stone);
 }
 
 @media (max-width: 980px) {

@@ -196,7 +196,7 @@
 .home-ads-stack {
   position: absolute;
   top: -650px;
-  left: calc(100% + 24px);
+  left: calc(100% + 100px);
   display: grid;
   gap: 14px;
   width: 160px;
@@ -240,6 +240,26 @@
   height: 100%;
   object-fit: contain;
   display: block;
+}
+
+.home-credit-ad {
+  height: auto;
+  min-height: 190px;
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.home-credit-ad img {
+  height: 130px;
+}
+
+.home-credit-ad span {
+  color: var(--text-muted);
+  font-size: 11px;
+  line-height: 1.35;
+  text-align: center;
 }
 
 .home-section-head h2,

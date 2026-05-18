@@ -3,6 +3,7 @@ import "./page.css";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { useEffect } from "react";
+import Image from "next/image";
 
 export default function Home() {
   const router = useRouter();
@@ -12,7 +13,7 @@ export default function Home() {
     if (isInitialized && !user) {
       router.replace("/auth");
     }
-  }, [isInitialized, user]);
+  }, [isInitialized, router, user]);
   if (isInitialized && !user) {
     return null;
   }
@@ -97,7 +98,12 @@ export default function Home() {
             rel="noopener noreferrer"
             aria-label="Перейти на сайт Министерства обороны"
           >
-            <img src="/svo.jpeg" alt="Информационный баннер" />
+            <Image
+              src="/svo.jpeg"
+              alt="Информационный баннер"
+              width={160}
+              height={220}
+            />
           </a>
           <a
             className="home-svo-ad"
@@ -106,7 +112,12 @@ export default function Home() {
             rel="noopener noreferrer"
             aria-label="Перейти на сайт Министерства обороны"
           >
-            <img src="/svo2.jpg" alt="Информационный баннер" />
+            <Image
+              src="/svo2.jpg"
+              alt="Информационный баннер"
+              width={160}
+              height={160}
+            />
           </a>
           <a
             className="home-svo-ad"
@@ -115,7 +126,22 @@ export default function Home() {
             rel="noopener noreferrer"
             aria-label="Перейти на сайт Лига Ставок"
           >
-            <img src="/1x.png" alt="Рекламный баннер" />
+            <Image
+              src="/1x.png"
+              alt="Рекламный баннер"
+              width={160}
+              height={160}
+            />
+          </a>
+          <a
+            className="home-svo-ad home-credit-ad"
+            href="https://home.kz/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Перейти на сайт Home Credit Bank Казахстан"
+          >
+            <Image src="/credit.png" alt="Рассрочка" width={140} height={130} />
+            <span>Рассматриваем возможность в рассрочку под 15% годовых</span>
           </a>
         </div>
 
