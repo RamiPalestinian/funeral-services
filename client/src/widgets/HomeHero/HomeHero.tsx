@@ -15,7 +15,7 @@ export default function HomeHero() {
               Ритуальные услуги и транспортная поддержка
             </p>
             <h1 className="home-cinematic-title home-reveal home-reveal-delay-2">
-              GRUZ 200
+              Panteon
               <span>тихое наставление в самый трудный час</span>
             </h1>
 

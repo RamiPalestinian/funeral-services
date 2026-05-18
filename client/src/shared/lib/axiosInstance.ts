@@ -30,14 +30,17 @@ axiosInstance.interceptors.response.use(    // перехватываем наш
     async (error) => {
       const previousRequest = error.config; // сохраняем конфигурацию ошибки которую нам передал сервер
   
-      if (error.response?.status === 403 && !previousRequest.sent) { // 403 - невалидный accessToken && не пробовали повторно отправить запрос
+      const status = error.response?.status;
+      const isAuthError = status === 401 || status === 403;
+
+      if (isAuthError && !previousRequest.sent && previousRequest.url !== '/auth/refresh') { // 401/403 - невалидный accessToken && не пробовали повторно отправить запрос
         previousRequest.sent = true; // устанавливаем флажок,что мы попробуем еще ОДИН раз жто сделать
 
         try {
           const { data } = await axiosInstance.post('/auth/refresh'); //отправляем запрос на наш путь http://localhost:3000/api/auth/refresh что бы обновить токен accessToken
           const newToken = data.accessToken; // достаем из ответа новый токен accessToken
           setAccessToken(newToken);
-          previousRequest.headers.Authorization = `Bearer ${accessToken}`; // к нашему предыдущему запросу который получил ошибку 403(33) устанавливаем заголовок авторизации (как в 19)
+          previousRequest.headers.Authorization = `Bearer ${newToken}`; // к нашему предыдущему запросу который получил ошибку устанавливаем новый заголовок авторизации
           return axiosInstance(previousRequest); // и опять запускаем через axiosInstance наш запрос что бы обновить наш accessToken если не удачно то в catch(переходит на страницу авторизации)
         } catch (error) {
           setAccessToken('');

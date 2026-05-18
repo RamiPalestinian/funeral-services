@@ -4,7 +4,7 @@ import UserProvider from "@/application/UserProvider";
 import StoreProvider from "@/app/store/storeProvider";
 
 export const metadata: Metadata = {
-  title: "Груз 200 мы вместе",
+  title: "Пантеон мы вместе",
   description: "Ритуальное агентство: сопровождение, организация и поддержка",
 };
 
