@@ -88,6 +88,36 @@ export default function Home() {
           <p>Почему мы</p>
           <h2>Работаем не громко, а точно</h2>
         </div>
+        <div className="home-ads-stack" aria-label="Рекламные баннеры">
+          <p className="home-ads-label">РЕКЛАМА:</p>
+          <a
+            className="home-svo-ad home-svo-ad--main"
+            href="https://службапоконтракту.рф"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Перейти на сайт Министерства обороны"
+          >
+            <img src="/svo.jpeg" alt="Информационный баннер" />
+          </a>
+          <a
+            className="home-svo-ad"
+            href="https://kontrakt-bpla.ru/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Перейти на сайт Министерства обороны"
+          >
+            <img src="/svo2.jpg" alt="Информационный баннер" />
+          </a>
+          <a
+            className="home-svo-ad"
+            href="https://www.ligastavok.ru"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Перейти на сайт Лига Ставок"
+          >
+            <img src="/1x.png" alt="Рекламный баннер" />
+          </a>
+        </div>
 
         <div className="home-values-row">
           <article>
