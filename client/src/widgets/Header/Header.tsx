@@ -35,7 +35,7 @@ export default function Header({ user, setUser }: HeaderProps) {
       <nav className={isHomePage ? "site-nav site-nav-home" : "site-nav"}>
         <div className="nav-brand">
           <span className="nav-brand-mark">линия сопровождения</span>
-          <span className="nav-brand-copy">Груз 200</span>
+          <span className="nav-brand-copy">Пантеон</span>
         </div>
         <div className="nav-links">
           {user !== null ? (

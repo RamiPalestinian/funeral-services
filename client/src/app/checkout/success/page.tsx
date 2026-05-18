@@ -58,6 +58,13 @@ export default function CheckoutSuccessPage() {
           </button>
         </div>
       </div>
+      <button
+        type="button"
+        className="checkout-success-mentor-link"
+        onClick={() => router.push("/tarasAndYra")}
+      >
+        благодарность
+      </button>
     </section>
   );
 }

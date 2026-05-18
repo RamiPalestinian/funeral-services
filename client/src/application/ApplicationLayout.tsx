@@ -18,7 +18,7 @@ export default function ApplicationLayout({ user, setUser, children } : LayoutPr
         {children}
       </main>
       <footer className="layout-footer">
-        <span>GRUZ 200</span>
+        <span>Panteon</span>
         <span>спокойная линия сопровождения</span>
       </footer>
     </div>
