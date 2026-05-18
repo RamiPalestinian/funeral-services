@@ -99,6 +99,8 @@ export default function Islamic() {
         <div className="islamic-hero-grid">
           <div className="islamic-hero-copy">
             <h1>Исламские ритуальные услуги</h1>
+            <div></div>
+            <div></div>
             <p>
               Подобрали услуги для исламского прощания: от базового
               сопровождения до полной церемонии с транспортом, залом и

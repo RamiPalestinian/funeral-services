@@ -19,9 +19,9 @@
       rgba(18, 20, 22, 0.88) 44%,
       rgba(18, 20, 22, 0.95) 100%
     ),
-    url("https://img.magnific.com/free-photo/top-view-black-bow-dark-wall_179666-39971.jpg?semt=ais_hybrid&w=740&q=80");
-  background-size: cover;
-  background-position: center top;
+    url("/404.png");
+  background-size: 100% 100%;
+  background-position: center;
   background-repeat: no-repeat;
 }
 

@@ -19,23 +19,14 @@
       rgba(18, 20, 22, 0.88) 44%,
       rgba(18, 20, 22, 0.95) 100%
     ),
-    url("https://img.magnific.com/free-photo/top-view-black-bow-dark-wall_179666-39971.jpg?semt=ais_hybrid&w=740&q=80");
-  background-size: cover;
-  background-position: center top;
+    url("/404.png");
+  background-size: 100% 100%;
+  background-position: center;
   background-repeat: no-repeat;
 }
 
 .islamic-page::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-  background-size: 84px 84px;
-  opacity: 0.16;
+  content: none;
 }
 
 .islamic-hero {
@@ -77,7 +68,7 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
+  grid-template-columns: minmax(0, 7fr) minmax(220px, 3fr);
   gap: 24px;
   align-items: end;
 }
@@ -88,16 +79,16 @@
 }
 
 .islamic-hero-copy h1 {
-  max-width: 11ch;
+  max-width: none;
   font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
-  font-size: clamp(2.2rem, 4.6vw, 4.2rem);
+  font-size: clamp(1.9rem, 3.4vw, 3.2rem);
   font-weight: 400;
-  line-height: 0.94;
+  line-height: 1.05;
   color: var(--accent-stone);
 }
 
 .islamic-hero-copy p {
-  max-width: 54ch;
+  max-width: none;
   color: var(--text-muted);
   line-height: 1.82;
 }
@@ -108,8 +99,8 @@
 }
 
 .islamic-hero-mark img {
-  width: 280px;
-  height: 280px;
+  width: min(100%, 182px);
+  height: 196px;
   object-fit: contain;
   opacity: 0.78;
   filter: grayscale(1) brightness(1.15);
