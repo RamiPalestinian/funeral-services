@@ -43,6 +43,39 @@ export default function ContactPage() {
           </article>
 
           <article className="contact-detail">
+            <span>Telegram</span>
+            <a
+              href="https://t.me/+79991234567"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              +7 (999) 123-45-67
+            </a>
+          </article>
+
+          <article className="contact-detail">
+            <span>WhatsApp</span>
+            <a
+              href="https://wa.me/79991234567"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              +7 (999) 123-45-67
+            </a>
+          </article>
+
+          <article className="contact-detail">
+            <span>Viber</span>
+            <a
+              href="viber://chat?number=79991234567"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              +7 (999) 123-45-67
+            </a>
+          </article>
+
+          <article className="contact-detail">
             <span>Адрес</span>
             <p>г. Москва, ул. Пушкина, д. Колотушкина</p>
             <p>Ежедневно с 9:00 до 21:00</p>
