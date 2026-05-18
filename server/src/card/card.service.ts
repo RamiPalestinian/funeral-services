@@ -95,7 +95,7 @@ export class CardService {
       include: this.cardWithRelationsInclude(),
     });
     if (!card) {
-      throw new NotFoundException('Card not found');
+      throw new NotFoundException('Карта не найдена');
     }
     return card;
   }
@@ -103,7 +103,7 @@ export class CardService {
   async deleteForUser(id: number, userId: number) {
     const result = await this.cardModel.destroy({ where: { id, userId } });
     if (result === 0) {
-      throw new NotFoundException('Card not found');
+      throw new NotFoundException('Карта не найдена');
     }
     return result;
   }
@@ -112,7 +112,7 @@ export class CardService {
     const cards = await this.findAllForUser(userId);
 
     if (cards.length === 0) {
-      throw new NotFoundException('Cart is empty');
+      throw new NotFoundException('Корзина пуста');
     }
 
     let total = 0;

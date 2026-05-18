@@ -95,6 +95,8 @@ export default function CheckoutPage() {
       setIsCashOrderModalOpen(false);
     }
   }, [paymentMethod]);
+
+  
   return (
     <section className="shop-page checkout-page">
       <div className="shop-hero">

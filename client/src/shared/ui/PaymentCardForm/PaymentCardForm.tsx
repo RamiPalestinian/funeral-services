@@ -17,7 +17,7 @@ export function PaymentCardForm({ onValidityChange }: PaymentCardFormProps) {
 
   const cardDigits = digitsOnly(cardNumber, 16);
   const expiryDigits = digitsOnly(expiry, 4);
-  const cvvDigits = digitsOnly(cvv, 4);
+  const cvvDigits = digitsOnly(cvv, 3);
   const month = Number(expiryDigits.slice(0, 2));
 
   const valid =
@@ -25,7 +25,7 @@ export function PaymentCardForm({ onValidityChange }: PaymentCardFormProps) {
     expiryDigits.length === 4 &&
     month >= 1 &&
     month <= 12 &&
-    cvvDigits.length >= 3;
+    cvvDigits.length === 3;
 
   useEffect(() => {
     onValidityChange?.(valid);
@@ -87,9 +87,9 @@ export function PaymentCardForm({ onValidityChange }: PaymentCardFormProps) {
             type="password"
             inputMode="numeric"
             placeholder="000"
-            maxLength={4}
+            maxLength={3}
             value={cvv}
-            onChange={(event) => setCvv(digitsOnly(event.target.value, 4))}
+            onChange={(event) => setCvv(digitsOnly(event.target.value, 3))}
           />
         </div>
       </div>

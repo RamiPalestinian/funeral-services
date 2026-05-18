@@ -90,6 +90,8 @@ export default function Islamic() {
       // Ошибка уже записывается в islamic slice.
     }
   }, [user, dispatch, formData]);
+
+  
   return (
     <section className="islamic-page">
       <div className="islamic-hero">
