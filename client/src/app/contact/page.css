@@ -16,22 +16,13 @@
       rgba(18, 20, 22, 0.82) 42%,
       rgba(18, 20, 22, 0.92) 100%
     ),
-    url("https://img.magnific.com/free-photo/top-view-black-bow-dark-wall_179666-39971.jpg?semt=ais_hybrid&w=740&q=80");
-  background-size: 100%;
-  background-position: center top;
+    url("/404.png");
+  background-size: 100% 100%;
+  background-position: center;
   background-repeat: no-repeat;
 }
 .contact-page::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-  background-size: 84px 84px;
-  opacity: 0.2;
+  content: none;
 }
 
 .contact-back-link {

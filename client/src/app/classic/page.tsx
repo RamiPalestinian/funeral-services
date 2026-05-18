@@ -114,6 +114,8 @@ export default function Classic() {
         <div className="classic-hero-grid">
           <div className="classic-hero-copy">
             <h1>Классические ритуальные услуги</h1>
+            <div></div>
+            <div></div>
             <p>
               Подобрали услуги для классического прощания: от базового
               сопровождения до полной церемонии с транспортом, залом и
