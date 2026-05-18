@@ -67,7 +67,7 @@ export default function ContactPage() {
           <article className="contact-detail">
             <span>Viber</span>
             <a
-              href="viber://chat?number=79991234567"
+              href="viber://chat?number=79991234569"
               target="_blank"
               rel="noopener noreferrer"
             >
