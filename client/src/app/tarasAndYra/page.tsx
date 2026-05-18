@@ -104,7 +104,7 @@ export default function TarasAndYraPage() {
         </div>
         <div>
           <span>Process</span>
-          <strong>Git / Jest / Docker / RAG / AI интеграции / команда / финальный проект</strong>
+          <strong>Git / Jest / Docker / RAG / AI интеграции / команда / финальный проект / Zod</strong>
         </div>
       </div>
 

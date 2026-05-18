@@ -10,6 +10,15 @@ import {
 } from "@/entities/classic/api/ClassicApiThunk";
 import { useEffect, useState } from "react";
 import { useCallback } from "react";
+import Image from "next/image";
+
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  classicSchema,
+  ClassicFormInput,
+  ClassicSchema,
+} from "@/entities/classic/model/classicSchema";
 
 export default function Classic() {
   const router = useRouter();
@@ -21,24 +30,7 @@ export default function Classic() {
   const { user, isInitialized } = useAppSelector((state) => state.user);
 
   const isAdmin = user?.id === 1;
-  const [newClassic, setNewClassic] = useState({
-    name: "",
-    description: "",
-    price: "",
-    image: "",
-    category: "",
-    userId: 1,
-  });
   const [formError, setFormError] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const filteredClassics = classics.filter((classic) =>
-    classic.name.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
-
-  useEffect(() => {
-    dispatch(fetchClassicThunk());
-  }, [dispatch]);
 
   const handleAddToCard = useCallback(
     async (classicServiceId: number) => {
@@ -55,53 +47,55 @@ export default function Classic() {
     [user, router, dispatch],
   );
 
-  const handleNewClassic = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = event.target;
-    setFormError("");
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<ClassicFormInput, unknown, ClassicSchema>({
+    resolver: zodResolver(classicSchema),
+    mode: "onSubmit",
+    defaultValues: {
+      name: "",
+      description: "",
+      price: "",
+      image: "",
+      category: "",
+      userId: 1,
+    },
+  });
 
-    setNewClassic((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  async function addNewClassic(event: React.ChangeEvent<HTMLFormElement>) {
-    event.preventDefault();
-
+  const onSubmit: SubmitHandler<ClassicSchema> = async (data) => {
     try {
-      await dispatch(
-        createClassicThunk({
-          ...newClassic,
-          price: Number(newClassic.price),
-          userId: user?.id ?? 1,
-        }),
-      ).unwrap();
-      setNewClassic({
-        name: "",
-        description: "",
-        price: "",
-        image: "",
-        category: "",
-        userId: 1,
-      });
       setFormError("");
+      await dispatch(createClassicThunk(data)).unwrap();
+      reset();
     } catch (error) {
       setFormError(
         typeof error === "string"
           ? error
           : "Не удалось создать услугу. Проверь поля формы.",
       );
+      console.error("Ошибка при создании классической услуги:", error);
     }
-  }
+  };
+
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredClassics = classics.filter((classic) =>
+    classic.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
+  useEffect(() => {
+    dispatch(fetchClassicThunk());
+  }, [dispatch]);
 
   //защита сраницы
   useEffect(() => {
     if (isInitialized && !user) {
       router.replace("/auth");
     }
-  }, [isInitialized, user]);
+  }, [isInitialized, router, user]);
 
   if (isInitialized && !user) {
     return null;
@@ -123,9 +117,11 @@ export default function Classic() {
             </p>
           </div>
           <div className="classic-hero-mark">
-            <img
+            <Image
               src="https://cdn-icons-png.flaticon.com/256/5339/5339355.png"
               alt="Ритуальные услуги"
+              width={182}
+              height={196}
             />
           </div>
         </div>
@@ -133,57 +129,47 @@ export default function Classic() {
 
       {isAdmin && (
         <div className="classic-form-wrap">
-          <form className="classic-form" onSubmit={addNewClassic}>
+          <form className="classic-form" onSubmit={handleSubmit(onSubmit)}>
             <input
               className="classic-form-input"
               type="text"
-              onChange={handleNewClassic}
-              name="name"
-              value={newClassic.name}
+              {...register("name")}
               placeholder="Название"
-              minLength={3}
-              required
             />
+            {errors.name && <p className="error">{errors.name.message}</p>}
             <input
               className="classic-form-input"
               type="text"
-              onChange={handleNewClassic}
-              name="category"
-              value={newClassic.category}
+              {...register("category")}
               placeholder="Категория"
-              minLength={3}
-              required
             />
+            {errors.category && <p className="error">{errors.category.message}</p>}
             <input
               className="classic-form-input"
               type="number"
-              onChange={handleNewClassic}
-              name="price"
-              value={newClassic.price}
+              {...register("price")}
               placeholder="Цена"
-              min={0}
-              required
             />
+       {errors.price && <p className="error">{errors.price.message}</p>}
             <input
               className="classic-form-input classic-form-input-wide"
               type="url"
-              onChange={handleNewClassic}
-              name="image"
-              value={newClassic.image}
+              {...register("image")}
               placeholder="Добавить фото"
-              required
             />
+           {errors.image && <p className="error">{errors.image.message}</p>}
             <textarea
               className="classic-form-input classic-form-textarea"
-              onChange={handleNewClassic}
-              name="description"
-              value={newClassic.description}
+              {...register("description")}
               placeholder="Описание"
-              minLength={10}
-              required
             />
-            <button className="classic-form-button" type="submit">
-              Создать
+            {errors.description && <p className="error">{errors.description.message}</p>}
+            <button
+              className="classic-form-button"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Создание..." : "Создать"}
             </button>
           </form>
           {(formError || classicError) && (
