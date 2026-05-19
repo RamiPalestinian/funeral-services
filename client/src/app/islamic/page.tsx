@@ -1,4 +1,5 @@
 "use client";
+import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 
 import "./page.css";
 import IslamicCard from "@/entities/islamic/ui/IslamicCard/IslamicCard";
@@ -37,7 +38,7 @@ export default function Islamic() {
   const handleAddToCard = useCallback(
     async (islamicId: number) => {
       if (!user) {
-        router.push("/auth");
+        router.push(CLIENT_ROUTES.AUTH);
         return;
       }
       try {
@@ -88,7 +89,7 @@ export default function Islamic() {
 
   useEffect(() => {
     if (isInitialized && !user) {
-      router.replace("/auth");
+      router.replace(CLIENT_ROUTES.AUTH);
     }
   }, [isInitialized, router, user]);
 
@@ -199,7 +200,7 @@ export default function Islamic() {
       <button
         type="button"
         className="islamic-back-link"
-        onClick={() => router.push("/home")}
+        onClick={() => router.push(CLIENT_ROUTES.HOME)}
       >
         Назад на главную
       </button>

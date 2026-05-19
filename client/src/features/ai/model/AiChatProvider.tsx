@@ -12,6 +12,11 @@ import {
 import { axiosInstance } from "@/shared/lib/axiosInstance";
 import { useAppSelector } from "@/shared/hooks/useReduxHooks";
 import {
+  clearChatMessages,
+  loadChatMessages,
+  saveChatMessages,
+} from "@/features/ai/model/chatStorage";
+import {
   AI_ASSISTANT_NAME,
   AI_WELCOME_MESSAGE,
   type ChatMessage,
@@ -24,6 +29,7 @@ type AiChatContextType = {
   error: string;
   isLoading: boolean;
   sendMessage: () => Promise<void>;
+  clearChat: () => void;
 };
 
 const AiChatContext = createContext<AiChatContextType | undefined>(undefined);
@@ -57,10 +63,36 @@ export function AiChatProvider({ children }: { children: ReactNode }) {
   );
 
   useEffect(() => {
-    setMessages([AI_WELCOME_MESSAGE]);
+    if (!user?.id) {
+      setMessages([AI_WELCOME_MESSAGE]);
+      setInput("");
+      setError("");
+      setIsLoading(false);
+      return;
+    }
+
+    setMessages(loadChatMessages(user.id));
     setInput("");
     setError("");
     setIsLoading(false);
+  }, [user?.id]);
+
+  useEffect(() => {
+    if (!user?.id) {
+      return;
+    }
+
+    saveChatMessages(user.id, messages);
+  }, [messages, user?.id]);
+
+  const clearChat = useCallback(() => {
+    setMessages([AI_WELCOME_MESSAGE]);
+    setInput("");
+    setError("");
+
+    if (user?.id) {
+      clearChatMessages(user.id);
+    }
   }, [user?.id]);
 
   const sendMessage = useCallback(async () => {
@@ -106,7 +138,13 @@ export function AiChatProvider({ children }: { children: ReactNode }) {
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (err) {
       console.error("AI chat error:", err);
-      setError("Не удалось получить ответ. Попробуйте ещё раз.");
+      const status = (err as { response?: { status?: number } })?.response?.status;
+
+      if (status === 401 || status === 403) {
+        setError("Войдите в аккаунт, чтобы пользоваться чатом.");
+      } else {
+        setError("Не удалось получить ответ. Попробуйте ещё раз.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -120,8 +158,9 @@ export function AiChatProvider({ children }: { children: ReactNode }) {
       error,
       isLoading,
       sendMessage,
+      clearChat,
     }),
-    [messages, input, error, isLoading, sendMessage],
+    [messages, input, error, isLoading, sendMessage, clearChat],
   );
 
   return (

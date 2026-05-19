@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { UserType } from "@/entities/user/model";
 import { CardDateMeta } from "@/shared/ui/CardDateMeta/CardDateMeta";
 import { formatPriceRUB } from "@/shared/lib/formatPriceRUB";
+import { cardDetailRoute } from "@/shared/consts/clientRouts";
 import React from "react";
 
 function CardCard({ card, user }: { card: CardType; user: UserType }) {
@@ -61,7 +62,7 @@ function CardCard({ card, user }: { card: CardType; user: UserType }) {
           <button
             type="button"
             className="card-line-button card-line-button-secondary"
-            onClick={() => router.push(`/card/${card.id}`)}
+            onClick={() => router.push(cardDetailRoute(card.id))}
           >
             Подробнее
           </button>

@@ -1,4 +1,5 @@
 "use client";
+import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 
 import "./page.css";
 import "../../shop/page.css";
@@ -15,7 +16,7 @@ export default function CheckoutSuccessPage() {
 
   useEffect(() => {
     if (!lastCheckout) {
-      router.replace("/card");
+      router.replace(CLIENT_ROUTES.CARD);
     }
   }, [lastCheckout, router]);
 
@@ -45,14 +46,14 @@ export default function CheckoutSuccessPage() {
           <button
             type="button"
             className="cart-checkout-btn"
-            onClick={() => router.push("/home")}
+            onClick={() => router.push(CLIENT_ROUTES.HOME)}
           >
             На главную
           </button>
           <button
             type="button"
             className="shop-back-link"
-            onClick={() => router.push("/shop")}
+            onClick={() => router.push(CLIENT_ROUTES.SHOP)}
           >
             В каталог
           </button>
@@ -61,7 +62,7 @@ export default function CheckoutSuccessPage() {
       <button
         type="button"
         className="checkout-success-mentor-link"
-        onClick={() => router.push("/tarasAndYra")}
+        onClick={() => router.push(CLIENT_ROUTES.TARAS_AND_YRA)}
       >
         благодарность
       </button>

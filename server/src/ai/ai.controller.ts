@@ -1,4 +1,12 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { AiService } from './ai.service';
 import { IndexFileDto } from './dto/index-file.dto';
 import { QueryDto } from './dto/query.dto';
@@ -27,6 +35,7 @@ export class AiController {
   constructor(private readonly aiService: AiService) {}
 
   @Post('send-message')
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   async sendMessage(@Body() dto: SendMessageDto): Promise<SendMessageResponse> {
     const answer = await this.aiService.sendMessage({

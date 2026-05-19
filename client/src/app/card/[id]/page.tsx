@@ -1,4 +1,5 @@
 "use client";
+import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 
 import "../../shop/page.css";
 import "../page.css";
@@ -42,7 +43,7 @@ export default function CardByIdPage() {
   useEffect(() => {
     if (!isInitialized) return;
     if (!user) {
-      router.replace("/auth");
+      router.replace(CLIENT_ROUTES.AUTH);
       return;
     }
     if (Number.isFinite(numericId)) {
@@ -104,7 +105,7 @@ export default function CardByIdPage() {
                 void (async () => {
                   try {
                     await dispatch(deleteCardThunk(card.id)).unwrap();
-                    router.push("/card");
+                    router.push(CLIENT_ROUTES.CARD);
                   } catch {
                     console.log("Ошибка при удалении из корзины");
                   }

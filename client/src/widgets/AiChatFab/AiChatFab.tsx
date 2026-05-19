@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import AiChatPanel from "@/features/ai/ui/AiChatPanel/AiChatPanel";
@@ -55,7 +56,16 @@ export default function AiChatFab() {
           />
           <div className="ai-chat-fab-panel" role="dialog" aria-label="Чат с ИИ-помощником">
             <div className="ai-chat-fab-header">
-              <h2>ИИ-помощник</h2>
+              <div className="ai-chat-fab-header-main">
+                <h2>ИИ-помощник</h2>
+                <Link
+                  href={CLIENT_ROUTES.AI}
+                  className="ai-chat-fab-full-link"
+                  onClick={closeChat}
+                >
+                  Открыть полный чат
+                </Link>
+              </div>
               <button
                 type="button"
                 className="ai-chat-fab-close"

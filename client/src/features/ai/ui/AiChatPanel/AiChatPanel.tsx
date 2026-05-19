@@ -52,6 +52,19 @@ export default function AiChatPanel({
 
   return (
     <div className={panelClassName}>
+      {user && hasDialog && (
+        <div className="ai-chat-toolbar">
+          <button
+            type="button"
+            className="ai-chat-clear"
+            onClick={clearChat}
+            disabled={isLoading}
+          >
+            Очистить диалог
+          </button>
+        </div>
+      )}
+
       <div className="ai-chat-messages">
         {messages.map((message) => (
           <article

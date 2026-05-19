@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { CardDateMeta } from "@/shared/ui/CardDateMeta/CardDateMeta";
 import ConfirmDialog from "@/shared/ui/ConfirmDialog/ConfirmDialog";
 import { formatPriceRUB } from "@/shared/lib/formatPriceRUB";
+import { classicDetailRoute } from "@/shared/consts/clientRouts";
 import Image from "next/image";
 import { useCallback, useState } from "react";
 
@@ -64,7 +65,7 @@ function ClassicCard({ classic, onAddToCard }: ClassicCardProps) {
           <button
             className="classic-card-button classic-card-button-secondary"
             onClick={() => {
-              router.push(`/classic/${classic.id}`);
+              router.push(classicDetailRoute(classic.id));
             }}
           >
             Подробнее

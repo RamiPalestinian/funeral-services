@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { CLIENT_ROUTES } from '@/shared/consts/clientRouts';
 
 // Создаём свой экземпляр axios
 export const axiosInstance = axios.create({
@@ -44,7 +45,7 @@ axiosInstance.interceptors.response.use(    // перехватываем наш
           return axiosInstance(previousRequest); // и опять запускаем через axiosInstance наш запрос что бы обновить наш accessToken если не удачно то в catch(переходит на страницу авторизации)
         } catch (error) {
           setAccessToken('');
-          window.location.href = '/auth';
+          window.location.href = CLIENT_ROUTES.AUTH;
           return Promise.reject(error);
         }
       }

@@ -68,11 +68,29 @@
 
 .ai-chat-fab-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
   padding: 16px 18px;
   border-bottom: 1px solid rgba(214, 204, 189, 0.1);
+}
+
+.ai-chat-fab-header-main {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.ai-chat-fab-full-link {
+  color: var(--text-muted);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.ai-chat-fab-full-link:hover {
+  color: var(--accent-stone);
 }
 
 .ai-chat-fab-header h2 {

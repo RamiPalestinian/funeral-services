@@ -9,6 +9,7 @@ import { logoutThunk } from "@/entities/user/api/UserApiThunk";
 import { getAllCardsThunk } from "@/entities/card/api/CardApiThunk";
 import { setAccessToken } from "@/shared/lib/axiosInstance";
 import { useEffect } from "react";
+import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 
 type HeaderProps = {
   user: UserType | null;
@@ -20,7 +21,7 @@ export default function Header({ user, setUser }: HeaderProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const cartCount = useAppSelector((state) => state.card.cards.length);
-  const isHomePage = pathname === "/";
+  const isHomePage = pathname === CLIENT_ROUTES.GENERAL;
 
   useEffect(() => {
     if (user) {
@@ -35,7 +36,7 @@ export default function Header({ user, setUser }: HeaderProps) {
       setUser(null);
       setAccessToken("");
     }
-    router.push("/");
+    router.push(CLIENT_ROUTES.GENERAL);
   }
   return (
     <header
@@ -49,32 +50,32 @@ export default function Header({ user, setUser }: HeaderProps) {
         <div className="nav-links">
           {user !== null ? (
             <>
-              <Link href="/home" className="navlink">
+              <Link href={CLIENT_ROUTES.HOME} className="navlink">
                 Главная страница
               </Link>
-              {/* <Link href="/ai" className="navlink">
+              {/* <Link href={CLIENT_ROUTES.AI} className="navlink">
                 Обращение
               </Link>
-              <Link href="/personal" className="navlink">
+              <Link href={CLIENT_ROUTES.PERSONAL} className="navlink">
                 Кабинет
               </Link> */}
               <div className="dropdown">
                 <button className="dropbtn">Кабинет</button>
                 <div className="dropdown-content">
-                  <Link href="/personal">Личный кабинет</Link>
-                  <Link href="/ai">Обращение</Link>
+                  <Link href={CLIENT_ROUTES.PERSONAL}>Личный кабинет</Link>
+                  <Link href={CLIENT_ROUTES.AI}>Обращение</Link>
                 </div>
               </div>
-              {/* <Link href="/contact" className="navlink">
+              {/* <Link href={CLIENT_ROUTES.CONTACT} className="navlink">
                 Контакты
               </Link> */}
               <div className="dropdown">
                 <button className="dropbtn">Наши услуги</button>
                 <div className="dropdown-content">
-                  <Link href="/classic">Традиционные похороны</Link>
-                  <Link href="/islamic">Исламские похороны</Link>
-                  <Link href="/cremation">Кремация</Link>
-                  <Link href="/shop">Ритуальный магазин</Link>
+                  <Link href={CLIENT_ROUTES.CLASSIC}>Традиционные похороны</Link>
+                  <Link href={CLIENT_ROUTES.ISLAMIC}>Исламские похороны</Link>
+                  <Link href={CLIENT_ROUTES.CREMATION}>Кремация</Link>
+                  <Link href={CLIENT_ROUTES.SHOP}>Ритуальный магазин</Link>
                 </div>
               </div>
               <button
@@ -88,10 +89,10 @@ export default function Header({ user, setUser }: HeaderProps) {
             </>
           ) : (
             <>
-              <Link href="/" className="navlink">
+              <Link href={CLIENT_ROUTES.GENERAL} className="navlink">
                 Главная
               </Link>
-              <Link href="/auth" className="navlink navlink-accent">
+              <Link href={CLIENT_ROUTES.AUTH} className="navlink navlink-accent">
                 Войти
               </Link>
             </>
@@ -103,7 +104,7 @@ export default function Header({ user, setUser }: HeaderProps) {
             <strong>24 / 7</strong>
           </div>
           <Link
-            href="/card"
+            href={CLIENT_ROUTES.CARD}
             className="navlink navlink-cart"
             aria-label={
               cartCount > 0 ? `Корзина, ${cartCount} позиций` : "Корзина"

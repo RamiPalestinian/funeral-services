@@ -1,4 +1,5 @@
 "use client";
+import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 
 import "../shop/page.css";
 import "./page.css";
@@ -19,7 +20,7 @@ export default function CardPage() {
   useEffect(() => {
     if (!isInitialized) return;
     if (!user) {
-      router.replace("/auth");
+      router.replace(CLIENT_ROUTES.AUTH);
       return;
     }
     void dispatch(getAllCardsThunk());
@@ -81,14 +82,14 @@ export default function CardPage() {
               <button
                 type="button"
                 className="cart-checkout-btn"
-                onClick={() => router.push("/checkout")}
+                onClick={() => router.push(CLIENT_ROUTES.CHECKOUT)}
               >
                 Оформить заказ
               </button>
               <button
                 type="button"
                 className="shop-back-link cart-back-link"
-                onClick={() => router.push("/home")}
+                onClick={() => router.push(CLIENT_ROUTES.HOME)}
               >
                 Назад на главную
               </button>
@@ -99,7 +100,7 @@ export default function CardPage() {
         <button
           type="button"
           className="shop-back-link cart-back-link"
-          onClick={() => router.push("/home")}
+          onClick={() => router.push(CLIENT_ROUTES.HOME)}
         >
           Назад на главную
         </button>

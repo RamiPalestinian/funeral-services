@@ -1,4 +1,5 @@
 "use client";
+import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 import { useRouter } from "next/navigation";
 import "./not-found.css";
 
@@ -11,7 +12,7 @@ export default function NotFoundPage() {
       return;
     }
 
-    router.push("/home");
+    router.push(CLIENT_ROUTES.HOME);
   }
 
   return (
@@ -29,7 +30,7 @@ export default function NotFoundPage() {
         </p>
         <div className="not-found-divider" aria-hidden="true"></div>
         <div className="not-found-actions">
-          <button className="back-button" onClick={() => router.replace("/home")}>
+          <button className="back-button" onClick={() => router.replace(CLIENT_ROUTES.HOME)}>
             ← Вернуться на главную
           </button>
         </div>

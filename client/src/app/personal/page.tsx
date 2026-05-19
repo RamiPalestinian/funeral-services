@@ -1,4 +1,5 @@
 "use client";
+import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 import "./page.css";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -21,7 +22,7 @@ export default function Personal() {
   useEffect(() => {
     if (!isInitialized) return;
     if (!user) {
-      router.replace("/auth");
+      router.replace(CLIENT_ROUTES.AUTH);
     }
   }, [isInitialized, user, router]);
 
@@ -89,28 +90,28 @@ export default function Personal() {
           <button
             type="button"
             className="personal-btn personal-btn--nav"
-            onClick={() => router.push("/islamic")}
+            onClick={() => router.push(CLIENT_ROUTES.ISLAMIC)}
           >
             Исламские
           </button>
           <button
             type="button"
             className="personal-btn personal-btn--nav"
-            onClick={() => router.push("/cremation")}
+            onClick={() => router.push(CLIENT_ROUTES.CREMATION)}
           >
             Кремация
           </button>
           <button
             type="button"
             className="personal-btn personal-btn--nav"
-            onClick={() => router.push("/classic")}
+            onClick={() => router.push(CLIENT_ROUTES.CLASSIC)}
           >
             Классические
           </button>
           <button
             type="button"
             className="personal-btn personal-btn--nav"
-            onClick={() => router.push("/shop")}
+            onClick={() => router.push(CLIENT_ROUTES.SHOP)}
           >
             Магазин
           </button>
@@ -120,14 +121,14 @@ export default function Personal() {
           <button
             type="button"
             className="personal-btn personal-btn--nav"
-            onClick={() => router.push("/card")}
+            onClick={() => router.push(CLIENT_ROUTES.CARD)}
           >
             Перейти в корзину
           </button>
           <button
             type="button"
             className="personal-btn personal-btn--nav"
-            onClick={() => router.push("/home")}
+            onClick={() => router.push(CLIENT_ROUTES.HOME)}
           >
             Вернуться на главную
           </button>

@@ -1,4 +1,5 @@
 "use client";
+import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 import "./page.css";
 import SignUpForm from "@/features/auth/ui/SignUpForm/SignUpForm";
 import SignInForm from "@/features/auth/ui/SignInForm/SignInForm";
@@ -20,7 +21,7 @@ export default function AuthPage() {
    //защита сраницы
    useEffect(() => {
     if (isInitialized && user) {
-      router.replace("/home");
+      router.replace(CLIENT_ROUTES.HOME);
     }
   }, [isInitialized, user]);
 
