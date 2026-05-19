@@ -1,4 +1,5 @@
 "use client";
+
 import "./page.css";
 import IslamicCard from "@/entities/islamic/ui/IslamicCard/IslamicCard";
 import { useRouter } from "next/navigation";
@@ -9,89 +10,92 @@ import {
   fetchIslamicThunk,
 } from "@/entities/islamic/api/IslamicApiThunk";
 import { useCallback, useEffect, useState } from "react";
-import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";  
-import { useUser } from "@/application/UserProvider";
-
-const initialFormState = {
-  name: "",
-  description: "",
-  price: "",
-  image: "",
-  category: "",
-};
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  islamicSchema,
+  IslamicFormInput,
+  IslamicSchema,
+} from "@/entities/islamic/model/islamicChema";
 
 export default function Islamic() {
   const router = useRouter();
-
-
   const dispatch = useAppDispatch();
-  const { error, islamics } = useAppSelector((state) => state.islamic);
-  const { isInitialized } = useAppSelector((state) => state.user);
-  const { user } = useUser();
+  const { islamics, error: islamicError } = useAppSelector(
+    (state) => state.islamic,
+  );
+  const { user, isInitialized } = useAppSelector((state) => state.user);
+
   const isAdmin = user?.id === 1;
-  const [formData, setFormData] = useState(initialFormState);
+  const [formError, setFormError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredIslamics = islamics.filter((islamic) =>
     islamic.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
-  useEffect(() => {
-    if (!isInitialized) return;
-    if (!user) {
-      router.replace(CLIENT_ROUTES.AUTH);
+  const handleAddToCard = useCallback(
+    async (islamicId: number) => {
+      if (!user) {
+        router.push("/auth");
+        return;
+      }
+      try {
+        await dispatch(createCardThunk({ islamicId })).unwrap();
+      } catch {
+        console.log("Ошибка при добавлении в корзину");
+      }
+    },
+    [user, router, dispatch],
+  );
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<IslamicFormInput, unknown, IslamicSchema>({
+    resolver: zodResolver(islamicSchema),
+    mode: "onSubmit",
+    defaultValues: {
+      name: "",
+      description: "",
+      price: "",
+      image: "",
+      category: "",
+      userId: 1,
+    },
+  });
+
+  const onSubmit: SubmitHandler<IslamicSchema> = async (data) => {
+    try {
+      setFormError("");
+      await dispatch(createIslamicThunk(data)).unwrap();
+      reset();
+    } catch (error) {
+      setFormError(
+        typeof error === "string"
+          ? error
+          : "Не удалось создать услугу. Проверь поля формы.",
+      );
+      console.error("Ошибка при создании исламской услуги:", error);
     }
-  }, [isInitialized, user, router]);
+  };
 
   useEffect(() => {
     dispatch(fetchIslamicThunk());
   }, [dispatch]);
 
-  const handleAddToCard = useCallback(async (islamicId: number) => {
-    if (!user) {
-      router.push("/auth");
-      return;
+  useEffect(() => {
+    if (isInitialized && !user) {
+      router.replace("/auth");
     }
-    try {
-      await dispatch(createCardThunk({ islamicId })).unwrap();
-    } catch {
-      console.log("Ошибка при добавлении в корзину");
-    }
-  }, [user, router, dispatch]);
+  }, [isInitialized, router, user]);
 
-  const handleChange = useCallback((
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = event.target;
+  if (isInitialized && !user) {
+    return null;
+  }
 
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  }, []);
-
-  const handleSubmit = useCallback(async (event: React.ChangeEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!user) {
-      return;
-    }
-
-    try {
-      await dispatch(
-        createIslamicThunk({
-          ...formData,
-          price: Number(formData.price),
-          userId: user.id,
-        }),
-      ).unwrap();
-      setFormData(initialFormState);
-    } catch {
-      // Ошибка уже записывается в islamic slice.
-    }
-  }, [user, dispatch, formData]);
-
-  
   return (
     <section className="islamic-page">
       <div className="islamic-hero">
@@ -115,58 +119,61 @@ export default function Islamic() {
           </div>
         </div>
       </div>
+
       {isAdmin && (
-        <form className="islamic-create-form" onSubmit={handleSubmit}>
+        <form
+          className="islamic-create-form"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <input
-            name="name"
             type="text"
             placeholder="Название"
-            value={formData.name}
-            onChange={handleChange}
-            minLength={3}
-            required
+            {...register("name")}
           />
+          {errors.name && (
+            <p className="islamic-create-error">{errors.name.message}</p>
+          )}
           <input
-            name="category"
             type="text"
             placeholder="Категория"
-            value={formData.category}
-            onChange={handleChange}
-            minLength={3}
-            required
+            {...register("category")}
           />
+          {errors.category && (
+            <p className="islamic-create-error">{errors.category.message}</p>
+          )}
           <input
-            name="price"
             type="number"
             placeholder="Цена"
-            value={formData.price}
-            onChange={handleChange}
-            min={0}
-            required
+            {...register("price")}
           />
+          {errors.price && (
+            <p className="islamic-create-error">{errors.price.message}</p>
+          )}
           <input
             className="islamic-form-input-wide"
-            name="image"
             type="url"
             placeholder="Добавить фото"
-            value={formData.image}
-            onChange={handleChange}
-            required
+            {...register("image")}
           />
+          {errors.image && (
+            <p className="islamic-create-error">{errors.image.message}</p>
+          )}
           <textarea
-            name="description"
             placeholder="Описание"
-            value={formData.description}
-            onChange={handleChange}
-            minLength={10}
-            required
+            {...register("description")}
           />
-          {error && <p className="islamic-create-error">{error}</p>}
-          <button type="submit" disabled={!user}>
-            Создать услугу
+          {errors.description && (
+            <p className="islamic-create-error">{errors.description.message}</p>
+          )}
+          {(formError || islamicError) && (
+            <p className="islamic-create-error">{formError || islamicError}</p>
+          )}
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Создание..." : "Создать услугу"}
           </button>
         </form>
       )}
+
       <div className="islamic-filter-bar">
         <span className="islamic-filter-label">Фильтрация</span>
         <input
@@ -178,6 +185,7 @@ export default function Islamic() {
           aria-label="Поиск услуг по названию"
         />
       </div>
+
       <div className="islamic-grid">
         {filteredIslamics.map((islamic) => (
           <IslamicCard
@@ -187,7 +195,9 @@ export default function Islamic() {
           />
         ))}
       </div>
+
       <button
+        type="button"
         className="islamic-back-link"
         onClick={() => router.push("/home")}
       >
