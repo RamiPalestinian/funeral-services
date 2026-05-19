@@ -107,6 +107,10 @@
 .cemeteries-map .leaflet-control-attribution {
   font-size: 10px;
 }
+.leaflet-right {
+  display: none;
+  opacity: 0;
+}
 
 @media (width <= 980px) {
   .cemeteries-map {
