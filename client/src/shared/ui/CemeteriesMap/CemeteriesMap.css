@@ -95,7 +95,7 @@
 @media (width <= 640px) {
   .cemeteries-map__canvas,
   .cemeteries-map--loading {
-    min-height: 340px;
     height: 340px;
+    min-height: 340px;
   }
 }
