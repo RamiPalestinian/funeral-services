@@ -40,7 +40,6 @@ function IslamicCard({ islamic, onAddToCard }: IslamicCardProps) {
     <article className="islamic-card">
       <CardDateMeta createdAt={islamic.createdAt} />
       <div className="islamic-card-media">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className="islamic-card-image"
           src={islamic.image}

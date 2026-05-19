@@ -56,7 +56,6 @@ export default function CardByIdPage() {
       <div className="card-item-detail-media">
         {item?.image ? (
           <>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               className="card-item-detail-image"
               src={item.image}

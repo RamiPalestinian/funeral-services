@@ -36,7 +36,6 @@ export default function ProfileAvatarEditor({
       <div className="personal-avatar-wrap">
         {avatar ? (
           <>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={avatar}
               alt=""
