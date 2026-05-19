@@ -1,10 +1,25 @@
 "use client";
 import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 import "./page.css";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { useEffect } from "react";
 import Image from "next/image";
+const CemeteriesMap = dynamic(
+  () =>
+    import("@/shared/ui/CemeteriesMap/CemeteriesMap").then(
+      (mod) => mod.CemeteriesMap,
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="cemeteries-map cemeteries-map--loading">
+        Загрузка карты…
+      </div>
+    ),
+  },
+);
 
 export default function Home() {
   const router = useRouter();
@@ -83,6 +98,14 @@ export default function Home() {
             <button onClick={() => router.push(CLIENT_ROUTES.SHOP)}>Подробнее</button>
           </article>
         </div>
+      </section>
+
+      <section className="home-cemeteries">
+        <div className="home-section-head">
+          <p>Кладбища Москвы</p>
+          <h2>Места захоронения, с которыми мы работаем</h2>
+        </div>
+        <CemeteriesMap />
       </section>
 
       <section className="home-values">
