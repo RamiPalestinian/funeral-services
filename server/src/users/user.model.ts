@@ -15,6 +15,8 @@ import { Card } from 'src/card/card.model';
 
 @Table({ tableName: 'users' }) //декоратор - мы добавляем либо методанные либо функционал
 export class User extends Model {
+  declare id: number;
+
   // устанавливаем взаимосвязь
 
   @HasMany(() => Service, { foreignKey: 'userId' })
