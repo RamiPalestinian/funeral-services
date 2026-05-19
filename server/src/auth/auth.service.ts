@@ -19,10 +19,10 @@ export class AuthService {
   ) {}
   // вспомогательная функция для создания токенов
   private async signTokens(user: { id: number; email: string }) {
-    const payload = { sub: user.id, email: user.email }; //sub- subject, кому мы выписываем токен
+    const payload = { sub: user.id, email: user.email };
 
     const accessToken = await this.jwtService.signAsync(payload, {
-      secret: this.configService.getOrThrow('JWT_ACCESS_SECRET'), // метод который дает возможность считать инфу с env или ошибка если такого значения нет
+      secret: this.configService.getOrThrow('JWT_ACCESS_SECRET'),
       expiresIn: this.configService.getOrThrow('JWT_ACCESS_EXPIRES_IN'),
     });
     const refreshToken = await this.jwtService.signAsync(payload, {
@@ -49,7 +49,6 @@ export class AuthService {
       email,
       password: hashedPassword,
     });
-    // после создания пользователя
     const { accessToken, refreshToken } = await this.signTokens({
       id: user.id,
       email: user.email,
@@ -57,8 +56,8 @@ export class AuthService {
 
     return {
       message: 'Registration successful',
-      accessToken, //возвращем вместе с пользователем
-      refreshToken, //возвращем вместе с пользователем и в куки его
+      accessToken,
+      refreshToken,
       user: {
         id: user.id,
         name: user.name,
@@ -87,7 +86,6 @@ export class AuthService {
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid email or password');
     }
-    // так же посли валидации пользователя
     const { accessToken, refreshToken } = await this.signTokens({
       id: user.id,
       email: user.email,
@@ -95,8 +93,8 @@ export class AuthService {
 
     return {
       message: 'Login successful',
-      accessToken, //возвращем вместе с пользователем
-      refreshToken, //возвращем вместе с пользователем и в куки его
+      accessToken,
+      refreshToken,
       user: {
         id: user.id,
         name: user.name,

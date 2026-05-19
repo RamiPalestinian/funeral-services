@@ -8,10 +8,8 @@ import {
   createClassicThunk,
   fetchClassicThunk,
 } from "@/entities/classic/api/ClassicApiThunk";
-import { useEffect, useState } from "react";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
-
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {

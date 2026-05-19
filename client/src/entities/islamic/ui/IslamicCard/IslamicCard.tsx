@@ -6,8 +6,9 @@ import type { IslamicType } from "@/entities/islamic/model";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { useRouter } from "next/navigation";
 import { CardDateMeta } from "@/shared/ui/CardDateMeta/CardDateMeta";
+import ConfirmDialog from "@/shared/ui/ConfirmDialog/ConfirmDialog";
 import { formatPriceRUB } from "@/shared/lib/formatPriceRUB";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 
 type IslamicCardProps = {
   islamic: IslamicType | null;
@@ -19,13 +20,15 @@ function IslamicCard({ islamic, onAddToCard }: IslamicCardProps) {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.user);
   const isAdmin = user?.id === 1;
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   if (!islamic) {
-    return null; // или можно отобразить заглушку, если данных нет
+    return null;
   }
 
-  const handleDelete = useCallback(() => {
+  const handleConfirmDelete = useCallback(() => {
     void dispatch(deleteIslamicThunk(islamic.id));
+    setIsDeleteOpen(false);
   }, [dispatch, islamic.id]);
 
   return (
@@ -47,7 +50,9 @@ function IslamicCard({ islamic, onAddToCard }: IslamicCardProps) {
           <span className="islamic-card-category">
             {islamic.category ?? "Ислам"}
           </span>
-          <span className="islamic-card-price">{formatPriceRUB(islamic.price)} ₽</span>
+          <span className="islamic-card-price">
+            {formatPriceRUB(islamic.price)} ₽
+          </span>
         </div>
         <div className="islamic-card-actions">
           <button
@@ -58,6 +63,7 @@ function IslamicCard({ islamic, onAddToCard }: IslamicCardProps) {
             В корзину
           </button>
           <button
+            type="button"
             className="islamic-card-button islamic-card-button-secondary"
             onClick={() => {
               router.push(`/islamic/${islamic.id}`);
@@ -69,14 +75,23 @@ function IslamicCard({ islamic, onAddToCard }: IslamicCardProps) {
             <button
               type="button"
               className="islamic-card-button islamic-card-button-danger"
-              onClick={handleDelete}
+              onClick={() => setIsDeleteOpen(true)}
             >
               Удалить
             </button>
           )}
         </div>
       </div>
+
+      <ConfirmDialog
+        isOpen={isDeleteOpen}
+        title="Удалить услугу?"
+        message={`«${islamic.name}» будет удалена безвозвратно.`}
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setIsDeleteOpen(false)}
+      />
     </article>
   );
-}   
+}
+
 export default React.memo(IslamicCard);

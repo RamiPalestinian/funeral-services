@@ -3,9 +3,8 @@ import { ClassicServiceController } from './classic-service.controller';
 import { ClassicServiceService } from './classic-service.service';
 import { ClassicService } from './classicService.model';
 import { SequelizeModule } from '@nestjs/sequelize';
-
 @Module({
-  imports: [SequelizeModule.forFeature([ClassicService])], //пишем для инпорта через SequelizeModule наш Task из './task.model';
+  imports: [SequelizeModule.forFeature([ClassicService])],
   controllers: [ClassicServiceController],
   providers: [ClassicServiceService],
 })

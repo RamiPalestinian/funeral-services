@@ -7,8 +7,9 @@ import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { deleteShopThunk } from "../../api/ShopApiThunk";
 import { useUser } from "@/application/UserProvider";
 import { CardDateMeta } from "@/shared/ui/CardDateMeta/CardDateMeta";
+import ConfirmDialog from "@/shared/ui/ConfirmDialog/ConfirmDialog";
 import { formatPriceRUB } from "@/shared/lib/formatPriceRUB";
-import React from "react";
+import React, { useCallback, useState } from "react";
 
 type ShopCardProps = {
   shop: ShopType;
@@ -20,9 +21,12 @@ function ShopCard({ shop, onAddToCard }: ShopCardProps) {
   const dispatch = useAppDispatch();
   const { user } = useUser();
   const isAdmin = user?.id === 1;
-  const handleDelete = () => {
-    dispatch(deleteShopThunk(Number(shop.id)));
-  };
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+  const handleConfirmDelete = useCallback(() => {
+    void dispatch(deleteShopThunk(Number(shop.id)));
+    setIsDeleteOpen(false);
+  }, [dispatch, shop.id]);
 
   return (
     <article className="shop-card">
@@ -40,9 +44,7 @@ function ShopCard({ shop, onAddToCard }: ShopCardProps) {
         <h2 className="shop-card-title">{shop.name}</h2>
         <p className="shop-card-description">{shop.description}</p>
         <div className="shop-card-meta">
-          <span className="shop-card-category">
-            {shop.category}
-          </span>
+          <span className="shop-card-category">{shop.category}</span>
           <span className="shop-card-price">{formatPriceRUB(shop.price)} ₽</span>
         </div>
         <div className="shop-card-actions">
@@ -64,13 +66,21 @@ function ShopCard({ shop, onAddToCard }: ShopCardProps) {
             <button
               type="button"
               className="shop-card-button shop-card-button-delete"
-              onClick={handleDelete}
+              onClick={() => setIsDeleteOpen(true)}
             >
               Удалить
             </button>
           )}
         </div>
       </div>
+
+      <ConfirmDialog
+        isOpen={isDeleteOpen}
+        title="Удалить услугу?"
+        message={`«${shop.name}» будет удалена безвозвратно.`}
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setIsDeleteOpen(false)}
+      />
     </article>
   );
 }

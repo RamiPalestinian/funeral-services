@@ -6,8 +6,10 @@ import type { ClassicType } from "@/entities/classic/model";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { useRouter } from "next/navigation";
 import { CardDateMeta } from "@/shared/ui/CardDateMeta/CardDateMeta";
+import ConfirmDialog from "@/shared/ui/ConfirmDialog/ConfirmDialog";
 import { formatPriceRUB } from "@/shared/lib/formatPriceRUB";
 import Image from "next/image";
+import { useCallback, useState } from "react";
 
 type ClassicCardProps = {
   classic: ClassicType | null;
@@ -19,11 +21,16 @@ function ClassicCard({ classic, onAddToCard }: ClassicCardProps) {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.user);
   const isAdmin = user?.id === 1;
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   if (!classic) {
-    return null; // или можно отобразить заглушку, если данных нет
+    return null;
   }
 
+  const handleConfirmDelete = useCallback(() => {
+    void dispatch(deleteClassicThunk(classic.id));
+    setIsDeleteOpen(false);
+  }, [dispatch, classic.id]);
 
   return (
     <article className="classic-card">
@@ -64,14 +71,23 @@ function ClassicCard({ classic, onAddToCard }: ClassicCardProps) {
           </button>
           {isAdmin && (
             <button
+              type="button"
               className="classic-card-button classic-card-button-delete"
-              onClick={() => dispatch(deleteClassicThunk(classic.id))}
+              onClick={() => setIsDeleteOpen(true)}
             >
               Удалить
             </button>
           )}
         </div>
       </div>
+
+      <ConfirmDialog
+        isOpen={isDeleteOpen}
+        title="Удалить услугу?"
+        message={`«${classic.name}» будет удалена безвозвратно.`}
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setIsDeleteOpen(false)}
+      />
     </article>
   );
 }

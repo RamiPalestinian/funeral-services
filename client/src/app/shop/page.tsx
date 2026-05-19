@@ -11,7 +11,6 @@ import {
   getAllShopsThunk,
 } from "@/entities/shop/api/ShopApiThunk";
 import type { ShopType } from "@/entities/shop/model";
-
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
