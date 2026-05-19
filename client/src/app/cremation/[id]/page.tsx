@@ -77,7 +77,7 @@ function CremationByIdPage() {
   }, [cremation]);
 
   const updateCremation = useCallback(
-    async (event: React.ChangeEvent<HTMLFormElement>) => {
+    async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
       await dispatch(
@@ -99,7 +99,7 @@ function CremationByIdPage() {
     if (isInitialized && !user) {
       router.replace("/auth");
     }
-  }, [isInitialized, user]);
+  }, [isInitialized, user, router]);
 
   if (isInitialized && !user) {
     return null;

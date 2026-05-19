@@ -23,13 +23,13 @@ const initialMessages: ChatMessage[] = [
     content: "Я ваш личный помощник, чем могу помочь?",
   },
 ];
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAppSelector } from "@/shared/hooks/useReduxHooks";
+import AiChatPanel from "@/features/ai/ui/AiChatPanel/AiChatPanel";
 
 export default function AiPage() {
   const { user, isInitialized } = useAppSelector((state) => state.user);
-  const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
-  const [input, setInput] = useState("");
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const chatHistory = useMemo(
@@ -114,6 +114,7 @@ export default function AiPage() {
       router.replace("/auth");
     }
   }, [isInitialized, router, user]);
+  }, [isInitialized, user, router]);
 
   if (isInitialized && !user) {
     return null;
@@ -131,44 +132,7 @@ export default function AiPage() {
       </div>
 
       <div className="support-chat-shell">
-        <div className="support-chat-messages">
-          {messages.map((message) => (
-            <article
-              key={message.id}
-              className={`support-chat-message support-chat-message-${message.role}${
-                message.id === "assistant-welcome"
-                  ? " support-chat-message-welcome"
-                  : ""
-              }`}
-            >
-              <span className="support-chat-author">{message.author}</span>
-              <p>{message.content}</p>
-            </article>
-          ))}
-
-          {isLoading && (
-            <article className="support-chat-message support-chat-message-assistant">
-              <span className="support-chat-author">{assistantName}</span>
-              <p>Печатает ответ...</p>
-            </article>
-          )}
-        </div>
-
-        <form className="support-chat-form" onSubmit={handleSubmit}>
-          <textarea
-            value={input}
-            onChange={(event) => setInput(event.target.value)}
-            onKeyDown={handleTextareaKeyDown}
-            placeholder="Напишите ваш вопрос"
-            rows={3}
-          />
-          <div className="support-chat-form-row">
-            {error ? <p className="support-chat-error">{error}</p> : <span />}
-            <button type="submit" disabled={isLoading || !input.trim()}>
-              Отправить
-            </button>
-          </div>
-        </form>
+        <AiChatPanel variant="page" />
       </div>
     </section>
   );

@@ -1,25 +1,21 @@
 "use client";
 
 import "../page.css";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { createCardThunk } from "@/entities/card/api/CardApiThunk";
 import {
   fetchIslamicByIdThunk,
   updateIslamicThunk,
 } from "@/entities/islamic/api/IslamicApiThunk";
-import { useCallback } from "react";
-import { useUser } from "@/application/UserProvider";
-import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
-
-const initialFormState = {
-  name: "",
-  description: "",
-  price: "",
-  image: "",
-  category: "",
-};
+import {
+  islamicUpdateSchema,
+  IslamicUpdateFormInput,
+  IslamicUpdateSchema,
+} from "@/entities/islamic/model/islamicChema";
 
 export default function OneIslamicPage() {
   const router = useRouter();
@@ -27,17 +23,91 @@ export default function OneIslamicPage() {
   const { error, isLoading, oneIslamic } = useAppSelector(
     (state) => state.islamic,
   );
-  const { isInitialized } = useAppSelector((state) => state.user);
-  const { user } = useUser();
+  const { user, isInitialized } = useAppSelector((state) => state.user);
+  const isAdmin = user?.id === 1;
+  const { id } = useParams<{ id: string }>();
+  const [isEditing, setIsEditing] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<IslamicUpdateFormInput, unknown, IslamicUpdateSchema>({
+    resolver: zodResolver(islamicUpdateSchema),
+    mode: "onSubmit",
+    defaultValues: {
+      name: "",
+      description: "",
+      price: "",
+      image: "",
+      category: "",
+    },
+  });
+
+  const getFormValues = useCallback((): IslamicUpdateFormInput => {
+    if (!oneIslamic) {
+      return {
+        name: "",
+        description: "",
+        price: "",
+        image: "",
+        category: "",
+      };
+    }
+
+    return {
+      name: oneIslamic.name,
+      description: oneIslamic.description,
+      price: oneIslamic.price,
+      image: oneIslamic.image,
+      category: oneIslamic.category ?? "",
+    };
+  }, [oneIslamic]);
+
   useEffect(() => {
-    if (!isInitialized) return;
-    if (!user) {
-      router.replace(CLIENT_ROUTES.AUTH);
+    if (isInitialized && !user) {
+      router.replace("/auth");
     }
   }, [isInitialized, user, router]);
-  const isAdmin = user?.id === 1;
-  const { id } = useParams<{ id: string }>(); 
-  const [formData, setFormData] = useState(initialFormState);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchIslamicByIdThunk(Number(id)));
+    }
+  }, [dispatch, id]);
+
+  const handleStartEdit = useCallback(() => {
+    if (!oneIslamic) {
+      return;
+    }
+
+    reset(getFormValues());
+    setIsEditing(true);
+  }, [oneIslamic, reset, getFormValues]);
+
+  const handleCancelEdit = useCallback(() => {
+    reset(getFormValues());
+    setIsEditing(false);
+  }, [reset, getFormValues]);
+
+  const onSubmit: SubmitHandler<IslamicUpdateSchema> = async (data) => {
+    if (!oneIslamic) {
+      return;
+    }
+
+    try {
+      await dispatch(
+        updateIslamicThunk({
+          id: oneIslamic.id,
+          islamicData: data,
+        }),
+      ).unwrap();
+      setIsEditing(false);
+    } catch {
+      // Ошибка уже записывается в islamic slice.
+    }
+  };
 
   const handleAddToCard = useCallback(async () => {
     if (!user) {
@@ -52,79 +122,15 @@ export default function OneIslamicPage() {
     } catch {
       console.log("Ошибка при добавлении в корзину");
     }
-  }, [user, router, dispatch, oneIslamic]); 
-  const [isEditing, setIsEditing] = useState(false);
+  }, [user, router, dispatch, oneIslamic]);
 
-  useEffect(() => {
-    if (id) {
-      dispatch(fetchIslamicByIdThunk(Number(id)));
-    }
-  }, [dispatch, id]);
+  if (isInitialized && !user) {
+    return null;
+  }
 
-  const handleChange = useCallback((
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = event.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  }, []);
-
-  const handleStartEdit = useCallback(() => {
-    if (!oneIslamic) {
-      return;
-    }
-
-    setFormData({
-      name: oneIslamic.name,
-      description: oneIslamic.description,
-      price: String(oneIslamic.price),
-      image: oneIslamic.image,
-      category: oneIslamic.category ?? "",
-    });
-    setIsEditing(true);
-  }, [oneIslamic]);
-
-  const handleCancelEdit = useCallback(() => {
-    if (oneIslamic) {
-      setFormData({
-        name: oneIslamic.name,
-        description: oneIslamic.description,
-        price: String(oneIslamic.price),
-        image: oneIslamic.image,
-        category: oneIslamic.category ?? "",
-      });
-    }
-
-    setIsEditing(false);
-  }, [oneIslamic]);
-
-  const handleSubmit = useCallback(async (event: React.ChangeEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!oneIslamic) {
-      return;
-    }
-
-    try {
-      await dispatch(
-        updateIslamicThunk({
-          id: oneIslamic.id,
-          islamicData: {
-            ...formData,
-            price: Number(formData.price),
-          },
-        }),
-      ).unwrap();
-      setIsEditing(false);
-    } catch {
-      // Ошибка уже записывается в islamic slice.
-    }
-  }, [dispatch, oneIslamic, formData]);
-
-  if (!oneIslamic) return null;
+  if (!oneIslamic) {
+    return null;
+  }
 
   return (
     <section className="islamic-page islamic-detail-page">
@@ -145,55 +151,50 @@ export default function OneIslamicPage() {
           <span>{oneIslamic.price} ₽</span>
         </div>
         {isAdmin && isEditing && (
-          <form className="islamic-update-form" onSubmit={handleSubmit}>
+          <form
+            className="islamic-update-form"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <input type="text" placeholder="Название" {...register("name")} />
+            {errors.name && (
+              <p className="islamic-update-error">{errors.name.message}</p>
+            )}
             <input
-              name="name"
-              type="text"
-              placeholder="Название"
-              value={formData.name}
-              onChange={handleChange}
-              minLength={3}
-              required
-            />
-            <input
-              name="category"
               type="text"
               placeholder="Категория"
-              value={formData.category}
-              onChange={handleChange}
-              minLength={3}
-              required
+              {...register("category")}
             />
-            <input
-              name="price"
-              type="number"
-              placeholder="Цена"
-              value={formData.price}
-              onChange={handleChange}
-              min={0}
-              required
-            />
+            {errors.category && (
+              <p className="islamic-update-error">{errors.category.message}</p>
+            )}
+            <input type="number" placeholder="Цена" {...register("price")} />
+            {errors.price && (
+              <p className="islamic-update-error">{errors.price.message}</p>
+            )}
             <input
               className="islamic-form-input-wide"
-              name="image"
               type="url"
               placeholder="Добавить фото"
-              value={formData.image}
-              onChange={handleChange}
-              required
+              {...register("image")}
             />
+            {errors.image && (
+              <p className="islamic-update-error">{errors.image.message}</p>
+            )}
             <textarea
-              name="description"
               placeholder="Описание"
-              value={formData.description}
-              onChange={handleChange}
-              minLength={10}
-              required
+              {...register("description")}
             />
+            {errors.description && (
+              <p className="islamic-update-error">
+                {errors.description.message}
+              </p>
+            )}
             {error && <p className="islamic-update-error">{error}</p>}
             <div className="islamic-update-actions">
-              <button type="submit" disabled={isLoading}>
-                Сохранить изменения
+              <button type="submit" disabled={isSubmitting || isLoading}>
+                {isSubmitting || isLoading
+                  ? "Сохранение..."
+                  : "Сохранить изменения"}
               </button>
               <button
                 type="button"
@@ -215,7 +216,11 @@ export default function OneIslamicPage() {
             Назад
           </button>
           {isAdmin && (
-            <button className="islamic-card-button" onClick={handleStartEdit}>
+            <button
+              type="button"
+              className="islamic-card-button"
+              onClick={handleStartEdit}
+            >
               Изменить
             </button>
           )}
