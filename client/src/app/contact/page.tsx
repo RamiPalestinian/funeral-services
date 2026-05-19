@@ -1,7 +1,19 @@
 "use client";
 import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 import "./page.css";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
+
+const ContactMap = dynamic(
+  () =>
+    import("@/shared/ui/ContactMap/ContactMap").then((mod) => mod.ContactMap),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="contact-map contact-map--loading">Загрузка карты…</div>
+    ),
+  },
+);
 
 export default function ContactPage() {
   const router = useRouter();
@@ -88,6 +100,14 @@ export default function ContactPage() {
             <p>Бесплатная парковка у входа</p>
           </article>
         </div>
+      </section>
+
+      <section className="contact-map-section">
+        <div className="contact-map-section__head">
+          <span>Карта</span>
+          <h2>Как нас найти</h2>
+        </div>
+        <ContactMap />
       </section>
     </div>
   );

@@ -186,6 +186,31 @@
   color: var(--accent-stone);
 }
 
+.contact-map-section {
+  display: grid;
+  gap: 18px;
+}
+
+.contact-map-section__head {
+  display: grid;
+  gap: 10px;
+}
+
+.contact-map-section__head span {
+  font-size: 11px;
+  color: var(--accent-terracotta);
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+}
+
+.contact-map-section__head h2 {
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--accent-stone);
+}
+
 @media (width <= 980px) {
   .contact-hero-grid,
   .contact-columns {
