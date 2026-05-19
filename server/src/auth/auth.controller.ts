@@ -60,9 +60,9 @@ export class AuthController {
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const refreshToken = req.cookies.refreshToken;
+    const refreshToken: unknown = req.cookies?.refreshToken;
 
-    if (!refreshToken) {
+    if (typeof refreshToken !== 'string' || !refreshToken) {
       throw new UnauthorizedException('Необходим refresh-токен'); //пользователь не авторизован
     }
 

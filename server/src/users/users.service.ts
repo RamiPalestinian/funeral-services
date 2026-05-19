@@ -13,6 +13,7 @@ import { Cremation } from 'src/cremations/cremations.model';
 import { Islamic } from 'src/islamic/islamic.model';
 import { Service } from 'src/services/services.model';
 import { User } from './user.model';
+import { toPublicUser } from './user-public';
 
 type CreateUserPayload = {
   name: string;
@@ -52,20 +53,8 @@ export class UsersService {
     return this.userModel.findByPk(id);
   }
 
-  private toSafeUser(user: User) {
-    return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      avatar: user.avatar,
-      lastName: user.lastName,
-      middleName: user.middleName,
-      phone: user.phone,
-      address: user.address,
-      city: user.city,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-    };
+  toPublicUser(user: User) {
+    return user ? toPublicUser(user) : null;
   }
 
   async updateProfile(id: number, dto: UpdateUserDto) {
@@ -116,7 +105,7 @@ export class UsersService {
     if (Object.keys(patch).length > 0) {
       await user.update(patch);
     }
-    return { user: this.toSafeUser(user) };
+    return { user: this.toPublicUser(user) };
   }
   async changePassword(
     id: number,
