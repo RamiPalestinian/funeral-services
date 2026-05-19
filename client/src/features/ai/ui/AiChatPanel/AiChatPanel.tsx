@@ -18,8 +18,13 @@ export default function AiChatPanel({
   className = "",
 }: AiChatPanelProps) {
   const { user } = useAppSelector((state) => state.user);
-  const { messages, input, setInput, error, isLoading, sendMessage } = useAiChat();
+  const { messages, input, setInput, error, isLoading, sendMessage, clearChat } =
+    useAiChat();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const hasDialog = messages.some(
+    (message) => message.id !== "assistant-welcome",
+  );
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
