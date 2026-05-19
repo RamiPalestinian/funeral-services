@@ -33,7 +33,9 @@ const cardSlice = createSlice({
     });
 
     builder.addCase(getAllCardsThunk.pending, (state) => {
-      state.isLoading = true;
+      if (state.cards.length === 0) {
+        state.isLoading = true;
+      }
     });
     builder.addCase(getAllCardsThunk.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -57,16 +59,15 @@ const cardSlice = createSlice({
       state.error = action.payload ?? null;
     });
 
-    //deleteCardThunk
-    builder.addCase(deleteCardThunk.pending, (state) => {
-      state.isLoading = true;
+    //deleteCardThunk — без isLoading, чтобы список корзины не пропадал на время запроса
+    builder.addCase(deleteCardThunk.pending, (state, action) => {
+      state.error = null;
+      state.cards = state.cards.filter((card) => card.id !== action.meta.arg);
     });
     builder.addCase(deleteCardThunk.fulfilled, (state, action) => {
-      state.isLoading = false;
       state.cards = state.cards.filter((card) => card.id !== action.payload);
     });
     builder.addCase(deleteCardThunk.rejected, (state, action) => {
-      state.isLoading = false;
       state.error = action.payload ?? null;
     });
 
