@@ -7,8 +7,9 @@ import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { deleteCremationThunk } from "../../api/CremationApiThunk";
 import { useUser } from "@/application/UserProvider";
 import { CardDateMeta } from "@/shared/ui/CardDateMeta/CardDateMeta";
+import ConfirmDialog from "@/shared/ui/ConfirmDialog/ConfirmDialog";
 import { formatPriceRUB } from "@/shared/lib/formatPriceRUB";
-import React from "react";
+import React, { useCallback, useState } from "react";
 
 type CremationCardProps = {
   cremation: CremationType;
@@ -20,9 +21,12 @@ function CremationCard({ cremation, onAddToCard }: CremationCardProps) {
   const dispatch = useAppDispatch();
   const { user } = useUser();
   const isAdmin = user?.id === 1;
-  const handleDelete = () => {
-    dispatch(deleteCremationThunk(Number(cremation.id)));
-  };
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+  const handleConfirmDelete = useCallback(() => {
+    void dispatch(deleteCremationThunk(Number(cremation.id)));
+    setIsDeleteOpen(false);
+  }, [dispatch, cremation.id]);
 
   return (
     <article className="cremation-card">
@@ -40,9 +44,7 @@ function CremationCard({ cremation, onAddToCard }: CremationCardProps) {
         <h2 className="cremation-card-title">{cremation.name}</h2>
         <p className="cremation-card-description">{cremation.description}</p>
         <div className="cremation-card-meta">
-          <span className="cremation-card-category">
-            {cremation.category}
-          </span>
+          <span className="cremation-card-category">{cremation.category}</span>
           <span className="cremation-card-price">
             {formatPriceRUB(cremation.price)} ₽
           </span>
@@ -66,13 +68,21 @@ function CremationCard({ cremation, onAddToCard }: CremationCardProps) {
             <button
               type="button"
               className="cremation-card-button cremation-card-button-delete"
-              onClick={handleDelete}
+              onClick={() => setIsDeleteOpen(true)}
             >
               Удалить
             </button>
           )}
         </div>
       </div>
+
+      <ConfirmDialog
+        isOpen={isDeleteOpen}
+        title="Удалить услугу?"
+        message={`«${cremation.name}» будет удалена безвозвратно.`}
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setIsDeleteOpen(false)}
+      />
     </article>
   );
 }

@@ -18,28 +18,28 @@ import { UpdateIslamicDto } from './dto/update-islamic.dto';
 export class IslamicController {
   constructor(private readonly islamicService: IslamicService) {}
 
-  @Get() // метод
+  @Get()
   findAll() {
     return this.islamicService.findAll();
   }
 
-  @Get(':id') // метод
+  @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.islamicService.findById(id);
   }
 
-  @Post() // метод
+  @Post()
   @HttpCode(HttpStatus.CREATED)
   create(@Body() dto: CreateIslamicDto) {
     return this.islamicService.create(dto);
   }
 
-  @Patch(':id') // метод
+  @Patch(':id')
   update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateIslamicDto) {
     return this.islamicService.update(id, dto);
   }
 
-  @Delete(':id') // метод
+  @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.islamicService.delete(id);
   }

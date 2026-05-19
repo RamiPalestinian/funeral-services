@@ -4,9 +4,11 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import "./Header.css";
 import type { UserType } from "@/entities/user/model";
-import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
+import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { logoutThunk } from "@/entities/user/api/UserApiThunk";
+import { getAllCardsThunk } from "@/entities/card/api/CardApiThunk";
 import { setAccessToken } from "@/shared/lib/axiosInstance";
+import { useEffect } from "react";
 
 type HeaderProps = {
   user: UserType | null;
@@ -17,7 +19,14 @@ export default function Header({ user, setUser }: HeaderProps) {
   const pathname = usePathname();
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const cartCount = useAppSelector((state) => state.card.cards.length);
   const isHomePage = pathname === "/";
+
+  useEffect(() => {
+    if (user) {
+      void dispatch(getAllCardsThunk());
+    }
+  }, [dispatch, user]);
 
   async function handleLogout() {
     try {
@@ -93,14 +102,25 @@ export default function Header({ user, setUser }: HeaderProps) {
             <span>на связи</span>
             <strong>24 / 7</strong>
           </div>
-          <Link href="/card" className="navlink navlink-cart" aria-label="Корзина">
+          <Link
+            href="/card"
+            className="navlink navlink-cart"
+            aria-label={
+              cartCount > 0 ? `Корзина, ${cartCount} позиций` : "Корзина"
+            }
+          >
             <img
               className="navlink-cart-icon"
               src="/cart.png"
-              alt="Корзина"
+              alt=""
               width={18}
               height={18}
             />
+            {user && cartCount > 0 ? (
+              <span className="navlink-cart-badge" aria-hidden>
+                {cartCount > 99 ? "99+" : cartCount}
+              </span>
+            ) : null}
           </Link>
         </div>
       </nav>
