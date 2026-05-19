@@ -46,6 +46,10 @@ export const islamicSchema = z.object({
   userId: z.number().min(1, { message: "Пользователь должен быть выбран" }),
 });
 
+export const islamicUpdateSchema = islamicSchema.omit({ id: true, userId: true });
+
 export type IslamicSchema = z.infer<typeof islamicSchema>;
 export type IslamicFormInput = z.input<typeof islamicSchema>;
+export type IslamicUpdateSchema = z.infer<typeof islamicUpdateSchema>;
+export type IslamicUpdateFormInput = z.input<typeof islamicUpdateSchema>;
 export type IslamicSchemaType = IslamicSchema;
