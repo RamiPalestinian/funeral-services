@@ -83,20 +83,23 @@ export function AiChatProvider({ children }: { children: ReactNode }) {
     setIsLoading(true);
 
     try {
-      const response = await axiosInstance.post("/ai/chat", {
-        message,
-        userName: user.name,
-        history: chatHistory,
-      });
+      const response = await axiosInstance.post<{ answer?: string }>(
+        "/ai/send-message",
+        {
+          message,
+          userName: user.name,
+          history: chatHistory,
+        },
+      );
 
       const reply =
-        response.data?.data?.reply ||
+        response.data?.answer?.trim() ||
         "Я рядом. Уточните, пожалуйста, ваш вопрос, и я постараюсь помочь.";
 
       const assistantMessage: ChatMessage = {
         id: `assistant-${Date.now()}`,
         role: "assistant",
-        author: response.data?.data?.assistantName || AI_ASSISTANT_NAME,
+        author: AI_ASSISTANT_NAME,
         content: reply,
       };
 

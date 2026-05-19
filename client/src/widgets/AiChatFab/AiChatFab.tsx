@@ -79,7 +79,7 @@ export default function AiChatFab() {
         aria-expanded={isOpen}
         onClick={toggleChat}
       >
-        <span className="ai-chat-fab-icon">{isOpen ? "×" : "ИИ"}</span>
+        <span className="ai-chat-fab-icon">{isOpen ? "×" : "Чат-бот"}</span>
       </button>
     </div>
   );
