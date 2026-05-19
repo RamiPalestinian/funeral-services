@@ -3,11 +3,36 @@
   gap: 18px;
 }
 
+.ai-chat-toolbar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ai-chat-clear {
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0;
+}
+
+.ai-chat-clear:hover:not(:disabled) {
+  color: var(--accent-stone);
+}
+
+.ai-chat-clear:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 .ai-chat-panel--widget {
   gap: 14px;
   height: 100%;
   min-height: 0;
-  grid-template-rows: 1fr auto;
+  grid-template-rows: auto 1fr auto;
 }
 
 .ai-chat-messages {

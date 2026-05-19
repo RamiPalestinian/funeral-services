@@ -1,4 +1,5 @@
 "use client";
+import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 import "./page.css";
 import { useRouter } from "next/navigation";
 
@@ -7,7 +8,7 @@ export default function ContactPage() {
 
   return (
     <div className="contact-page">
-      <button className="contact-back-link" onClick={() => router.push('/home')}>
+      <button className="contact-back-link" onClick={() => router.push(CLIENT_ROUTES.HOME)}>
         Назад на главную
       </button>
 

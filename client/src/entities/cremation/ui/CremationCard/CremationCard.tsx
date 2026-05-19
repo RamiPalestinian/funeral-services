@@ -9,6 +9,7 @@ import { useUser } from "@/application/UserProvider";
 import { CardDateMeta } from "@/shared/ui/CardDateMeta/CardDateMeta";
 import ConfirmDialog from "@/shared/ui/ConfirmDialog/ConfirmDialog";
 import { formatPriceRUB } from "@/shared/lib/formatPriceRUB";
+import { cremationDetailRoute } from "@/shared/consts/clientRouts";
 import React, { useCallback, useState } from "react";
 
 type CremationCardProps = {
@@ -60,7 +61,7 @@ function CremationCard({ cremation, onAddToCard }: CremationCardProps) {
           <button
             type="button"
             className="cremation-card-button cremation-card-button-secondary"
-            onClick={() => router.push(`/cremation/${cremation.id}`)}
+            onClick={() => router.push(cremationDetailRoute(cremation.id))}
           >
             Подробнее
           </button>

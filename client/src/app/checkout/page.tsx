@@ -1,4 +1,5 @@
 "use client";
+import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 
 import "../shop/page.css";
 import "../card/page.css";
@@ -75,7 +76,7 @@ export default function CheckoutPage() {
 
     try {
       await dispatch(mockCheckoutThunk()).unwrap();
-      router.push("/checkout/success");
+      router.push(CLIENT_ROUTES.CHECKOUT_SUCCESS);
     } catch (error) {
       console.error("Ошибка при оплате:", error);
     }
@@ -84,7 +85,7 @@ export default function CheckoutPage() {
   useEffect(() => {
     if (!isInitialized) return;
     if (!user) {
-      router.replace("/auth");
+      router.replace(CLIENT_ROUTES.AUTH);
       return;
     }
     void dispatch(getAllCardsThunk());
@@ -209,7 +210,7 @@ export default function CheckoutPage() {
             <button
               type="button"
               className="shop-back-link cart-back-link"
-              onClick={() => router.push("/card")}
+              onClick={() => router.push(CLIENT_ROUTES.CARD)}
             >
               Назад в корзину
             </button>

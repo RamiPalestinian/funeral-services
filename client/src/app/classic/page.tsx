@@ -1,4 +1,5 @@
 "use client";
+import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 import "./page.css";
 import ClassicCard from "@/entities/classic/ui/ClassicCard/ClassicCard";
 import { useRouter } from "next/navigation";
@@ -33,7 +34,7 @@ export default function Classic() {
   const handleAddToCard = useCallback(
     async (classicServiceId: number) => {
       if (!user) {
-        router.push("/auth");
+        router.push(CLIENT_ROUTES.AUTH);
         return;
       }
       try {
@@ -91,7 +92,7 @@ export default function Classic() {
   //защита сраницы
   useEffect(() => {
     if (isInitialized && !user) {
-      router.replace("/auth");
+      router.replace(CLIENT_ROUTES.AUTH);
     }
   }, [isInitialized, router, user]);
 
@@ -198,7 +199,7 @@ export default function Classic() {
       </div>
       <button
         className="classic-back-link"
-        onClick={() => router.push("/home")}
+        onClick={() => router.push(CLIENT_ROUTES.HOME)}
       >
         Назад на главную
       </button>

@@ -1,4 +1,5 @@
 "use client";
+import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 
 import "../page.css";
 import { useCallback, useEffect, useState } from "react";
@@ -67,7 +68,7 @@ export default function OneIslamicPage() {
 
   useEffect(() => {
     if (isInitialized && !user) {
-      router.replace("/auth");
+      router.replace(CLIENT_ROUTES.AUTH);
     }
   }, [isInitialized, user, router]);
 
@@ -111,7 +112,7 @@ export default function OneIslamicPage() {
 
   const handleAddToCard = useCallback(async () => {
     if (!user) {
-      router.push("/auth");
+      router.push(CLIENT_ROUTES.AUTH);
       return;
     }
     if (!oneIslamic) {

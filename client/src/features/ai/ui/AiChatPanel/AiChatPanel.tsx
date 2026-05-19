@@ -17,7 +17,11 @@ export default function AiChatPanel({
   className = "",
 }: AiChatPanelProps) {
   const { user } = useAppSelector((state) => state.user);
-  const { messages, input, setInput, error, isLoading, sendMessage } = useAiChat();
+  const { messages, input, setInput, error, isLoading, sendMessage, clearChat } =
+    useAiChat();
+
+  const hasDialog =
+    messages.some((message) => message.id !== "assistant-welcome");
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -46,6 +50,19 @@ export default function AiChatPanel({
 
   return (
     <div className={panelClassName}>
+      {user && hasDialog && (
+        <div className="ai-chat-toolbar">
+          <button
+            type="button"
+            className="ai-chat-clear"
+            onClick={clearChat}
+            disabled={isLoading}
+          >
+            Очистить диалог
+          </button>
+        </div>
+      )}
+
       <div className="ai-chat-messages">
         {messages.map((message) => (
           <article

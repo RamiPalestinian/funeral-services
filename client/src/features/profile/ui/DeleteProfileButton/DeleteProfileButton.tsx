@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@/application/UserProvider";
 import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { deleteUserAccountThunk } from "@/entities/user/api/UserApiThunk";
+import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 import "./DeleteProfileButton.css";
 
 export default function DeleteProfileButton() {
@@ -29,7 +30,7 @@ export default function DeleteProfileButton() {
     try {
       await dispatch(deleteUserAccountThunk()).unwrap();
       setUser(null);
-      router.replace("/home");
+      router.replace(CLIENT_ROUTES.HOME);
     } catch (thunkError) {
       setError(thunkError as string);
     } finally {

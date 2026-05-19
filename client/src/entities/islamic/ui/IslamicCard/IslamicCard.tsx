@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { CardDateMeta } from "@/shared/ui/CardDateMeta/CardDateMeta";
 import ConfirmDialog from "@/shared/ui/ConfirmDialog/ConfirmDialog";
 import { formatPriceRUB } from "@/shared/lib/formatPriceRUB";
+import { islamicDetailRoute } from "@/shared/consts/clientRouts";
 import React, { useCallback, useState } from "react";
 
 type IslamicCardProps = {
@@ -66,7 +67,7 @@ function IslamicCard({ islamic, onAddToCard }: IslamicCardProps) {
             type="button"
             className="islamic-card-button islamic-card-button-secondary"
             onClick={() => {
-              router.push(`/islamic/${islamic.id}`);
+              router.push(islamicDetailRoute(islamic.id));
             }}
           >
             Подробнее

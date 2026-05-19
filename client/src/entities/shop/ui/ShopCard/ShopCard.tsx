@@ -9,6 +9,7 @@ import { useUser } from "@/application/UserProvider";
 import { CardDateMeta } from "@/shared/ui/CardDateMeta/CardDateMeta";
 import ConfirmDialog from "@/shared/ui/ConfirmDialog/ConfirmDialog";
 import { formatPriceRUB } from "@/shared/lib/formatPriceRUB";
+import { shopDetailRoute } from "@/shared/consts/clientRouts";
 import React, { useCallback, useState } from "react";
 
 type ShopCardProps = {
@@ -58,7 +59,7 @@ function ShopCard({ shop, onAddToCard }: ShopCardProps) {
           <button
             type="button"
             className="shop-card-button shop-card-button-secondary"
-            onClick={() => router.push(`/shop/${shop.id}`)}
+            onClick={() => router.push(shopDetailRoute(shop.id))}
           >
             Подробнее
           </button>

@@ -1,4 +1,5 @@
 "use client";
+import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 
 import "./page.css";
 import { useCallback, useEffect, useState } from "react";
@@ -56,7 +57,7 @@ export default function ShopPage() {
   const handleAddToCard = useCallback(
     async (serviceId: number) => {
       if (!user) {
-        router.push("/auth");
+        router.push(CLIENT_ROUTES.AUTH);
         return;
       }
       try {
@@ -82,7 +83,7 @@ export default function ShopPage() {
 
   useEffect(() => {
     if (isInitialized && !user) {
-      router.replace("/auth");
+      router.replace(CLIENT_ROUTES.AUTH);
     }
   }, [isInitialized, user]);
 
@@ -198,7 +199,7 @@ export default function ShopPage() {
       <button
         type="button"
         className="shop-back-link"
-        onClick={() => router.push("/home")}
+        onClick={() => router.push(CLIENT_ROUTES.HOME)}
       >
         Назад на главную
       </button>

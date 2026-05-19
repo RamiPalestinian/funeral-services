@@ -6,6 +6,7 @@ import { UserValidator } from '@/entities/user/model/UserValidator';
 import FormInput from '@/shared/ui/FormInput/FormInput';
 import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { registerThunk } from '@/entities/user/api/UserApiThunk';
+import { CLIENT_ROUTES } from '@/shared/consts/clientRouts';
 
 export default function SignUpForm() {
   const dispatch = useAppDispatch();
@@ -49,7 +50,7 @@ export default function SignUpForm() {
       await dispatch(registerThunk(registrationData)).unwrap();
       setError(null);
       setSignUpData(initialValue);
-      router.push('/home');
+      router.push(CLIENT_ROUTES.HOME);
       router.refresh();
     } catch (thunkError) {
       setError(thunkError as string);

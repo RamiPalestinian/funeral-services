@@ -1,4 +1,5 @@
 "use client";
+import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 
 import "../page.css";
 import "@/entities/shop/ui/ShopCard/ShopCard.css";
@@ -28,7 +29,7 @@ function ShopByIdPage() {
 
   const handleAddToCard = useCallback(async () => {
     if (!user) {
-      router.push("/auth");
+      router.push(CLIENT_ROUTES.AUTH);
       return;
     }
     try {
@@ -99,7 +100,7 @@ function ShopByIdPage() {
 
   useEffect(() => {
     if (isInitialized && !user) {
-      router.replace("/auth");
+      router.replace(CLIENT_ROUTES.AUTH);
     }
   }, [isInitialized, user, router]);
 

@@ -1,4 +1,5 @@
 "use client";
+import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 import "./page.css";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/shared/hooks/useReduxHooks";
@@ -11,7 +12,7 @@ export default function Home() {
   const { user, isInitialized } = useAppSelector((state) => state.user);
   useEffect(() => {
     if (isInitialized && !user) {
-      router.replace("/auth");
+      router.replace(CLIENT_ROUTES.AUTH);
     }
   }, [isInitialized, router, user]);
   if (isInitialized && !user) {
@@ -31,7 +32,7 @@ export default function Home() {
             </p>
             <button
               className="home-link-button"
-              onClick={() => router.push("/contact")}
+              onClick={() => router.push(CLIENT_ROUTES.CONTACT)}
             >
               Связаться сейчас
             </button>
@@ -49,7 +50,7 @@ export default function Home() {
               (гусль), заворачивание в саван (кафан), джаназа-намаз,
               сопровождение до кладбища.
             </p>
-            <button onClick={() => router.push("/islamic")}>Подробнее</button>
+            <button onClick={() => router.push(CLIENT_ROUTES.ISLAMIC)}>Подробнее</button>
           </article>
 
           <article className="home-service-card">
@@ -59,7 +60,7 @@ export default function Home() {
               Традиционная церемония прощания: подготовка тела, организация
               зала, траурный транспорт, помощь в выборе места захоронения.
             </p>
-            <button onClick={() => router.push("/classic")}>Подробнее</button>
+            <button onClick={() => router.push(CLIENT_ROUTES.CLASSIC)}>Подробнее</button>
           </article>
 
           <article className="home-service-card">
@@ -69,7 +70,7 @@ export default function Home() {
               Организация кремации с возможностью хранения урны в колумбарии или
               захоронения урны с прахом.
             </p>
-            <button onClick={() => router.push("/cremation")}>Подробнее</button>
+            <button onClick={() => router.push(CLIENT_ROUTES.CREMATION)}>Подробнее</button>
           </article>
 
           <article className="home-service-card">
@@ -79,7 +80,7 @@ export default function Home() {
               Круглосуточный магазин ритуальных товаров: гробы, венки,
               памятники, ритуальная одежда и аксессуары.
             </p>
-            <button onClick={() => router.push("/shop")}>Подробнее</button>
+            <button onClick={() => router.push(CLIENT_ROUTES.SHOP)}>Подробнее</button>
           </article>
         </div>
       </section>
@@ -160,7 +161,7 @@ export default function Home() {
             <a href="tel:+79991234567">+7 (999) 123-45-67</a>
             <button
               className="home-link-button"
-              onClick={() => router.push("/contact")}
+              onClick={() => router.push(CLIENT_ROUTES.CONTACT)}
             >
               Перейти в контакты
             </button>

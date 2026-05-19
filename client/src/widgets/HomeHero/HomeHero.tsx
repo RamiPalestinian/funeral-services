@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 import "./HomeHero.css";
 
 export default function HomeHero() {
@@ -24,7 +25,7 @@ export default function HomeHero() {
             </p>
 
             <div className="home-cinematic-actions home-reveal home-reveal-delay-4">
-              <Link href="/auth" className="home-action-link">
+              <Link href={CLIENT_ROUTES.AUTH} className="home-action-link">
                 Оставить заявку
               </Link>
             </div>

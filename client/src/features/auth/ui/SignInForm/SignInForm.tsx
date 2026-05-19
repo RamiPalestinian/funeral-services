@@ -7,6 +7,7 @@ import FormInput from '@/shared/ui/FormInput/FormInput';
 import type { UserType } from '@/entities/user/model';
 import { useAppDispatch } from '@/shared/hooks/useReduxHooks';
 import { loginThunk } from '@/entities/user/api/UserApiThunk';
+import { CLIENT_ROUTES } from '@/shared/consts/clientRouts';
 
 type SignInFormProps = {
   setUser: React.Dispatch<React.SetStateAction<UserType | null>>  
@@ -42,7 +43,7 @@ export default function SignInForm({ setUser } : SignInFormProps) {
     try {
       const user = await dispatch(loginThunk(signInData)).unwrap();
       setUser(user);
-      router.push('/home');
+      router.push(CLIENT_ROUTES.HOME);
       setSignInData(initialValue);
       setError(null);
     } catch (thunkError) {

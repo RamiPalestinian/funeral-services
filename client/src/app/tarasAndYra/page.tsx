@@ -1,4 +1,5 @@
 "use client";
+import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 
 import "./page.css";
 import { useRouter } from "next/navigation";
@@ -11,7 +12,7 @@ export default function TarasAndYraPage() {
   const { user, isInitialized } = useAppSelector((state) => state.user);
   useEffect(() => {
     if (isInitialized && !user) {
-      router.replace("/auth");
+      router.replace(CLIENT_ROUTES.AUTH);
     }
   }, [isInitialized, router, user]);
 
@@ -162,7 +163,7 @@ export default function TarasAndYraPage() {
       <button
         type="button"
         className="mentors-back"
-        onClick={() => router.push("/home")}
+        onClick={() => router.push(CLIENT_ROUTES.HOME)}
       >
         Назад на главную
       </button>

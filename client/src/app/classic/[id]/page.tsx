@@ -1,4 +1,5 @@
 "use client";
+import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 
 import "../page.css";
 import "@/entities/classic/ui/ClassicCard/ClassicCard.css";
@@ -34,7 +35,7 @@ export default function OneClassicPage() {
 
   const handleAddToCard = async () => {
     if (!user) {
-      router.push("/auth");
+      router.push(CLIENT_ROUTES.AUTH);
       return;
     }
     if (!oneClassic) {
@@ -122,7 +123,7 @@ export default function OneClassicPage() {
   //защита сраницы
   useEffect(() => {
     if (isInitialized && !user) {
-      router.replace("/auth");
+      router.replace(CLIENT_ROUTES.AUTH);
     }
   }, [isInitialized, user]);
 
