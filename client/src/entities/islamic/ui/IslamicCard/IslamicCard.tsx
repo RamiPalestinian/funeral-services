@@ -23,19 +23,24 @@ function IslamicCard({ islamic, onAddToCard }: IslamicCardProps) {
   const isAdmin = user?.id === 1;
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
+  const handleConfirmDelete = useCallback(() => {
+    if (!islamic) {
+      return;
+    }
+
+    void dispatch(deleteIslamicThunk(islamic.id));
+    setIsDeleteOpen(false);
+  }, [dispatch, islamic]);
+
   if (!islamic) {
     return null;
   }
-
-  const handleConfirmDelete = useCallback(() => {
-    void dispatch(deleteIslamicThunk(islamic.id));
-    setIsDeleteOpen(false);
-  }, [dispatch, islamic.id]);
 
   return (
     <article className="islamic-card">
       <CardDateMeta createdAt={islamic.createdAt} />
       <div className="islamic-card-media">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className="islamic-card-image"
           src={islamic.image}

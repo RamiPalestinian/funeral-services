@@ -4,30 +4,30 @@
 }
 
 .personal-delete-text {
-  margin: 0;
   max-width: 52ch;
-  color: var(--text-muted);
+  margin: 0;
   font-size: 0.92rem;
   line-height: 1.55;
+  color: var(--text-muted);
 }
 
 .personal-btn--danger {
   width: fit-content;
   min-height: 42px;
   padding: 10px 22px;
-  border: 1px solid rgba(193, 140, 127, 0.45);
-  border-radius: 10px;
-  background: rgba(193, 140, 127, 0.1);
   color: #e8b4aa;
+  background: rgb(193 140 127 / 10%);
+  border: 1px solid rgb(193 140 127 / 45%);
+  border-radius: 10px;
 }
 
 .personal-btn--danger:hover:not(:disabled) {
-  border-color: rgba(193, 140, 127, 0.7);
-  background: rgba(193, 140, 127, 0.2);
   color: #f3d0c8;
+  background: rgb(193 140 127 / 20%);
+  border-color: rgb(193 140 127 / 70%);
 }
 
 .personal-btn--danger:disabled {
-  opacity: 0.6;
   cursor: not-allowed;
+  opacity: 0.6;
 }

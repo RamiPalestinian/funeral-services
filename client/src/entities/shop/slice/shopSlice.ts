@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { initialShopState, ShopStateType } from "../model";
+import { initialShopState } from "../model";
 import {
   getAllShopsThunk,
   getShopByIdThunk,

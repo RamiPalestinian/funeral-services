@@ -1,39 +1,39 @@
 .card-date-meta {
   display: flex;
+  gap: 12px;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin: 0;
   padding: 11px 18px;
-  border-bottom: 1px solid var(--line-soft, rgba(214, 204, 189, 0.08));
-  background: transparent;
-  color: var(--text-dim, rgba(226, 218, 207, 0.68));
+  margin: 0;
   font-size: 12px;
   line-height: 1.5;
+  color: var(--text-dim, rgb(226 218 207 / 68%));
+  background: transparent;
+  border-bottom: 1px solid var(--line-soft, rgb(214 204 189 / 8%));
 }
 
 .card-date-meta__date {
   min-width: 0;
   margin-left: auto;
-  text-align: right;
-  color: var(--accent-stone, #e2dacf);
   font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
   font-size: 13px;
   font-weight: 400;
   font-variant-numeric: tabular-nums;
+  color: var(--accent-stone, #e2dacf);
+  text-align: right;
   letter-spacing: 0.02em;
 }
 
 .card-date-meta__label {
   flex-shrink: 0;
-  color: var(--accent-terracotta, #c4a088);
   font-size: 10px;
-  letter-spacing: 0.22em;
+  color: var(--accent-terracotta, #c4a088);
   text-transform: uppercase;
+  letter-spacing: 0.22em;
   opacity: 0.92;
 }
 
-@media (max-width: 640px) {
+@media (width <= 640px) {
   .card-date-meta {
     padding: 10px 14px;
     font-size: 11px;

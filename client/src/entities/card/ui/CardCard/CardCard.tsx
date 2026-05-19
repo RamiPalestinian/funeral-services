@@ -30,13 +30,16 @@ function CardCard({ card, user }: { card: CardType; user: UserType }) {
       <CardDateMeta createdAt={card.createdAt} />
       <div className="card-line-media">
         {item?.image ? (
-          <img
-            className="card-line-image"
-            src={item.image}
-            alt={item.name}
-            width={400}
-            height={300}
-          />
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              className="card-line-image"
+              src={item.image}
+              alt={item.name}
+              width={400}
+              height={300}
+            />
+          </>
         ) : (
           <div className="card-line-media-placeholder" aria-hidden />
         )}

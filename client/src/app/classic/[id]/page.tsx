@@ -125,7 +125,7 @@ export default function OneClassicPage() {
     if (isInitialized && !user) {
       router.replace(CLIENT_ROUTES.AUTH);
     }
-  }, [isInitialized, user]);
+  }, [isInitialized, user, router]);
 
   if (isInitialized && !user) {
     return null;

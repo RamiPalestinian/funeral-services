@@ -1,17 +1,17 @@
 .payment-card-form {
   display: grid;
   gap: 14px;
-  margin: 18px 0 6px;
   padding: 18px;
+  margin: 18px 0 6px;
+  background: rgb(255 255 255 / 4%);
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.04);
-  box-shadow: inset 0 0 0 1px rgba(214, 204, 189, 0.1);
+  box-shadow: inset 0 0 0 1px rgb(214 204 189 / 10%);
 }
 
 .payment-card-form__title {
   margin: 0;
-  color: var(--accent-stone);
   font-size: 14px;
+  color: var(--accent-stone);
 }
 
 .payment-card-form__field {
@@ -20,22 +20,22 @@
 }
 
 .payment-card-form__label {
-  color: var(--text-muted);
   font-size: 12px;
-  letter-spacing: 0.06em;
+  color: var(--text-muted);
   text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
 .payment-card-form__input {
   width: 100%;
   min-height: 46px;
   padding: 0 14px;
-  border: 1px solid rgba(214, 204, 189, 0.14);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--accent-stone);
-  font-size: 15px;
   font-family: inherit;
+  font-size: 15px;
+  color: var(--accent-stone);
+  background: rgb(255 255 255 / 5%);
+  border: 1px solid rgb(214 204 189 / 14%);
+  border-radius: 14px;
 }
 
 .payment-card-form__input::placeholder {
@@ -45,8 +45,8 @@
 
 .payment-card-form__input:focus {
   outline: none;
-  border-color: rgba(179, 110, 98, 0.5);
-  box-shadow: 0 0 0 2px rgba(179, 110, 98, 0.15);
+  border-color: rgb(179 110 98 / 50%);
+  box-shadow: 0 0 0 2px rgb(179 110 98 / 15%);
 }
 
 .payment-card-form__row {
@@ -57,7 +57,7 @@
 
 .payment-card-form__hint {
   margin: 0;
-  color: var(--text-muted);
   font-size: 12px;
   line-height: 1.45;
+  color: var(--text-muted);
 }

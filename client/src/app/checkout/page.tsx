@@ -91,13 +91,13 @@ export default function CheckoutPage() {
     void dispatch(getAllCardsThunk());
   }, [dispatch, isInitialized, user, router]);
 
-  useEffect(() => {
-    if (paymentMethod !== "cash") {
+  function handlePaymentMethodChange(method: string) {
+    setPaymentMethod(method);
+    if (method !== "cash") {
       setIsCashOrderModalOpen(false);
     }
-  }, [paymentMethod]);
+  }
 
-  
   return (
     <section className="shop-page checkout-page">
       <div className="shop-hero">
@@ -174,7 +174,7 @@ export default function CheckoutPage() {
                   name="paymentMethod"
                   value={option.id}
                   checked={paymentMethod === option.id}
-                  onChange={() => setPaymentMethod(option.id)}
+                  onChange={() => handlePaymentMethodChange(option.id)}
                 />
                 <span className="checkout-method-text">
                   <span className="checkout-method-title">{option.title}</span>
@@ -218,7 +218,7 @@ export default function CheckoutPage() {
         </div>
       </div>
 
-      {isCashOrderModalOpen ? (
+      {isCashOrderModalOpen && paymentMethod === "cash" ? (
         <div
           className="checkout-cash-modal"
           role="dialog"

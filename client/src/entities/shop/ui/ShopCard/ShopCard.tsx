@@ -33,6 +33,7 @@ function ShopCard({ shop, onAddToCard }: ShopCardProps) {
     <article className="shop-card">
       <CardDateMeta createdAt={shop.createdAt} />
       <div className="shop-card-media">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className="shop-card-image"
           src={shop.image}

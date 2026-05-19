@@ -8,16 +8,15 @@
   width: 100%;
   min-height: 62px;
   padding: 30px 0 12px;
-  appearance: none;
-  -webkit-appearance: none;
-  border: none;
-  border-bottom: 1px solid rgba(214, 204, 189, 0.18);
-  border-radius: 0;
-  background: transparent;
-  color: var(--text-main);
   font: inherit;
+  color: var(--text-main);
   letter-spacing: normal;
+  appearance: none;
   outline: none;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgb(214 204 189 / 18%);
+  border-radius: 0;
   box-shadow: none;
   transition:
     border-color 0.3s ease,
@@ -25,17 +24,17 @@
 }
 
 .auth-form-input-group .auth-form-input:focus {
-  border-color: rgba(125, 151, 168, 0.94);
+  border-color: rgb(125 151 168 / 94%);
   transform: translateX(2px);
 }
 
 .auth-form-input-group .auth-form-input-label {
   position: absolute;
-  left: 0;
   top: 24px;
+  left: 0;
   color: var(--text-dim);
-  pointer-events: none;
   letter-spacing: 0.02em;
+  pointer-events: none;
   transition:
     top 0.22s ease,
     font-size 0.22s ease,
@@ -51,6 +50,6 @@
   top: 4px;
   font-size: 11px;
   color: var(--accent-blue);
-  letter-spacing: 0.18em;
   text-transform: uppercase;
+  letter-spacing: 0.18em;
 }

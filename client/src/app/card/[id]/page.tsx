@@ -55,13 +55,16 @@ export default function CardByIdPage() {
     <section className="shop-page card-item-detail-page">
       <div className="card-item-detail-media">
         {item?.image ? (
-          <img
-            className="card-item-detail-image"
-            src={item.image}
-            alt={item.name}
-            width={400}
-            height={300}
-          />
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              className="card-item-detail-image"
+              src={item.image}
+              alt={item.name}
+              width={400}
+              height={300}
+            />
+          </>
         ) : (
           <div
             className="card-item-detail-image card-item-detail-image--empty"

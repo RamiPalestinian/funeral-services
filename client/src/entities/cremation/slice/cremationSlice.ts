@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { initialCremationState, CremationStateType } from "../model";
+import { initialCremationState } from "../model";
 import {
   getAllCremationsThunk,
   getCremationByIdThunk,

@@ -62,6 +62,7 @@ export function AiChatProvider({ children }: { children: ReactNode }) {
     [messages],
   );
 
+  /* eslint-disable react-hooks/set-state-in-effect -- синхронизация чата при смене пользователя */
   useEffect(() => {
     if (!user?.id) {
       setMessages([AI_WELCOME_MESSAGE]);
@@ -76,6 +77,7 @@ export function AiChatProvider({ children }: { children: ReactNode }) {
     setError("");
     setIsLoading(false);
   }, [user?.id]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   useEffect(() => {
     if (!user?.id) {
@@ -85,6 +87,7 @@ export function AiChatProvider({ children }: { children: ReactNode }) {
     saveChatMessages(user.id, messages);
   }, [messages, user?.id]);
 
+  // eslint-disable-next-line react-hooks/preserve-manual-memoization -- зависимость user?.id намеренная
   const clearChat = useCallback(() => {
     setMessages([AI_WELCOME_MESSAGE]);
     setInput("");
@@ -138,7 +141,8 @@ export function AiChatProvider({ children }: { children: ReactNode }) {
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (err) {
       console.error("AI chat error:", err);
-      const status = (err as { response?: { status?: number } })?.response?.status;
+      const status = (err as { response?: { status?: number } })?.response
+        ?.status;
 
       if (status === 401 || status === 403) {
         setError("Войдите в аккаунт, чтобы пользоваться чатом.");

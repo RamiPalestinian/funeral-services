@@ -1,14 +1,14 @@
 .personal-avatar-editor {
   position: relative;
   display: block;
+  align-self: start;
   width: 64px;
   height: 64px;
-  align-self: start;
 }
 
 .personal-avatar-editor summary {
-  list-style: none;
   cursor: pointer;
+  list-style: none;
 }
 
 .personal-avatar-editor summary::-webkit-details-marker {
@@ -29,12 +29,12 @@
   display: grid;
   place-items: center;
   padding: 6px;
-  text-align: center;
-  background: rgba(12, 14, 16, 0.6);
-  color: #f6f1e8;
   font-size: 9px;
-  letter-spacing: 0.05em;
+  color: #f6f1e8;
+  text-align: center;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgb(12 14 16 / 60%);
   opacity: 0;
   transition: opacity 0.2s;
 }
@@ -53,12 +53,12 @@
   z-index: 2;
   display: none;
   flex-direction: column;
-  justify-content: flex-end;
   gap: 6px;
+  justify-content: flex-end;
   padding: 8px;
   margin: 0;
+  background: rgb(12 14 16 / 90%);
   border-radius: 18px;
-  background: rgba(12, 14, 16, 0.9);
 }
 
 .personal-avatar-editor[open] .personal-avatar-form {
@@ -68,24 +68,24 @@
 .personal-avatar-form input {
   width: 100%;
   padding: 6px 8px;
-  border: 1px solid rgba(214, 204, 189, 0.2);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.08);
-  color: #f6f1e8;
   font-size: 9px;
+  color: #f6f1e8;
+  background: rgb(255 255 255 / 8%);
+  border: 1px solid rgb(214 204 189 / 20%);
+  border-radius: 8px;
 }
 
 .personal-avatar-form button {
   min-height: 26px;
+  font-size: 9px;
+  color: #f6f1e8;
+  cursor: pointer;
+  background: linear-gradient(135deg, rgb(125 151 168 / 94%), rgb(185 138 113 / 85%));
   border: none;
   border-radius: 8px;
-  background: linear-gradient(135deg, rgba(125, 151, 168, 0.94), rgba(185, 138, 113, 0.85));
-  color: #f6f1e8;
-  font-size: 9px;
-  cursor: pointer;
 }
 
 .personal-avatar-form button:disabled {
-  opacity: 0.6;
   cursor: not-allowed;
+  opacity: 0.6;
 }

@@ -86,7 +86,7 @@ export default function CremationPage() {
     if (isInitialized && !user) {
       router.replace(CLIENT_ROUTES.AUTH);
     }
-  }, [isInitialized, user]);
+  }, [isInitialized, user, router]);
 
   if (isInitialized && !user) {
     return null;
@@ -106,9 +106,12 @@ export default function CremationPage() {
             </p>
           </div>
           <div className="cremation-hero-mark">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="https://cdn-icons-png.flaticon.com/256/2920/2920349.png"
               alt="Кремация"
+              width={100}
+              height={100}
             />
           </div>
         </div>

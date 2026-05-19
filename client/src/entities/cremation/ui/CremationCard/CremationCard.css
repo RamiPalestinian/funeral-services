@@ -1,31 +1,31 @@
 .cremation-card {
-  min-width: 0;
   display: grid;
   grid-template-rows: auto 190px 1fr;
-  border-radius: 28px;
+  min-width: 0;
   overflow: hidden;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01)),
+    linear-gradient(180deg, rgb(255 255 255 / 5%), rgb(255 255 255 / 1%)),
     var(--bg-panel);
+  border-radius: 28px;
   box-shadow: var(--shadow-md);
 }
 
 .cremation-card-media {
   display: grid;
   place-items: center;
-  overflow: hidden;
-  min-height: 0;
   width: 100%;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .cremation-card-image {
+  display: block;
   width: 82%;
-  height: 82%;
   max-width: 82%;
+  height: 82%;
   max-height: 82%;
   object-fit: contain;
   object-position: center;
-  display: block;
   transform: translateY(-10px);
   transition: transform 0.5s ease;
 }
@@ -41,10 +41,10 @@
 }
 
 .cremation-card-kicker {
-  color: var(--accent-terracotta);
   font-size: 11px;
-  letter-spacing: 0.22em;
+  color: var(--accent-terracotta);
   text-transform: uppercase;
+  letter-spacing: 0.22em;
 }
 
 .cremation-card-title {
@@ -56,14 +56,14 @@
 }
 
 .cremation-card-description {
+  display: -webkit-box;
+  min-height: 4.65em;
   margin: 0;
-  color: var(--text-muted);
+  overflow: hidden;
+  -webkit-line-clamp: 3;
   font-size: 13px;
   line-height: 1.55;
-  min-height: 4.65em;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
+  color: var(--text-muted);
   -webkit-box-orient: vertical;
 }
 
@@ -79,32 +79,32 @@
   align-items: center;
   min-height: 2.375rem;
   padding: 9px 12px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.04);
-  box-shadow: inset 0 0 0 1px rgba(214, 204, 189, 0.08);
-  color: var(--text-main);
   font-size: 14px;
+  color: var(--text-main);
+  background: rgb(255 255 255 / 4%);
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgb(214 204 189 / 8%);
 }
 
 .cremation-card-actions {
   display: flex;
-  gap: 10px;
   flex-wrap: wrap;
+  gap: 10px;
   margin-top: 4px;
 }
 
 .cremation-card-button {
   min-height: 46px;
   padding: 0 18px;
-  border: 1px solid rgba(214, 204, 189, 0.12);
-  border-radius: 999px;
-  background:
-    linear-gradient(135deg, rgba(125, 151, 168, 0.94), rgba(94, 112, 124, 0.94));
-  color: #f6f1e8;
-  cursor: pointer;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
   font-size: 12px;
+  color: #f6f1e8;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  background:
+    linear-gradient(135deg, rgb(125 151 168 / 94%), rgb(94 112 124 / 94%));
+  border: 1px solid rgb(214 204 189 / 12%);
+  border-radius: 999px;
   transition:
     transform 0.25s ease,
     box-shadow 0.25s ease,
@@ -113,29 +113,29 @@
 }
 
 .cremation-card-button:hover {
+  box-shadow: 0 14px 24px rgb(10 12 14 / 22%);
   transform: translateY(-1px);
-  box-shadow: 0 14px 24px rgba(10, 12, 14, 0.22);
 }
 
 .cremation-card-button-secondary {
-  background: transparent;
   color: var(--text-main);
+  background: transparent;
 }
 
 .cremation-card-button-delete {
-  border-color: rgba(179, 110, 98, 0.28);
-  background:
-    linear-gradient(135deg, rgba(122, 72, 64, 0.96), rgba(84, 44, 39, 0.96));
   color: #f5eae3;
+  background:
+    linear-gradient(135deg, rgb(122 72 64 / 96%), rgb(84 44 39 / 96%));
+  border-color: rgb(179 110 98 / 28%);
 }
 
 .cremation-card-button-delete:hover {
-  border-color: rgba(206, 141, 128, 0.46);
   background:
-    linear-gradient(135deg, rgba(137, 80, 71, 0.98), rgba(98, 48, 43, 0.98));
+    linear-gradient(135deg, rgb(137 80 71 / 98%), rgb(98 48 43 / 98%));
+  border-color: rgb(206 141 128 / 46%);
 }
 
-@media (max-width: 640px) {
+@media (width <= 640px) {
   .cremation-card {
     grid-template-rows: auto 210px 1fr;
     border-radius: 22px;
