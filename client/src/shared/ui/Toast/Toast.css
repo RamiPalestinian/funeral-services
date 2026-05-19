@@ -1,6 +1,6 @@
 .toast-viewport {
   position: fixed;
-  top: 24px;
+  top: var(--toast-offset-top);
   right: 24px;
   z-index: 1300;
   display: flex;
@@ -51,7 +51,7 @@
 
 @media (width <= 700px) {
   .toast-viewport {
-    inset: auto 16px 88px;
+    right: 16px;
     width: auto;
   }
 }

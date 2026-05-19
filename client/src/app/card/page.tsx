@@ -27,6 +27,7 @@ export default function CardPage() {
   }, [dispatch, isInitialized, user, router]);
 
   const ready = isInitialized && user;
+  const isInitialLoading = isLoading && cards.length === 0;
 
   function lineItem(card: CardType) {
     return (
@@ -55,11 +56,15 @@ export default function CardPage() {
         </div>
       </div>
 
-      {ready && !isLoading && !error && cards.length === 0 ? (
+      {ready && isInitialLoading ? (
+        <p className="cart-panel-message">Загрузка…</p>
+      ) : null}
+
+      {ready && !isInitialLoading && !error && cards.length === 0 ? (
         <p className="cart-panel-message">Корзина пуста.</p>
       ) : null}
 
-      {ready && !isLoading && cards.length > 0 ? (
+      {ready && cards.length > 0 ? (
         <>
           <div className="shop-grid">
             {cards.map((card) => (
@@ -96,7 +101,7 @@ export default function CardPage() {
             </div>
           </div>
         </>
-      ) : (
+      ) : ready && !isInitialLoading ? (
         <button
           type="button"
           className="shop-back-link cart-back-link"
@@ -104,7 +109,7 @@ export default function CardPage() {
         >
           Назад на главную
         </button>
-      )}
+      ) : null}
     </section>
   );
 }

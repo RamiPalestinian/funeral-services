@@ -20,6 +20,7 @@
   --radius-lg: 14px;
   --radius-md: 10px;
   --container-width: 1240px;
+  --toast-offset-top: 100px;
 
   font-family:
     "IBM Plex Sans",
@@ -104,4 +105,16 @@ a {
 
 .app-root {
   min-height: 100vh;
+}
+
+@media (width <= 980px) {
+  :root {
+    --toast-offset-top: 240px;
+  }
+}
+
+@media (width <= 700px) {
+  :root {
+    --toast-offset-top: 300px;
+  }
 }

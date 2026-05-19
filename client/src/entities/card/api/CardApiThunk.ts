@@ -90,7 +90,7 @@ export const deleteCardThunk = createAsyncThunk<
   number,
   number,
   { rejectValue: string }
->(CARD_THUNK_NAMES.DELETE_CARD, async (id, { rejectWithValue }) => {
+>(CARD_THUNK_NAMES.DELETE_CARD, async (id, { rejectWithValue, dispatch }) => {
   try {
     const response = await axiosInstance.delete<number>(
       CARD_API_URLS.DELETE_CARD(id),
@@ -100,8 +100,10 @@ export const deleteCardThunk = createAsyncThunk<
       return id;
     }
 
+    void dispatch(getAllCardsThunk());
     return rejectWithValue("Ошибка при удалении карты по id");
   } catch (error) {
+    void dispatch(getAllCardsThunk());
     return rejectWithValue(
       (error as AxiosError).message ?? "Ошибка при удалении карты по id",
     );
