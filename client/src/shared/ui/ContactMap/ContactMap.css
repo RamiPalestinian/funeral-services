@@ -31,7 +31,7 @@
 @media (width <= 640px) {
   .contact-map__canvas,
   .contact-map--loading {
-    min-height: 320px;
     height: 320px;
+    min-height: 320px;
   }
 }
