@@ -85,6 +85,24 @@ export function CemeteriesMap() {
 
   return (
     <div className="cemeteries-map-section">
+      <ul className="cemeteries-map-list">
+        {MOSCOW_CEMETERIES.map((cemetery) => (
+          <li key={cemetery.id}>
+            <button
+              type="button"
+              className={`cemeteries-map-list__button${
+                selectedId === cemetery.id ? " is-active" : ""
+              }`}
+              aria-pressed={selectedId === cemetery.id}
+              onClick={() => setSelectedId(cemetery.id)}
+            >
+              <span>{cemetery.name}</span>
+              <small>{cemetery.district}</small>
+            </button>
+          </li>
+        ))}
+      </ul>
+
       <div className="cemeteries-map">
         <MapContainer
           center={[55.7558, 37.6173]}
@@ -108,24 +126,6 @@ export function CemeteriesMap() {
           ))}
         </MapContainer>
       </div>
-
-      <ul className="cemeteries-map-list">
-        {MOSCOW_CEMETERIES.map((cemetery) => (
-          <li key={cemetery.id}>
-            <button
-              type="button"
-              className={`cemeteries-map-list__button${
-                selectedId === cemetery.id ? " is-active" : ""
-              }`}
-              aria-pressed={selectedId === cemetery.id}
-              onClick={() => setSelectedId(cemetery.id)}
-            >
-              <span>{cemetery.name}</span>
-              <small>{cemetery.district}</small>
-            </button>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }

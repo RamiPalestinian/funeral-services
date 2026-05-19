@@ -58,7 +58,6 @@ export default function Home() {
       <section className="home-services">
         <div className="home-services-grid">
           <article className="home-service-card">
-            <span>01</span>
             <h3>Исламские похороны</h3>
             <p>
               Организация погребения в соответствии с шариатом: омовение
@@ -69,7 +68,6 @@ export default function Home() {
           </article>
 
           <article className="home-service-card">
-            <span>02</span>
             <h3>Классические похороны</h3>
             <p>
               Традиционная церемония прощания: подготовка тела, организация
@@ -79,7 +77,6 @@ export default function Home() {
           </article>
 
           <article className="home-service-card">
-            <span>03</span>
             <h3>Кремация</h3>
             <p>
               Организация кремации с возможностью хранения урны в колумбарии или
@@ -89,7 +86,6 @@ export default function Home() {
           </article>
 
           <article className="home-service-card">
-            <span>04</span>
             <h3>Магазин 24/7</h3>
             <p>
               Круглосуточный магазин ритуальных товаров: гробы, венки,

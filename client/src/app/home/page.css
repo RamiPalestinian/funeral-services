@@ -196,7 +196,7 @@
 
 .home-ads-stack {
   position: absolute;
-  top: -1751px;
+  top: -1251px;
   left: calc(100% + 100px);
   display: grid;
   gap: 14px;
@@ -270,6 +270,11 @@
   color: var(--accent-blue);
 }
 
+.home-cemeteries .home-section-head h2,
+.home-values .home-section-head h2 {
+  max-width: none;
+}
+
 .home-services-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -319,6 +324,7 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 18px;
+  width: 100%;
 }
 
 .home-values-row article {
