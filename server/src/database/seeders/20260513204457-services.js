@@ -10,7 +10,7 @@ module.exports = {
           'Сдержанный траурный венок из белых лилий, зелени и атласной ленты для церемонии прощания.',
         price: 8900,
         image:
-          'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=1200&q=80',
+          'https://i3.storeland.net/2/820/108196381/afacdb/traurnyj-venok-110-sm.png',
         category: 'flowers',
         userId: 1,
       },
@@ -20,7 +20,7 @@ module.exports = {
           'Настольная цветочная композиция в спокойной гамме для зала прощания или мемориального места.',
         price: 6400,
         image:
-          'https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=1200&q=80',
+          'https://avatars.mds.yandex.net/get-mpic/17962538/2a0000019c75376242dbeb7cd378b04d26ec/orig',
         category: 'flowers',
         userId: 1,
       },
@@ -30,7 +30,7 @@ module.exports = {
           'Классическая модель из массива с мягкой внутренней отделкой и аккуратной фурнитурой.',
         price: 42000,
         image:
-          'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
+          'https://poxoronim.ru/wp-content/uploads/2018/10/klassik.jpg',
         category: 'coffins',
         userId: 1,
       },
@@ -40,7 +40,7 @@ module.exports = {
           'Минималистичная керамическая урна с матовым покрытием для бережного хранения праха.',
         price: 12500,
         image:
-          'https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=1200&q=80',
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6X0K8qdipWbb67VsnixiIBLrKrE5gRIDDnw&s',
         category: 'urns',
         userId: 1,
       },
@@ -50,7 +50,7 @@ module.exports = {
           'Комплект покрывала, подушки и внутренней отделки в нейтральном светлом цвете.',
         price: 7800,
         image:
-          'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=1200&q=80',
+          'https://ritual-78.ru/wp-content/uploads/2022/08/img_qsiv6r1sa40ypvgcscugdzhnknqawc3deqkw.jpeg',
         category: 'textile',
         userId: 1,
       },
@@ -60,7 +60,7 @@ module.exports = {
           'Аккуратная бронзовая табличка с гравировкой имени, дат и короткой памятной надписи.',
         price: 9600,
         image:
-          'https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?auto=format&fit=crop&w=1200&q=80',
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSM6C9hSSy6bAK2fsnPj-UGS81bIytgwmdTmA&s',
         category: 'memorial',
         userId: 1,
       },
@@ -70,7 +70,7 @@ module.exports = {
           'Набор белых мемориальных свечей для церемонии, домашнего поминовения или траурного стола.',
         price: 2400,
         image:
-          'https://images.unsplash.com/photo-1602874801007-bd458bb1b8b6?auto=format&fit=crop&w=1200&q=80',
+          'https://postament.ru/upload/medialibrary/830/09_10_17_2.jpg',
         category: 'ceremony',
         userId: 1,
       },
@@ -80,7 +80,7 @@ module.exports = {
           'Объемная корзина из свежих цветов в мягких оттенках для возложения и зала прощания.',
         price: 11200,
         image:
-          'https://images.unsplash.com/photo-1487070183336-b863922373d4?auto=format&fit=crop&w=1200&q=80',
+          'https://zakazvenkov.com/wp-content/uploads/2020/12/img-20201215-wa0053.jpg',
         category: 'flowers',
         userId: 1,
       },
