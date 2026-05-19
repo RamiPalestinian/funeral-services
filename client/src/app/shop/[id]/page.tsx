@@ -101,7 +101,7 @@ function ShopByIdPage() {
     if (isInitialized && !user) {
       router.replace("/auth");
     }
-  }, [isInitialized, user]);
+  }, [isInitialized, user, router]);
 
   if (isInitialized && !user) {
     return null;
