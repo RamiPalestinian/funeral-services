@@ -10,9 +10,11 @@ type ToastListener = (toast: ToastPayload) => void;
 
 const listeners = new Set<ToastListener>();
 
-export function subscribeToast(listener: ToastListener) {
+export function subscribeToast(listener: ToastListener): () => void {
   listeners.add(listener);
-  return () => listeners.delete(listener);
+  return () => {
+    listeners.delete(listener);
+  };
 }
 
 export function showToast(message: string, type: ToastType = "success") {
