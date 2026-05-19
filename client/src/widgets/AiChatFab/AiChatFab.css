@@ -1,0 +1,116 @@
+.ai-chat-fab {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 1200;
+}
+
+.ai-chat-fab-button {
+  width: 56px;
+  height: 56px;
+  border: 1px solid rgba(214, 204, 189, 0.2);
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(125, 151, 168, 0.96), rgba(94, 112, 124, 0.96));
+  color: #f6f1e8;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ai-chat-fab-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
+}
+
+.ai-chat-fab-button:focus-visible {
+  outline: 2px solid var(--accent-stone);
+  outline-offset: 3px;
+}
+
+.ai-chat-fab-button--open {
+  background: linear-gradient(135deg, rgba(185, 138, 113, 0.94), rgba(125, 151, 168, 0.94));
+}
+
+.ai-chat-fab-icon {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.ai-chat-fab-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1190;
+  border: none;
+  background: rgba(10, 12, 14, 0.45);
+  cursor: pointer;
+}
+
+.ai-chat-fab-panel {
+  position: fixed;
+  right: 22px;
+  bottom: 90px;
+  z-index: 1201;
+  width: min(400px, calc(100vw - 32px));
+  max-height: min(640px, calc(100vh - 120px));
+  display: grid;
+  grid-template-rows: auto 1fr;
+  border-radius: 24px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+    var(--bg-panel);
+  border: 1px solid rgba(214, 204, 189, 0.12);
+  box-shadow: var(--shadow-xl);
+}
+
+.ai-chat-fab-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(214, 204, 189, 0.1);
+}
+
+.ai-chat-fab-header h2 {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-stone);
+}
+
+.ai-chat-fab-close {
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(214, 204, 189, 0.14);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-main);
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.ai-chat-fab-body {
+  min-height: 0;
+  padding: 16px 18px 18px;
+  overflow: hidden;
+}
+
+@media (max-width: 700px) {
+  .ai-chat-fab {
+    right: 16px;
+    bottom: 16px;
+  }
+
+  .ai-chat-fab-panel {
+    right: 16px;
+    bottom: 82px;
+    width: calc(100vw - 32px);
+    max-height: calc(100vh - 110px);
+  }
+}
