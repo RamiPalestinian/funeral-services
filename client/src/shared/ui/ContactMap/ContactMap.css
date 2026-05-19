@@ -28,6 +28,11 @@
   font-size: 10px;
 }
 
+.leaflet-right {
+  display: none;
+  opacity: 0;
+}
+
 @media (width <= 640px) {
   .contact-map__canvas,
   .contact-map--loading {
