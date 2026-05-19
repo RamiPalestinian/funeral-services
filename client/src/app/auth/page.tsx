@@ -23,7 +23,7 @@ export default function AuthPage() {
     if (isInitialized && user) {
       router.replace(CLIENT_ROUTES.HOME);
     }
-  }, [isInitialized, user]);
+  }, [isInitialized, user, router]);
 
   if (isInitialized && user) {
     return null;

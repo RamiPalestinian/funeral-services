@@ -85,7 +85,7 @@ export default function ShopPage() {
     if (isInitialized && !user) {
       router.replace(CLIENT_ROUTES.AUTH);
     }
-  }, [isInitialized, user]);
+  }, [isInitialized, user, router]);
 
   if (isInitialized && !user) {
     return null;
@@ -105,6 +105,7 @@ export default function ShopPage() {
             </p>
           </div>
           <div className="shop-hero-mark">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="https://cdn-icons-png.flaticon.com/256/3144/3144456.png"
               alt="Ритуальные товары"

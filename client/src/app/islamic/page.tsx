@@ -113,9 +113,12 @@ export default function Islamic() {
             </p>
           </div>
           <div className="islamic-hero-mark">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="https://cdn-icons-png.flaticon.com/256/5339/5339355.png"
               alt="Ритуальные услуги"
+              width={100}
+              height={100}
             />
           </div>
         </div>

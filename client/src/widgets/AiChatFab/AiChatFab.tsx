@@ -10,8 +10,16 @@ import "./AiChatFab.css";
 export default function AiChatFab() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const [lastPathname, setLastPathname] = useState(pathname);
 
   const isAiPage = pathname === CLIENT_ROUTES.AI;
+
+  if (pathname !== lastPathname) {
+    setLastPathname(pathname);
+    if (isOpen) {
+      setIsOpen(false);
+    }
+  }
 
   const closeChat = useCallback(() => {
     setIsOpen(false);
@@ -35,10 +43,6 @@ export default function AiChatFab() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, closeChat]);
-
-  useEffect(() => {
-    closeChat();
-  }, [pathname, closeChat]);
 
   if (isAiPage) {
     return null;

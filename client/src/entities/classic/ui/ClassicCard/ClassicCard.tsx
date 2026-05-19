@@ -24,14 +24,18 @@ function ClassicCard({ classic, onAddToCard }: ClassicCardProps) {
   const isAdmin = user?.id === 1;
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
+  const handleConfirmDelete = useCallback(() => {
+    if (!classic) {
+      return;
+    }
+
+    void dispatch(deleteClassicThunk(classic.id));
+    setIsDeleteOpen(false);
+  }, [dispatch, classic]);
+
   if (!classic) {
     return null;
   }
-
-  const handleConfirmDelete = useCallback(() => {
-    void dispatch(deleteClassicThunk(classic.id));
-    setIsDeleteOpen(false);
-  }, [dispatch, classic.id]);
 
   return (
     <article className="classic-card">

@@ -1,5 +1,13 @@
 {
-    "extends": ["stylelint-config-standard", "stylelint-config-recess-order"],
-    "ignoreFiles": ["dist/**/*.css"]
+  "extends": ["stylelint-config-standard", "stylelint-config-recess-order"],
+  "ignoreFiles": ["dist/**/*.css"],
+  "rules": {
+    "selector-class-pattern": [
+      "^[a-z]([a-z0-9-]+)?(__([a-z0-9]+-?)+)?(--([a-z0-9]+-?)+)?$",
+      {
+        "message": "Use kebab-case or BEM (block__element--modifier)"
+      }
+    ],
+    "no-descending-specificity": null
   }
-  
+}

@@ -110,6 +110,7 @@ export default function Header({ user, setUser }: HeaderProps) {
               cartCount > 0 ? `Корзина, ${cartCount} позиций` : "Корзина"
             }
           >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               className="navlink-cart-icon"
               src="/cart.png"

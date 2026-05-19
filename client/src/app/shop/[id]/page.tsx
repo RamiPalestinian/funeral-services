@@ -115,6 +115,7 @@ function ShopByIdPage() {
   return (
     <section className="shop-page shop-detail-page">
       <div className="shop-detail-media">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className="shop-detail-image"
           src={shop.image}

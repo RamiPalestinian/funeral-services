@@ -6,14 +6,14 @@ import "./not-found.css";
 export default function NotFoundPage() {
   const router = useRouter();
 
-  function handleBack() {
-    if (window.history.length > 1) {
-      router.back();
-      return;
-    }
+  // function handleBack() {
+  //   if (window.history.length > 1) {
+  //     router.back();
+  //     return;
+  //   }
 
-    router.push(CLIENT_ROUTES.HOME);
-  }
+  //   router.push(CLIENT_ROUTES.HOME);
+  // }
 
   return (
     <div className="not-found-page">
