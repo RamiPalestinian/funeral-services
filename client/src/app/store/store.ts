@@ -5,6 +5,7 @@ import { cremationReducer } from "@/entities/cremation/slice/cremationSlice";
 import { shopReducer } from "@/entities/shop/slice/shopSlice";
 import { islamicReducer } from "@/entities/islamic/slice/islamicSlice";
 import { cardReducer } from "@/entities/card/slice/cardSlice";
+import { toastListenerMiddleware } from "./toastListener";
 
 // создаём store - глобальное хранилище данных
 export const store = configureStore({
@@ -16,6 +17,8 @@ export const store = configureStore({
     islamic: islamicReducer,
     card: cardReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().prepend(toastListenerMiddleware.middleware),
 });
 
 // экспортируем типы для написания кастомных хуков useAppSelector и useAppDispatch
