@@ -120,20 +120,6 @@ export default function Home() {
             />
           </a>
           <a
-            className="home-svo-ad"
-            href="https://www.ligastavok.ru"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Перейти на сайт Лига Ставок"
-          >
-            <Image
-              src="/1x.png"
-              alt="Рекламный баннер"
-              width={160}
-              height={160}
-            />
-          </a>
-          <a
             className="home-svo-ad home-credit-ad"
             href="https://home.kz/"
             target="_blank"
