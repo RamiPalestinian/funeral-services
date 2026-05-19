@@ -16,6 +16,12 @@
   align-content: start;
   overflow-y: auto;
   min-height: 0;
+  scroll-behavior: smooth;
+}
+
+.ai-chat-messages-end {
+  width: 100%;
+  height: 1px;
 }
 
 .ai-chat-panel--page .ai-chat-messages {

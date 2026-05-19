@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 import { useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 import { useAiChat } from "@/features/ai/model/AiChatProvider";
@@ -18,6 +19,11 @@ export default function AiChatPanel({
 }: AiChatPanelProps) {
   const { user } = useAppSelector((state) => state.user);
   const { messages, input, setInput, error, isLoading, sendMessage } = useAiChat();
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [messages, isLoading]);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -65,6 +71,7 @@ export default function AiChatPanel({
             <p>Печатает ответ...</p>
           </article>
         )}
+        <div ref={messagesEndRef} className="ai-chat-messages-end" aria-hidden />
       </div>
 
       {!user ? (
