@@ -196,7 +196,7 @@
 
 .home-ads-stack {
   position: absolute;
-  top: -650px;
+  top: -1750px;
   left: calc(100% + 100px);
   display: grid;
   gap: 14px;
