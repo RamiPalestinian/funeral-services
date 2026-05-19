@@ -12,16 +12,40 @@ import {
 } from "@/entities/cremation/api/CremationApiThunk";
 import type { CremationType } from "@/entities/cremation/model";
 
+import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  CremationFormInput,
+  cremationSchema,
+  CremationSchema,
+} from "@/entities/cremation/model/cremationSchema";
+
 export default function CremationPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { cremations, error, isLoading } = useAppSelector(
-    (state) => state.cremation,
-  );
+  const { cremations, error } = useAppSelector((state) => state.cremation);
   const { user, isInitialized } = useAppSelector((state) => state.user);
 
   const isAdmin = user?.id === 1;
   const [searchQuery, setSearchQuery] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<CremationFormInput, unknown, CremationSchema>({
+    resolver: zodResolver(cremationSchema),
+    mode: "onChange",
+    defaultValues: {
+      name: "",
+      description: "",
+      price: "",
+      image: "",
+      category: "",
+      userId: 1,
+    },
+  });
 
   const filteredCremations = cremations.filter((cremation) =>
     cremation.name.toLowerCase().includes(searchQuery.toLowerCase()),
@@ -46,29 +70,16 @@ export default function CremationPage() {
     [user, router, dispatch],
   );
 
-  const handleCreateSubmit = useCallback(
-    async (event: React.ChangeEvent<HTMLFormElement>) => {
-      event.preventDefault();
-
-      if (user === null) {
-        return;
+  const onSubmit: SubmitHandler<CremationSchema> = useCallback(
+    async (data) => {
+      try {
+        await dispatch(createCremationThunk(data)).unwrap();
+        reset();
+      } catch (error) {
+        console.error("Ошибка при создании услуги кремации:", error);
       }
-
-      const formData = new FormData(event.currentTarget);
-
-      await dispatch(
-        createCremationThunk({
-          name: String(formData.get("name")),
-          description: String(formData.get("description")),
-          price: Number(formData.get("price")),
-          image: String(formData.get("image")),
-          category: String(formData.get("category")),
-          userId: user.id,
-        }),
-      );
-      event.currentTarget.reset();
     },
-    [user, dispatch],
+    [dispatch, reset],
   );
 
   useEffect(() => {
@@ -105,51 +116,60 @@ export default function CremationPage() {
 
       {isAdmin && (
         <div className="cremation-form-wrap">
-          <form className="cremation-form" onSubmit={handleCreateSubmit}>
+          <form className="cremation-form" onSubmit={handleSubmit(onSubmit)}>
             <input
+              {...register("name")}
               className="cremation-form-input"
-              name="name"
               type="text"
               placeholder="Название"
               minLength={3}
               required
             />
+            {errors.name && <p className="error">{errors.name.message}</p>}
             <input
+              {...register("category")}
               className="cremation-form-input"
-              name="category"
               type="text"
               placeholder="Категория"
               minLength={3}
               required
             />
+            {errors.category && (
+              <p className="error">{errors.category.message}</p>
+            )}
             <input
+              {...register("price")}
               className="cremation-form-input"
-              name="price"
               type="number"
               placeholder="Цена"
               min={0}
               required
             />
+            {errors.price && <p className="error">{errors.price.message}</p>}
             <input
+              {...register("image")}
               className="cremation-form-input cremation-form-input-wide"
-              name="image"
               type="url"
               placeholder="Добавить фото"
               required
             />
+            {errors.image && <p className="error">{errors.image.message}</p>}
             <textarea
+              {...register("description")}
               className="cremation-form-textarea"
-              name="description"
               placeholder="Описание"
               minLength={10}
               required
             />
+            {errors.description && (
+              <p className="error">{errors.description.message}</p>
+            )}
             <button
               className="cremation-form-button"
               type="submit"
-              disabled={!user || isLoading}
+              disabled={isSubmitting}
             >
-              {isLoading ? "Создание..." : "Создать услугу"}
+              {isSubmitting ? "Создание..." : "Создать услугу"}
             </button>
           </form>
           {error && <p className="cremation-form-error">{error}</p>}

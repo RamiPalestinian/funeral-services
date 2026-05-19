@@ -12,13 +12,39 @@ import {
 } from "@/entities/shop/api/ShopApiThunk";
 import type { ShopType } from "@/entities/shop/model";
 
+import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  shopSchema,
+  ShopSchema,
+  ShopFormInput,
+} from "@/entities/shop/model/shopSchema";
+
 export default function ShopPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { shops, error, isLoading } = useAppSelector((state) => state.shop);
+  const { shops, error } = useAppSelector((state) => state.shop);
   const { user, isInitialized } = useAppSelector((state) => state.user);
   const isAdmin = user?.id === 1;
   const [searchQuery, setSearchQuery] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<ShopFormInput, unknown, ShopSchema>({
+    resolver: zodResolver(shopSchema),
+    mode: "onChange",
+    defaultValues: {
+      name: "",
+      description: "",
+      price: "",
+      image: "",
+      category: "",
+      userId: 1,
+    },
+  });
 
   const filteredShops = shops.filter((shop) =>
     shop.name.toLowerCase().includes(searchQuery.toLowerCase()),
@@ -43,29 +69,16 @@ export default function ShopPage() {
     [user, router, dispatch],
   );
 
-  const handleCreateSubmit = useCallback(
-    async (event: React.ChangeEvent<HTMLFormElement>) => {
-      event.preventDefault();
-
-      if (user === null) {
-        return;
+  const onSubmit: SubmitHandler<ShopSchema> = useCallback(
+    async (data) => {
+      try {
+        await dispatch(createShopThunk(data)).unwrap();
+        reset();
+      } catch (error) {
+        console.error("Ошибка при создании магазина:", error);
       }
-
-      const formData = new FormData(event.currentTarget);
-
-      await dispatch(
-        createShopThunk({
-          name: String(formData.get("name")),
-          description: String(formData.get("description")),
-          price: Number(formData.get("price")),
-          image: String(formData.get("image")),
-          category: String(formData.get("category")),
-          userId: user.id,
-        }),
-      );
-      event.currentTarget.reset();
     },
-    [user, dispatch],
+    [dispatch, reset],
   );
 
   useEffect(() => {
@@ -102,51 +115,60 @@ export default function ShopPage() {
 
       {isAdmin && (
         <div className="shop-form-wrap">
-          <form className="shop-form" onSubmit={handleCreateSubmit}>
+          <form className="shop-form" onSubmit={handleSubmit(onSubmit)}>
             <input
               className="shop-form-input"
-              name="name"
+              {...register("name")}
               type="text"
               placeholder="Название"
               minLength={3}
               required
             />
+            {errors.name && <p className="error">{errors.name.message}</p>}
             <input
               className="shop-form-input"
-              name="category"
+              {...register("category")}
               type="text"
               placeholder="Категория"
               minLength={3}
               required
             />
+            {errors.category && (
+              <p className="error">{errors.category.message}</p>
+            )}
             <input
               className="shop-form-input"
-              name="price"
+              {...register("price")}
               type="number"
               placeholder="Цена"
               min={0}
               required
             />
+            {errors.price && <p className="error">{errors.price.message}</p>}
             <input
               className="shop-form-input shop-form-input-wide"
-              name="image"
+              {...register("image")}
               type="url"
               placeholder="Добавить фото"
               required
             />
+            {errors.image && <p className="error">{errors.image.message}</p>}
             <textarea
               className="shop-form-textarea"
-              name="description"
+              {...register("description")}
               placeholder="Описание"
               minLength={10}
               required
             />
+            {errors.description && (
+              <p className="error">{errors.description.message}</p>
+            )}
             <button
               className="shop-form-button"
               type="submit"
-              disabled={!user || isLoading}
+              disabled={isSubmitting}
             >
-              {isLoading ? "Создание..." : "Создать товар"}
+              {isSubmitting ? "Создание..." : "Создать товар"}
             </button>
           </form>
           {error && <p className="shop-form-error">{error}</p>}
