@@ -106,7 +106,6 @@ export default function CremationPage() {
             </p>
           </div>
           <div className="cremation-hero-mark">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="https://cdn-icons-png.flaticon.com/256/2920/2920349.png"
               alt="Кремация"

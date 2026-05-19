@@ -33,7 +33,6 @@ function CremationCard({ cremation, onAddToCard }: CremationCardProps) {
     <article className="cremation-card">
       <CardDateMeta createdAt={cremation.createdAt} />
       <div className="cremation-card-media">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className="cremation-card-image"
           src={cremation.image}

@@ -136,7 +136,6 @@ export default function OneIslamicPage() {
   return (
     <section className="islamic-page islamic-detail-page">
       <div className="islamic-detail-media">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className="islamic-detail-image"
           src={oneIslamic.image}

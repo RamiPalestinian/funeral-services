@@ -113,7 +113,6 @@ function CremationByIdPage() {
   return (
     <section className="cremation-page cremation-detail-page">
       <div className="cremation-detail-media">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className="cremation-detail-image"
           src={cremation.image}

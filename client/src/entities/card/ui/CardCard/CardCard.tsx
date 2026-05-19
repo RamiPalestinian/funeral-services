@@ -31,7 +31,6 @@ function CardCard({ card, user }: { card: CardType; user: UserType }) {
       <div className="card-line-media">
         {item?.image ? (
           <>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               className="card-line-image"
               src={item.image}

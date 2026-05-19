@@ -40,7 +40,6 @@ export function PaymentQr({
           aria-hidden
         />
         <span className="payment-qr__scan-line" aria-hidden />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={qrSrc}
           alt="QR-код"

@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import { axiosInstance } from "@/shared/lib/axiosInstance";
+import type { UserType } from "@/entities/user/model";
 import { useAppSelector } from "@/shared/hooks/useReduxHooks";
 import {
   clearChatMessages,
@@ -46,7 +47,26 @@ export function useAiChat() {
 
 export function AiChatProvider({ children }: { children: ReactNode }) {
   const { user } = useAppSelector((state) => state.user);
-  const [messages, setMessages] = useState<ChatMessage[]>([AI_WELCOME_MESSAGE]);
+  const userKey = user?.id ?? "guest";
+
+  return (
+    <AiChatStateProvider key={userKey} user={user}>
+      {children}
+    </AiChatStateProvider>
+  );
+}
+
+type AiChatStateProviderProps = {
+  children: ReactNode;
+  user: UserType | null;
+};
+
+function AiChatStateProvider({ children, user }: AiChatStateProviderProps) {
+  const userId = user?.id;
+
+  const [messages, setMessages] = useState<ChatMessage[]>(() =>
+    userId ? loadChatMessages(userId) : [AI_WELCOME_MESSAGE],
+  );
   const [input, setInput] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -62,41 +82,23 @@ export function AiChatProvider({ children }: { children: ReactNode }) {
     [messages],
   );
 
-  /* eslint-disable react-hooks/set-state-in-effect -- синхронизация чата при смене пользователя */
   useEffect(() => {
-    if (!user?.id) {
-      setMessages([AI_WELCOME_MESSAGE]);
-      setInput("");
-      setError("");
-      setIsLoading(false);
+    if (!userId) {
       return;
     }
 
-    setMessages(loadChatMessages(user.id));
-    setInput("");
-    setError("");
-    setIsLoading(false);
-  }, [user?.id]);
-  /* eslint-enable react-hooks/set-state-in-effect */
+    saveChatMessages(userId, messages);
+  }, [messages, userId]);
 
-  useEffect(() => {
-    if (!user?.id) {
-      return;
-    }
-
-    saveChatMessages(user.id, messages);
-  }, [messages, user?.id]);
-
-  // eslint-disable-next-line react-hooks/preserve-manual-memoization -- зависимость user?.id намеренная
   const clearChat = useCallback(() => {
     setMessages([AI_WELCOME_MESSAGE]);
     setInput("");
     setError("");
 
-    if (user?.id) {
-      clearChatMessages(user.id);
+    if (userId) {
+      clearChatMessages(userId);
     }
-  }, [user?.id]);
+  }, [userId]);
 
   const sendMessage = useCallback(async () => {
     const message = input.trim();
