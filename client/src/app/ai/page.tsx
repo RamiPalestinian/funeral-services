@@ -1,11 +1,10 @@
 "use client";
 
 import "./page.css";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { axiosInstance } from "@/shared/lib/axiosInstance";
 import { useAppSelector } from "@/shared/hooks/useReduxHooks";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 
 type ChatMessage = {
   id: string;
@@ -26,7 +25,6 @@ const initialMessages: ChatMessage[] = [
 ];
 
 export default function AiPage() {
-  //вытаскиваем юзера и инициализацию
   const { user, isInitialized } = useAppSelector((state) => state.user);
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
   const [input, setInput] = useState("");
@@ -65,20 +63,23 @@ export default function AiPage() {
     setIsLoading(true);
 
     try {
-      const response = await axiosInstance.post("/ai/chat", {
-        message,
-        userName: user?.name,
-        history: chatHistory,
-      });
+      const response = await axiosInstance.post<{ answer?: string }>(
+        "/ai/send-message",
+        {
+          message,
+          userName: user?.name,
+          history: chatHistory,
+        },
+      );
 
       const reply =
-        response.data?.data?.reply ||
+        response.data?.answer?.trim() ||
         "Я рядом. Уточните, пожалуйста, ваш вопрос, и я постараюсь помочь.";
 
       const assistantMessage: ChatMessage = {
         id: `assistant-${Date.now()}`,
         role: "assistant",
-        author: response.data?.data?.assistantName || assistantName,
+        author: assistantName,
         content: reply,
       };
 
@@ -108,12 +109,11 @@ export default function AiPage() {
     }
   }
 
-  //защита сраницы
   useEffect(() => {
     if (isInitialized && !user) {
       router.replace("/auth");
     }
-  }, [isInitialized, user]);
+  }, [isInitialized, router, user]);
 
   if (isInitialized && !user) {
     return null;

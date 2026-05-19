@@ -1,67 +1,80 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  HttpCode,
-  HttpStatus,
-  InternalServerErrorException,
-  Logger,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AiService } from './ai.service';
+import { IndexFileDto } from './dto/index-file.dto';
+import { QueryDto } from './dto/query.dto';
+import { SendMessageDto } from './dto/send-message.dto';
 
-type ChatHistoryMessageDto = {
-  role: 'user' | 'assistant';
-  content: string;
+type SendMessageResponse = {
+  success: true;
+  answer: string;
 };
 
-type ChatRequestDto = {
-  message: string;
-  userName?: string;
-  history?: ChatHistoryMessageDto[];
+type RagQueryResponse = {
+  success: true;
+  answer: string;
+  context: string | null;
+  message?: string;
+};
+
+type IndexFileResponse = {
+  success: true;
+  chunksCount: number;
+  filePath: string;
 };
 
 @Controller('ai')
 export class AiController {
-  private readonly logger = new Logger(AiController.name);
-
   constructor(private readonly aiService: AiService) {}
 
-  @Post('chat')
+  @Post('send-message')
   @HttpCode(HttpStatus.OK)
-  async chat(@Body() dto: ChatRequestDto) {
-    const message = dto.message?.trim();
+  async sendMessage(@Body() dto: SendMessageDto): Promise<SendMessageResponse> {
+    const answer = await this.aiService.sendMessage({
+      message: dto.message.trim(),
+      userName: dto.userName,
+      history: dto.history ?? [],
+    });
 
-    if (!message) {
-      throw new BadRequestException('Сообщение обязательно');
-    }
+    return { success: true, answer };
+  }
 
-    if (message.length > 1000) {
-      throw new BadRequestException(
-        'Сообщение не должно превышать 1000 символов',
-      );
-    }
+  @Post('index-file')
+  @HttpCode(HttpStatus.OK)
+  async indexFile(@Body() dto: IndexFileDto): Promise<IndexFileResponse> {
+    const filePath = dto.filePath.trim();
+    const chunksCount = await this.aiService.indexFileByPath(filePath);
 
-    try {
-      const reply = await this.aiService.sendMessage({
-        message,
-        userName: dto.userName,
-        history: dto.history ?? [],
-      });
+    return { success: true, chunksCount, filePath };
+  }
 
-      return {
-        statusCode: 200,
-        message: 'Ответ получен',
-        data: {
-          reply,
-          assistantName: 'Ваш личный помощник',
-        },
-        error: null,
-      };
-    } catch (error) {
-      this.logger.error('==== AiController.chat ====');
-      this.logger.error(error);
-      throw new InternalServerErrorException('Не удалось получить ответ');
-    }
+  @Post('query')
+  @HttpCode(HttpStatus.OK)
+  async query(@Body() dto: QueryDto): Promise<RagQueryResponse> {
+    const { answer, context, message } = await this.aiService.queryRag(
+      dto.question.trim(),
+    );
+
+    return {
+      success: true,
+      answer,
+      context,
+      ...(message !== undefined ? { message } : {}),
+    };
+  }
+
+  @Post('clear-storage')
+  @HttpCode(HttpStatus.OK)
+  clearStorage(): { success: true; message: string } {
+    this.aiService.clearRagStorage();
+    return { success: true, message: 'Хранилище очищено' };
+  }
+
+  @Post('storage-info')
+  @HttpCode(HttpStatus.OK)
+  getStorageInfo(): { success: true; storageSize: number } {
+    return {
+      success: true,
+      storageSize: this.aiService.getRagStorageSize(),
+    };
   }
 }
