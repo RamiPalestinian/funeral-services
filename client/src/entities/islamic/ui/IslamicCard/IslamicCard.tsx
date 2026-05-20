@@ -3,7 +3,8 @@
 import "./IslamicCard.css";
 import { deleteIslamicThunk } from "@/entities/islamic/api/IslamicApiThunk";
 import type { IslamicType } from "@/entities/islamic/model";
-import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
+import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
+import { useIsAdmin } from "@/shared/hooks/useIsAdmin";
 import { useRouter } from "next/navigation";
 import { CardDateMeta } from "@/shared/ui/CardDateMeta/CardDateMeta";
 import ConfirmDialog from "@/shared/ui/ConfirmDialog/ConfirmDialog";
@@ -19,8 +20,7 @@ type IslamicCardProps = {
 function IslamicCard({ islamic, onAddToCard }: IslamicCardProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user.user);
-  const isAdmin = user?.id === 1;
+  const isAdmin = useIsAdmin();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   const handleConfirmDelete = useCallback(() => {

@@ -3,20 +3,14 @@ import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 
 import "./page.css";
 import { useRouter } from "next/navigation";
-import { useAppSelector } from "@/shared/hooks/useReduxHooks";
-import { useEffect } from "react";
+import { useRequireAuth } from "@/shared/hooks/useRequireAuth";
 import Image from "next/image";
 
 export default function TarasAndYraPage() {
   const router = useRouter();
-  const { user, isInitialized } = useAppSelector((state) => state.user);
-  useEffect(() => {
-    if (isInitialized && !user) {
-      router.replace(CLIENT_ROUTES.AUTH);
-    }
-  }, [isInitialized, router, user]);
+  const { isReady } = useRequireAuth();
 
-  if (isInitialized && !user) {
+  if (!isReady) {
     return null;
   }
 

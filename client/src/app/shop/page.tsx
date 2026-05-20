@@ -6,11 +6,14 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ShopCard from "@/entities/shop/ui/ShopCard/ShopCard";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
-import { createCardThunk } from "@/entities/card/api/CardApiThunk";
 import {
   createShopThunk,
   getAllShopsThunk,
 } from "@/entities/shop/api/ShopApiThunk";
+import { useRequireAuth } from "@/shared/hooks/useRequireAuth";
+import { useIsAdmin } from "@/shared/hooks/useIsAdmin";
+import { useAddToCart } from "@/shared/hooks/useAddToCart";
+import { showToast } from "@/shared/lib/toast";
 import type { ShopType } from "@/entities/shop/model";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,8 +27,9 @@ export default function ShopPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { shops, error } = useAppSelector((state) => state.shop);
-  const { user, isInitialized } = useAppSelector((state) => state.user);
-  const isAdmin = user?.id === 1;
+  const { isReady } = useRequireAuth();
+  const isAdmin = useIsAdmin();
+  const { addShopToCart } = useAddToCart();
   const [searchQuery, setSearchQuery] = useState("");
 
   const {
@@ -54,40 +58,19 @@ export default function ShopPage() {
     dispatch(getAllShopsThunk());
   }, [dispatch]);
 
-  const handleAddToCard = useCallback(
-    async (serviceId: number) => {
-      if (!user) {
-        router.push(CLIENT_ROUTES.AUTH);
-        return;
-      }
-      try {
-        await dispatch(createCardThunk({ serviceId })).unwrap();
-      } catch {
-        console.log("Ошибка при добавлении в корзину");
-      }
-    },
-    [user, router, dispatch],
-  );
-
   const onSubmit: SubmitHandler<ShopSchema> = useCallback(
     async (data) => {
       try {
         await dispatch(createShopThunk(data)).unwrap();
         reset();
-      } catch (error) {
-        console.error("Ошибка при создании магазина:", error);
+      } catch {
+        showToast("Не удалось создать товар", "error");
       }
     },
     [dispatch, reset],
   );
 
-  useEffect(() => {
-    if (isInitialized && !user) {
-      router.replace(CLIENT_ROUTES.AUTH);
-    }
-  }, [isInitialized, user, router]);
-
-  if (isInitialized && !user) {
+  if (!isReady) {
     return null;
   }
 
@@ -192,7 +175,7 @@ export default function ShopPage() {
           <ShopCard
             key={shop.id}
             shop={shop}
-            onAddToCard={() => void handleAddToCard(shop.id)}
+            onAddToCard={() => void addShopToCart(shop.id)}
           />
         ))}
       </div>

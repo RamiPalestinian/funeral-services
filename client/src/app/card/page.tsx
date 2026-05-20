@@ -10,23 +10,20 @@ import { getAllCardsThunk } from "@/entities/card/api/CardApiThunk";
 import { formatPriceRUB } from "@/shared/lib/formatPriceRUB";
 import { useEffect } from "react";
 import type { CardType } from "@/entities/card/model";
+import { useRequireAuth } from "@/shared/hooks/useRequireAuth";
 
 export default function CardPage() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { cards, isLoading, error } = useAppSelector((state) => state.card);
-  const { user, isInitialized } = useAppSelector((state) => state.user);
+  const { isReady } = useRequireAuth();
 
   useEffect(() => {
-    if (!isInitialized) return;
-    if (!user) {
-      router.replace(CLIENT_ROUTES.AUTH);
-      return;
-    }
+    if (!isReady) return;
     void dispatch(getAllCardsThunk());
-  }, [dispatch, isInitialized, user, router]);
+  }, [dispatch, isReady]);
 
-  const ready = isInitialized && user;
+  const ready = isReady;
   const isInitialLoading = isLoading && cards.length === 0;
 
   function lineItem(card: CardType) {

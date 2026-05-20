@@ -11,11 +11,7 @@ import {
 const cremationSlice = createSlice({
   name: "cremation",
   initialState: initialCremationState,
-  reducers: {
-    setCremations: (state, action) => {
-      state.cremations = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     //getAllCremationsThunk
     builder.addCase(getAllCremationsThunk.pending, (state) => {
@@ -62,8 +58,8 @@ const cremationSlice = createSlice({
     });
     builder.addCase(updateCremationThunk.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.cremations = state.cremations.map((shop) =>
-        shop.id === action.payload.id ? action.payload : shop,
+      state.cremations = state.cremations.map((cremation ) =>
+        cremation.id === action.payload.id ? action.payload : cremation,
       );
     });
     builder.addCase(updateCremationThunk.rejected, (state, action) => {
@@ -78,7 +74,7 @@ const cremationSlice = createSlice({
     builder.addCase(deleteCremationThunk.fulfilled, (state, action) => {
       state.isLoading = false;
       state.cremations = state.cremations.filter(
-        (shop) => shop.id !== action.payload,
+        (cremation) => cremation.id !== action.payload,
       );
     });
     builder.addCase(deleteCremationThunk.rejected, (state, action) => {
@@ -87,7 +83,5 @@ const cremationSlice = createSlice({
     });
   },
 });
-
-export const { setCremations } = cremationSlice.actions;
 
 export const cremationReducer = cremationSlice.reducer;

@@ -1,17 +1,18 @@
 "use client";
-import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 
 import "../page.css";
 import "@/entities/classic/ui/ClassicCard/ClassicCard.css";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
-import { createCardThunk } from "@/entities/card/api/CardApiThunk";
 import {
   fetchClassicByIdThunk,
   updateClassicThunk,
 } from "@/entities/classic/api/ClassicApiThunk";
 import Image from "next/image";
+import { useRequireAuth } from "@/shared/hooks/useRequireAuth";
+import { useIsAdmin } from "@/shared/hooks/useIsAdmin";
+import { useAddToCart } from "@/shared/hooks/useAddToCart";
 
 const initialFormState = {
   name: "",
@@ -26,29 +27,12 @@ export default function OneClassicPage() {
   const { error, isLoading, oneClassic } = useAppSelector(
     (state) => state.classic,
   );
-  //вытаскиваем юзера и инициализацию
-  const { user, isInitialized } = useAppSelector((state) => state.user);
-  const isAdmin = user?.id === 1;
+  const { isReady } = useRequireAuth();
+  const isAdmin = useIsAdmin();
+  const { addClassicToCart } = useAddToCart();
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const [formData, setFormData] = useState(initialFormState);
-
-  const handleAddToCard = async () => {
-    if (!user) {
-      router.push(CLIENT_ROUTES.AUTH);
-      return;
-    }
-    if (!oneClassic) {
-      return;
-    }
-    try {
-      await dispatch(
-        createCardThunk({ classicServiceId: oneClassic.id }),
-      ).unwrap();
-    } catch {
-      console.log("Ошибка при добавлении в корзину");
-    }
-  };
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
@@ -120,14 +104,7 @@ export default function OneClassicPage() {
     }
   };
 
-  //защита сраницы
-  useEffect(() => {
-    if (isInitialized && !user) {
-      router.replace(CLIENT_ROUTES.AUTH);
-    }
-  }, [isInitialized, user, router]);
-
-  if (isInitialized && !user) {
+  if (!isReady) {
     return null;
   }
 
@@ -229,7 +206,7 @@ export default function OneClassicPage() {
           <button
             type="button"
             className="classic-card-button"
-            onClick={() => void handleAddToCard()}
+            onClick={() => void addClassicToCart(oneClassic.id)}
           >
             В корзину
           </button>

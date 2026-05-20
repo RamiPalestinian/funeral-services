@@ -1,16 +1,17 @@
 "use client";
-import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 
 import "../page.css";
 import "@/entities/shop/ui/ShopCard/ShopCard.css";
 import React, { useCallback, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
-import { createCardThunk } from "@/entities/card/api/CardApiThunk";
 import {
   getShopByIdThunk,
   updateShopThunk,
 } from "@/entities/shop/api/ShopApiThunk";
+import { useRequireAuth } from "@/shared/hooks/useRequireAuth";
+import { useIsAdmin } from "@/shared/hooks/useIsAdmin";
+import { useAddToCart } from "@/shared/hooks/useAddToCart";
 
 const initialFormState = {
   name: "",
@@ -24,20 +25,9 @@ function ShopByIdPage() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { id } = useParams<{ id: string }>();
-  const { user, isInitialized } = useAppSelector((state) => state.user);
-  const isAdmin = user?.id === 1;
-
-  const handleAddToCard = useCallback(async () => {
-    if (!user) {
-      router.push(CLIENT_ROUTES.AUTH);
-      return;
-    }
-    try {
-      await dispatch(createCardThunk({ serviceId: Number(id) })).unwrap();
-    } catch {
-      console.log("Ошибка при добавлении в корзину");
-    }
-  }, [user, router, dispatch, id]);
+  const { isReady } = useRequireAuth();
+  const isAdmin = useIsAdmin();
+  const { addShopToCart } = useAddToCart();
 
   const { shops, error, isLoading } = useAppSelector((state) => state.shop);
   const [formData, setFormData] = useState(initialFormState);
@@ -98,13 +88,7 @@ function ShopByIdPage() {
     [dispatch, id, formData],
   );
 
-  useEffect(() => {
-    if (isInitialized && !user) {
-      router.replace(CLIENT_ROUTES.AUTH);
-    }
-  }, [isInitialized, user, router]);
-
-  if (isInitialized && !user) {
+  if (!isReady) {
     return null;
   }
 
@@ -211,7 +195,7 @@ function ShopByIdPage() {
           <button
             type="button"
             className="shop-card-button"
-            onClick={() => void handleAddToCard()}
+            onClick={() => void addShopToCart(Number(id))}
           >
             В корзину
           </button>

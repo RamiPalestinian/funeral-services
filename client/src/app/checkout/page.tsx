@@ -12,6 +12,8 @@ import {
 } from "@/entities/card/api/CardApiThunk";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useRequireAuth } from "@/shared/hooks/useRequireAuth";
+import { showToast } from "@/shared/lib/toast";
 import { CardType } from "@/entities/card/model";
 import { PaymentQr } from "@/shared/ui/PaymentQr/PaymentQr";
 import { PaymentCardForm } from "@/shared/ui/PaymentCardForm/PaymentCardForm";
@@ -21,7 +23,7 @@ export default function CheckoutPage() {
   const { lastCheckout, cards, isLoading, error } = useAppSelector(
     (state) => state.card,
   );
-  const { user, isInitialized } = useAppSelector((state) => state.user);
+  const { isReady } = useRequireAuth();
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [isCardFormValid, setIsCardFormValid] = useState(false);
   const [isCashOrderModalOpen, setIsCashOrderModalOpen] = useState(false);
@@ -77,19 +79,19 @@ export default function CheckoutPage() {
     try {
       await dispatch(mockCheckoutThunk()).unwrap();
       router.push(CLIENT_ROUTES.CHECKOUT_SUCCESS);
-    } catch (error) {
-      console.error("Ошибка при оплате:", error);
+    } catch {
+      showToast("Не удалось завершить оплату", "error");
     }
   }, [dispatch, paymentMethod, router]);
 
   useEffect(() => {
-    if (!isInitialized) return;
-    if (!user) {
-      router.replace(CLIENT_ROUTES.AUTH);
-      return;
-    }
+    if (!isReady) return;
     void dispatch(getAllCardsThunk());
-  }, [dispatch, isInitialized, user, router]);
+  }, [dispatch, isReady]);
+
+  if (!isReady) {
+    return null;
+  }
 
   function handlePaymentMethodChange(method: string) {
     setPaymentMethod(method);

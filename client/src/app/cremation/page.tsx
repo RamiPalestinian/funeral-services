@@ -6,7 +6,10 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import CremationCard from "@/entities/cremation/ui/CremationCard/CremationCard";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
-import { createCardThunk } from "@/entities/card/api/CardApiThunk";
+import { useRequireAuth } from "@/shared/hooks/useRequireAuth";
+import { useIsAdmin } from "@/shared/hooks/useIsAdmin";
+import { useAddToCart } from "@/shared/hooks/useAddToCart";
+import { showToast } from "@/shared/lib/toast";
 import {
   createCremationThunk,
   getAllCremationsThunk,
@@ -24,9 +27,9 @@ export default function CremationPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { cremations, error } = useAppSelector((state) => state.cremation);
-  const { user, isInitialized } = useAppSelector((state) => state.user);
-
-  const isAdmin = user?.id === 1;
+  const { isReady } = useRequireAuth();
+  const isAdmin = useIsAdmin();
+  const { addCremationToCart } = useAddToCart();
   const [searchQuery, setSearchQuery] = useState("");
 
   const {
@@ -55,40 +58,19 @@ export default function CremationPage() {
     dispatch(getAllCremationsThunk());
   }, [dispatch]);
 
-  const handleAddToCard = useCallback(
-    async (cremationId: number) => {
-      if (!user) {
-        router.push(CLIENT_ROUTES.AUTH);
-        return;
-      }
-      try {
-        await dispatch(createCardThunk({ cremationId })).unwrap();
-      } catch {
-        console.log("Ошибка при добавлении в корзину");
-      }
-    },
-    [user, router, dispatch],
-  );
-
   const onSubmit: SubmitHandler<CremationSchema> = useCallback(
     async (data) => {
       try {
         await dispatch(createCremationThunk(data)).unwrap();
         reset();
-      } catch (error) {
-        console.error("Ошибка при создании услуги кремации:", error);
+      } catch {
+        showToast("Не удалось создать услугу кремации", "error");
       }
     },
     [dispatch, reset],
   );
 
-  useEffect(() => {
-    if (isInitialized && !user) {
-      router.replace(CLIENT_ROUTES.AUTH);
-    }
-  }, [isInitialized, user, router]);
-
-  if (isInitialized && !user) {
+  if (!isReady) {
     return null;
   }
 
@@ -195,7 +177,7 @@ export default function CremationPage() {
           <CremationCard
             key={cremation.id}
             cremation={cremation}
-            onAddToCard={() => void handleAddToCard(cremation.id)}
+            onAddToCard={() => void addCremationToCart(cremation.id)}
           />
         ))}
       </div>

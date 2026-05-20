@@ -5,7 +5,7 @@ import type { ShopType } from "../../model";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { deleteShopThunk } from "../../api/ShopApiThunk";
-import { useUser } from "@/application/UserProvider";
+import { useIsAdmin } from "@/shared/hooks/useIsAdmin";
 import { CardDateMeta } from "@/shared/ui/CardDateMeta/CardDateMeta";
 import ConfirmDialog from "@/shared/ui/ConfirmDialog/ConfirmDialog";
 import { formatPriceRUB } from "@/shared/lib/formatPriceRUB";
@@ -20,8 +20,7 @@ type ShopCardProps = {
 function ShopCard({ shop, onAddToCard }: ShopCardProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { user } = useUser();
-  const isAdmin = user?.id === 1;
+  const isAdmin = useIsAdmin();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   const handleConfirmDelete = useCallback(() => {
@@ -46,7 +45,9 @@ function ShopCard({ shop, onAddToCard }: ShopCardProps) {
         <p className="shop-card-description">{shop.description}</p>
         <div className="shop-card-meta">
           <span className="shop-card-category">{shop.category}</span>
-          <span className="shop-card-price">{formatPriceRUB(shop.price)} ₽</span>
+          <span className="shop-card-price">
+            {formatPriceRUB(shop.price)} ₽
+          </span>
         </div>
         <div className="shop-card-actions">
           <button

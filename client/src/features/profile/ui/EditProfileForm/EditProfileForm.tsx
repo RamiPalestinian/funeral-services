@@ -5,6 +5,7 @@ import { UserValidator } from "@/entities/user/model/UserValidator";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { updateProfileThunk } from "@/entities/user/api/UserApiThunk";
 import type { UserType } from "@/entities/user/model";
+import { showToast } from "@/shared/lib/toast";
 
 export default function EditProfileForm({
   user,
@@ -50,7 +51,7 @@ export default function EditProfileForm({
       const updatedUser = await dispatch(updateProfileThunk(payload)).unwrap();
       setUser(updatedUser);
     } catch {
-      console.log("Ошибка при сохранении профиля");
+      showToast("Не удалось сохранить профиль", "error");
     }
   };
 
