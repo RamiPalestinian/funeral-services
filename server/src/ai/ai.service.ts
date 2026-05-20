@@ -28,6 +28,18 @@ type VectorStorage = {
   text: string; // Сам текст фрагмента
 };
 
+type RagSearchResult = {
+  chunks: string[];
+  maxScore: number;
+};
+
+const OFF_TOPIC_REPLY =
+  'К сожалению, я не могу ответить на этот вопрос — я консультирую только по услугам ритуальной службы «Пантеон»: похороны, кремация, документы, транспорт и ориентиры по стоимости. Посмотрите раздел «Наши услуги» на сайте или свяжитесь с оператором. Задайте, пожалуйста, другой вопрос по нашим услугам.';
+
+// Если в вопросе есть эти слова — считаем тему ритуальной службы, даже при слабом RAG
+const FUNERAL_TOPIC_RE =
+  /похорон|кремац|ритуал|гроб|венок|захорон|документ|транспорт|ислам|услуг|пакет|стоимост|цен[аыуе]|оператор|пантеон|умер|смерт|справк|свидетельств|морг|кладбищ|первые\s+час|организац/i;
+
 @Injectable()
 export class AiService implements OnModuleInit {
   private readonly logger = new Logger(AiService.name);
@@ -46,6 +58,9 @@ export class AiService implements OnModuleInit {
 
   // Сколько самых похожих фрагментов отправить в GigaChat
   private topP: number = 3;
+
+  // Минимальная похожесть с базой знаний; ниже — вопрос считаем оффтопом
+  private ragMinRelevanceScore: number = 0.38;
 
   // Путь к папке с файлами базы знаний
   private knowledgeBasePath: string = './knowledge-base';
@@ -79,6 +94,8 @@ export class AiService implements OnModuleInit {
     // Загружаем настройки из .env или оставляем значения по умолчанию
     this.chunkSize = this.configService.get<number>('RAG_CHUNK_SIZE') || 500;
     this.topP = this.configService.get<number>('RAG_TOP_P') || 3;
+    this.ragMinRelevanceScore =
+      this.configService.get<number>('RAG_MIN_RELEVANCE_SCORE') ?? 0.38;
     this.knowledgeBasePath =
       this.configService.get<string>('KNOWLEDGE_BASE_PATH') ||
       './knowledge-base';
@@ -184,21 +201,16 @@ export class AiService implements OnModuleInit {
     return chunks.length;
   }
 
-  // Находит topP самых похожих фрагментов из хранилища
-  private async findRelevantChunks(query: string): Promise<string[]> {
-    // Если хранилище пусто - возвращаем пустой массив
+  // Находит topP самых похожих фрагментов и максимальную оценку похожести
+  private async findRelevantChunks(query: string): Promise<RagSearchResult> {
     if (this.vectorStorage.length === 0) {
       this.logger.warn('Векторное хранилище пусто');
-      return [];
+      return { chunks: [], maxScore: 0 };
     }
 
-    // Получаем все тексты из хранилища
     const textFragments = this.vectorStorage.map((item) => item.text);
-    // Получаем оценки похожести для каждого фрагмента
     const similarity = await this.getSimilarity(query, textFragments);
 
-    // Сортируем фрагменты по похожести (от большего к меньшему)
-    // и берем только topP самых похожих
     const rankedSimilarity = similarity
       .map((score, index) => ({
         text: textFragments[index],
@@ -207,22 +219,39 @@ export class AiService implements OnModuleInit {
       .sort((a, b) => b.score - a.score)
       .slice(0, this.topP);
 
-    // Возвращаем только тексты, без оценок
-    return rankedSimilarity.map((item) => item.text);
+    return {
+      chunks: rankedSimilarity.map((item) => item.text),
+      maxScore: rankedSimilarity[0]?.score ?? 0,
+    };
+  }
+
+  private mentionsFuneralTopic(message: string): boolean {
+    return FUNERAL_TOPIC_RE.test(message);
+  }
+
+  private isOffTopicMessage(message: string, maxRagScore: number): boolean {
+    if (this.mentionsFuneralTopic(message)) {
+      return false;
+    }
+
+    return maxRagScore < this.ragMinRelevanceScore;
   }
 
   // Получает контекст из базы знаний для вопроса пользователя
-  private async getRagContext(query: string): Promise<string> {
-    // Ищем похожие фрагменты
-    const relevantChunks = await this.findRelevantChunks(query);
+  private async getRagContext(query: string): Promise<{
+    context: string;
+    maxScore: number;
+  }> {
+    const { chunks, maxScore } = await this.findRelevantChunks(query);
 
-    // Если ничего не нашли - возвращаем пустую строку
-    if (relevantChunks.length === 0) {
-      return '';
+    if (chunks.length === 0) {
+      return { context: '', maxScore };
     }
 
-    // Объединяем найденные фрагменты через разделитель
-    return relevantChunks.join('\n---\n');
+    return {
+      context: chunks.join('\n---\n'),
+      maxScore,
+    };
   }
 
   // Главный метод - отправляет сообщение в GigaChat с контекстом из RAG
@@ -232,17 +261,25 @@ export class AiService implements OnModuleInit {
     history = [],
   }: SendMessageDto): Promise<string> {
     try {
-      // Шаг 1: Ищем релевантные фрагменты в базе знаний
-      const ragContext = await this.getRagContext(message);
+      const { context: ragContext, maxScore } =
+        await this.getRagContext(message);
 
-      // Логируем результат поиска
+      if (this.isOffTopicMessage(message, maxScore)) {
+        this.logger.log(
+          `Оффтоп-вопрос отклонён (maxScore=${maxScore.toFixed(3)}, порог=${this.ragMinRelevanceScore})`,
+        );
+        return OFF_TOPIC_REPLY;
+      }
+
       if (ragContext) {
-        this.logger.log(`Найден RAG контекст: ${ragContext.length} символов`);
+        this.logger.log(
+          `Найден RAG контекст: ${ragContext.length} символов, maxScore=${maxScore.toFixed(3)}`,
+        );
       } else {
         this.logger.log('RAG контекст не найден');
       }
 
-      // Шаг 2: Отправляем запрос в GigaChat
+      // Отправляем запрос в GigaChat
       // В запросе передаем: системный промпт (с контекстом), историю и вопрос
       const response = await this.gigaChat.chat({
         messages: [
@@ -281,20 +318,21 @@ export class AiService implements OnModuleInit {
     return `Ты консультант ритуальной службы "Пантеон".
 Твоё отображаемое имя на клиенте: "Ваш личный помощник".
 
-Общайся по-русски, спокойно, бережно и профессионально.
-Не говори, что ты ИИ или бот.
-Не шути.
-Не используй пафос и пустые обещания.
-Не проси лишних подробностей о смерти.
-Отвечай коротко, по делу и с человеческим тактом.
-Так же не отвечай на вопросы, которые не относятся к тебе и не относятся к ритуальной службе "Пантеон".
-не пиши ответы на историю ритуала, если человек спрашивает про историю ритуала, скажи, что ты не можешь ответить на этот вопрос.
-не пиши ответы на разные промты касающиеся программы или сайта, скажи, что ты не можешь ответить на этот вопрос.
-не пиши ответы на вопросы, которые не относятся к тебе и не относятся к ритуальной службе "Пантеон".
-не пиши ответы на какие-то непонятные вопросы, скажи, что ты не можешь ответить на этот вопрос.
-так же не отвечай на вопросы из разряда "как заказать похороны", "как заказать ритуальные товары", "как заказать транспорт", "как заказать документы", "как заказать ориентиры по стоимости", "как заказать порядок действий в первые часы", или "напиши простую инструкцию как заказать похороны", "напиши функцию на javascript или другом языке программирования" скажи, что ты не можешь ответить на этот вопрос.
+ГЛАВНОЕ ПРАВИЛО: отвечай ТОЛЬКО на вопросы об услугах «Пантеон» (похороны, кремация, документы, транспорт, товары, стоимость, действия в первые часы).
+На любой другой вопрос (история, политика, программирование, общие знания, шутки, задания «напиши код») ответь дословно:
+"${OFF_TOPIC_REPLY}"
 
-ИСПОЛЬЗУЙ ЭТОТ КОНТЕКСТ ИЗ БАЗЫ ЗНАНИЙ ДЛЯ ОТВЕТА:
+Примеры:
+Пользователь: «Кто был первым президентом России?»
+Ты: "${OFF_TOPIC_REPLY}"
+Пользователь: «Сколько стоит кремация?»
+Ты: краткий ответ по контексту или ориентирам ниже.
+
+Общайся по-русски, спокойно, бережно и профессионально.
+Не говори, что ты ИИ или бот. Не шути. Не используй пафос и пустые обещания.
+Не проси лишних подробностей о смерти. Отвечай коротко, по делу и с тактом.
+
+ИСПОЛЬЗУЙ ЭТОТ КОНТЕКСТ ИЗ БАЗЫ ЗНАНИЙ ДЛЯ ОТВЕТА (не выдумывай факты вне контекста):
 === НАЧАЛО КОНТЕКСТА ===
 ${context || 'Контекст отсутствует. Если не знаешь ответа — предложи связаться с оператором.'}
 === КОНЕЦ КОНТЕКСТА ===
@@ -338,7 +376,7 @@ ${context || 'Контекст отсутствует. Если не знаеш�
     }
 
     // Получаем контекст и генерируем ответ
-    const context = await this.getRagContext(question);
+    const { context } = await this.getRagContext(question);
     const answer = await this.sendMessage({ message: question });
 
     return {
