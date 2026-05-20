@@ -3,23 +3,17 @@
 import "./CardCard.css";
 import type { CardType } from "../../model";
 import { deleteCardThunk } from "../../api/CardApiThunk";
-import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
+import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { useRouter } from "next/navigation";
-import { UserType } from "@/entities/user/model";
 import { CardDateMeta } from "@/shared/ui/CardDateMeta/CardDateMeta";
 import { formatPriceRUB } from "@/shared/lib/formatPriceRUB";
 import { cardDetailRoute } from "@/shared/consts/clientRouts";
 import React from "react";
 
-function CardCard({
-  card,
-  user,
-}: {
-  card: CardType;
-  user: UserType | null;
-}) {
+function CardCard({ card }: { card: CardType }) {
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const user = useAppSelector((state) => state.user.user);
 
   function lineItem(card: CardType) {
     return (
