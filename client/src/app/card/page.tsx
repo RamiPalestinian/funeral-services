@@ -16,7 +16,7 @@ export default function CardPage() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { cards, isLoading, error } = useAppSelector((state) => state.card);
-  const { isReady } = useRequireAuth();
+  const { user, isReady } = useRequireAuth();
 
   useEffect(() => {
     if (!isReady) return;
@@ -61,7 +61,7 @@ export default function CardPage() {
         <p className="cart-panel-message">Корзина пуста.</p>
       ) : null}
 
-      {ready && cards.length > 0 ? (
+      {ready && user && cards.length > 0 ? (
         <>
           <div className="shop-grid">
             {cards.map((card) => (

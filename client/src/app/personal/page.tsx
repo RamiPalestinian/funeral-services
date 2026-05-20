@@ -26,7 +26,7 @@ export default function Personal() {
     );
   }
 
-  if (!isReady) {
+  if (!isReady || !user) {
     return null;
   }
 

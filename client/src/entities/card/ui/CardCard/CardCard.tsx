@@ -11,7 +11,13 @@ import { formatPriceRUB } from "@/shared/lib/formatPriceRUB";
 import { cardDetailRoute } from "@/shared/consts/clientRouts";
 import React from "react";
 
-function CardCard({ card, user }: { card: CardType; user: UserType }) {
+function CardCard({
+  card,
+  user,
+}: {
+  card: CardType;
+  user: UserType | null;
+}) {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
