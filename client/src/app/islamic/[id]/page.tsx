@@ -163,10 +163,7 @@ export default function OneIslamicPage() {
             {errors.image && (
               <p className="islamic-update-error">{errors.image.message}</p>
             )}
-            <textarea
-              placeholder="Описание"
-              {...register("description")}
-            />
+            <textarea placeholder="Описание" {...register("description")} />
             {errors.description && (
               <p className="islamic-update-error">
                 {errors.description.message}

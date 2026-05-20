@@ -45,7 +45,9 @@ function ShopCard({ shop, onAddToCard }: ShopCardProps) {
         <p className="shop-card-description">{shop.description}</p>
         <div className="shop-card-meta">
           <span className="shop-card-category">{shop.category}</span>
-          <span className="shop-card-price">{formatPriceRUB(shop.price)} ₽</span>
+          <span className="shop-card-price">
+            {formatPriceRUB(shop.price)} ₽
+          </span>
         </div>
         <div className="shop-card-actions">
           <button

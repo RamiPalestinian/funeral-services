@@ -32,37 +32,40 @@ export default function ProfileAvatarEditor({
     }
   };
 
-  return (<> <details className="personal-avatar-editor">
-    <summary aria-label="Изменить аватарку">
-      <div className="personal-avatar-wrap">
-        {avatar ? (
-          <>
-            <img
-              src={avatar}
-              alt=""
-              className="personal-avatar personal-avatar-image"
-            />
-          </>
-        ) : (
-          <div className="personal-avatar">{user.name?.[0] ?? "?"}</div>
-        )}
-        <span className="personal-avatar-overlay">Изменить аватарку</span>
-      </div>
-    </summary>
+  return (
+    <>
+      {" "}
+      <details className="personal-avatar-editor">
+        <summary aria-label="Изменить аватарку">
+          <div className="personal-avatar-wrap">
+            {avatar ? (
+              <>
+                <img
+                  src={avatar}
+                  alt=""
+                  className="personal-avatar personal-avatar-image"
+                />
+              </>
+            ) : (
+              <div className="personal-avatar">{user.name?.[0] ?? "?"}</div>
+            )}
+            <span className="personal-avatar-overlay">Изменить аватарку</span>
+          </div>
+        </summary>
 
-    <form key={avatar} className="personal-avatar-form" onSubmit={onSubmit}>
-      <input
-        name="avatar"
-        type="url"
-        placeholder="https://..."
-        defaultValue={avatar}
-        required
-      />
-      <button type="submit" disabled={loading}>
-        {loading ? "…" : "OK"}
-      </button>
-    </form>
-  </details>
-</>
-   );
+        <form key={avatar} className="personal-avatar-form" onSubmit={onSubmit}>
+          <input
+            name="avatar"
+            type="url"
+            placeholder="https://..."
+            defaultValue={avatar}
+            required
+          />
+          <button type="submit" disabled={loading}>
+            {loading ? "…" : "OK"}
+          </button>
+        </form>
+      </details>
+    </>
+  );
 }

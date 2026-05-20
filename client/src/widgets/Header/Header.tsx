@@ -54,16 +54,22 @@ export default function Header({ user, setUser }: HeaderProps) {
                 Главная страница
               </Link>
               <div className="dropdown">
-                <button type="button" className="dropbtn">Кабинет</button>
+                <button type="button" className="dropbtn">
+                  Кабинет
+                </button>
                 <div className="dropdown-content">
                   <Link href={CLIENT_ROUTES.PERSONAL}>Личный кабинет</Link>
                   <Link href={CLIENT_ROUTES.AI}>Обращение</Link>
                 </div>
               </div>
               <div className="dropdown">
-                <button type="button" className="dropbtn">Наши услуги</button>
+                <button type="button" className="dropbtn">
+                  Наши услуги
+                </button>
                 <div className="dropdown-content">
-                  <Link href={CLIENT_ROUTES.CLASSIC}>Традиционные похороны</Link>
+                  <Link href={CLIENT_ROUTES.CLASSIC}>
+                    Традиционные похороны
+                  </Link>
                   <Link href={CLIENT_ROUTES.ISLAMIC}>Исламские похороны</Link>
                   <Link href={CLIENT_ROUTES.CREMATION}>Кремация</Link>
                   <Link href={CLIENT_ROUTES.SHOP}>Ритуальный магазин</Link>
@@ -83,7 +89,10 @@ export default function Header({ user, setUser }: HeaderProps) {
               <Link href={CLIENT_ROUTES.GENERAL} className="navlink">
                 Главная
               </Link>
-              <Link href={CLIENT_ROUTES.AUTH} className="navlink navlink-accent">
+              <Link
+                href={CLIENT_ROUTES.AUTH}
+                className="navlink navlink-accent"
+              >
                 Войти
               </Link>
             </>

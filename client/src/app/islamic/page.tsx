@@ -104,15 +104,8 @@ export default function Islamic() {
       </div>
 
       {isAdmin && (
-        <form
-          className="islamic-create-form"
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <input
-            type="text"
-            placeholder="Название"
-            {...register("name")}
-          />
+        <form className="islamic-create-form" onSubmit={handleSubmit(onSubmit)}>
+          <input type="text" placeholder="Название" {...register("name")} />
           {errors.name && (
             <p className="islamic-create-error">{errors.name.message}</p>
           )}
@@ -124,11 +117,7 @@ export default function Islamic() {
           {errors.category && (
             <p className="islamic-create-error">{errors.category.message}</p>
           )}
-          <input
-            type="number"
-            placeholder="Цена"
-            {...register("price")}
-          />
+          <input type="number" placeholder="Цена" {...register("price")} />
           {errors.price && (
             <p className="islamic-create-error">{errors.price.message}</p>
           )}
@@ -141,10 +130,7 @@ export default function Islamic() {
           {errors.image && (
             <p className="islamic-create-error">{errors.image.message}</p>
           )}
-          <textarea
-            placeholder="Описание"
-            {...register("description")}
-          />
+          <textarea placeholder="Описание" {...register("description")} />
           {errors.description && (
             <p className="islamic-create-error">{errors.description.message}</p>
           )}
