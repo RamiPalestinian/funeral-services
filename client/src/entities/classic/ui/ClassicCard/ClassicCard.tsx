@@ -3,7 +3,8 @@ import React from "react";
 import "./ClassicCard.css";
 import { deleteClassicThunk } from "@/entities/classic/api/ClassicApiThunk";
 import type { ClassicType } from "@/entities/classic/model";
-import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
+import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
+import { useIsAdmin } from "@/shared/hooks/useIsAdmin";
 import { useRouter } from "next/navigation";
 import { CardDateMeta } from "@/shared/ui/CardDateMeta/CardDateMeta";
 import ConfirmDialog from "@/shared/ui/ConfirmDialog/ConfirmDialog";
@@ -20,8 +21,7 @@ type ClassicCardProps = {
 function ClassicCard({ classic, onAddToCard }: ClassicCardProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user.user);
-  const isAdmin = user?.id === 1;
+  const isAdmin = useIsAdmin();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   const handleConfirmDelete = useCallback(() => {

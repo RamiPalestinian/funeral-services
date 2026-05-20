@@ -7,11 +7,13 @@ import { useParams, useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
-import { createCardThunk } from "@/entities/card/api/CardApiThunk";
 import {
   fetchIslamicByIdThunk,
   updateIslamicThunk,
 } from "@/entities/islamic/api/IslamicApiThunk";
+import { useRequireAuth } from "@/shared/hooks/useRequireAuth";
+import { useIsAdmin } from "@/shared/hooks/useIsAdmin";
+import { useAddToCart } from "@/shared/hooks/useAddToCart";
 import {
   islamicUpdateSchema,
   IslamicUpdateFormInput,
@@ -24,8 +26,9 @@ export default function OneIslamicPage() {
   const { error, isLoading, oneIslamic } = useAppSelector(
     (state) => state.islamic,
   );
-  const { user, isInitialized } = useAppSelector((state) => state.user);
-  const isAdmin = user?.id === 1;
+  const { isReady } = useRequireAuth();
+  const isAdmin = useIsAdmin();
+  const { addIslamicToCart } = useAddToCart();
   const { id } = useParams<{ id: string }>();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -67,12 +70,6 @@ export default function OneIslamicPage() {
   }, [oneIslamic]);
 
   useEffect(() => {
-    if (isInitialized && !user) {
-      router.replace(CLIENT_ROUTES.AUTH);
-    }
-  }, [isInitialized, user, router]);
-
-  useEffect(() => {
     if (id) {
       dispatch(fetchIslamicByIdThunk(Number(id)));
     }
@@ -110,22 +107,7 @@ export default function OneIslamicPage() {
     }
   };
 
-  const handleAddToCard = useCallback(async () => {
-    if (!user) {
-      router.push(CLIENT_ROUTES.AUTH);
-      return;
-    }
-    if (!oneIslamic) {
-      return;
-    }
-    try {
-      await dispatch(createCardThunk({ islamicId: oneIslamic.id })).unwrap();
-    } catch {
-      console.log("Ошибка при добавлении в корзину");
-    }
-  }, [user, router, dispatch, oneIslamic]);
-
-  if (isInitialized && !user) {
+  if (!isReady) {
     return null;
   }
 
@@ -228,7 +210,7 @@ export default function OneIslamicPage() {
           <button
             type="button"
             className="islamic-card-button"
-            onClick={() => void handleAddToCard()}
+            onClick={() => void addIslamicToCart(oneIslamic.id)}
           >
             В корзину
           </button>

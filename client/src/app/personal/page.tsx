@@ -1,10 +1,9 @@
 "use client";
 import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 import "./page.css";
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/application/UserProvider";
-import { useAppSelector } from "@/shared/hooks/useReduxHooks";
+import { useRequireAuth } from "@/shared/hooks/useRequireAuth";
 import EditProfileForm from "@/features/profile/ui/EditProfileForm/EditProfileForm";
 import ProfileAvatarEditor from "@/features/profile/ui/ProfileAvatarEditor/ProfileAvatarEditor";
 import ChangePasswordForm from "@/features/profile/ui/ChangePasswordForm/ChangePasswordForm";
@@ -13,18 +12,11 @@ import DeleteProfileButton from "@/features/profile/ui/DeleteProfileButton/Delet
 export default function Personal() {
   const router = useRouter();
   const { user, setUser } = useUser();
-  const { isInitialized } = useAppSelector((state) => state.user);
+  const { isInitialized, isReady } = useRequireAuth();
 
   const registrationDate = user?.createdAt
     ? new Date(user.createdAt).toLocaleDateString("ru-RU")
     : "Дата не указана";
-
-  useEffect(() => {
-    if (!isInitialized) return;
-    if (!user) {
-      router.replace(CLIENT_ROUTES.AUTH);
-    }
-  }, [isInitialized, user, router]);
 
   if (!isInitialized) {
     return (
@@ -34,7 +26,7 @@ export default function Personal() {
     );
   }
 
-  if (!user) {
+  if (!isReady) {
     return null;
   }
 

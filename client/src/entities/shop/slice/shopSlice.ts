@@ -11,11 +11,7 @@ import {
 const shopSlice = createSlice({
   name: "shop",
   initialState: initialShopState,
-  reducers: {
-    setShops: (state, action) => {
-      state.shops = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     //getAllShopsThunk
     builder.addCase(getAllShopsThunk.pending, (state) => {
@@ -85,7 +81,5 @@ const shopSlice = createSlice({
     });
   },
 });
-
-export const { setShops } = shopSlice.actions;
 
 export const shopReducer = shopSlice.reducer;

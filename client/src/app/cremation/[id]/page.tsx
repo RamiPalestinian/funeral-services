@@ -6,11 +6,13 @@ import "@/entities/cremation/ui/CremationCard/CremationCard.css";
 import React, { useCallback, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
-import { createCardThunk } from "@/entities/card/api/CardApiThunk";
 import {
   getCremationByIdThunk,
   updateCremationThunk,
 } from "@/entities/cremation/api/CremationApiThunk";
+import { useRequireAuth } from "@/shared/hooks/useRequireAuth";
+import { useIsAdmin } from "@/shared/hooks/useIsAdmin";
+import { useAddToCart } from "@/shared/hooks/useAddToCart";
 
 const initialFormState = {
   name: "",
@@ -27,29 +29,17 @@ function CremationByIdPage() {
   const { cremations, error, isLoading } = useAppSelector(
     (state) => state.cremation,
   );
-  const { user, isInitialized } = useAppSelector((state) => state.user);
+  const { isReady } = useRequireAuth();
+  const isAdmin = useIsAdmin();
+  const { addCremationToCart } = useAddToCart();
   const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState(initialFormState);
 
   const cremation = cremations.find((el) => el.id === Number(id));
 
-  const isAdmin = user?.id === 1;
-
   useEffect(() => {
     dispatch(getCremationByIdThunk(Number(id)));
   }, [dispatch, id]);
-
-  const handleAddToCard = useCallback(async () => {
-    if (!user) {
-      router.push(CLIENT_ROUTES.AUTH);
-      return;
-    }
-    try {
-      await dispatch(createCardThunk({ cremationId: Number(id) })).unwrap();
-    } catch {
-      console.log("Ошибка при добавлении в корзину");
-    }
-  }, [user, router, dispatch, id]);
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -96,13 +86,7 @@ function CremationByIdPage() {
     [dispatch, id, formData],
   );
 
-  useEffect(() => {
-    if (isInitialized && !user) {
-      router.replace(CLIENT_ROUTES.AUTH);
-    }
-  }, [isInitialized, user, router]);
-
-  if (isInitialized && !user) {
+  if (!isReady) {
     return null;
   }
 
@@ -209,7 +193,7 @@ function CremationByIdPage() {
           <button
             type="button"
             className="cremation-card-button"
-            onClick={() => void handleAddToCard()}
+            onClick={() => void addCremationToCart(Number(id))}
           >
             В корзину
           </button>

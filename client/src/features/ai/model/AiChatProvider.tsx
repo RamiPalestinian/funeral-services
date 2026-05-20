@@ -142,7 +142,6 @@ function AiChatStateProvider({ children, user }: AiChatStateProviderProps) {
 
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (err) {
-      console.error("AI chat error:", err);
       const status = (err as { response?: { status?: number } })?.response
         ?.status;
 

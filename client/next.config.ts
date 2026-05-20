@@ -78,12 +78,6 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "img.magnific.com",
-        port: "",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
         hostname: "pohoroni21.ru",
         port: "",
         pathname: "/**",

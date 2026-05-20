@@ -3,8 +3,7 @@ import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 import "./page.css";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { useAppSelector } from "@/shared/hooks/useReduxHooks";
-import { useEffect } from "react";
+import { useRequireAuth } from "@/shared/hooks/useRequireAuth";
 import Image from "next/image";
 const CemeteriesMap = dynamic(
   () =>
@@ -23,14 +22,9 @@ const CemeteriesMap = dynamic(
 
 export default function Home() {
   const router = useRouter();
+  const { isReady } = useRequireAuth();
 
-  const { user, isInitialized } = useAppSelector((state) => state.user);
-  useEffect(() => {
-    if (isInitialized && !user) {
-      router.replace(CLIENT_ROUTES.AUTH);
-    }
-  }, [isInitialized, router, user]);
-  if (isInitialized && !user) {
+  if (!isReady) {
     return null;
   }
   return (

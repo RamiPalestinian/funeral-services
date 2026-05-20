@@ -1,23 +1,13 @@
 "use client";
-import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 
 import "./page.css";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useAppSelector } from "@/shared/hooks/useReduxHooks";
+import { useRequireAuth } from "@/shared/hooks/useRequireAuth";
 import AiChatPanel from "@/features/ai/ui/AiChatPanel/AiChatPanel";
 
 export default function AiPage() {
-  const { user, isInitialized } = useAppSelector((state) => state.user);
-  const router = useRouter();
+  const { isReady } = useRequireAuth();
 
-  useEffect(() => {
-    if (isInitialized && !user) {
-      router.replace(CLIENT_ROUTES.AUTH);
-    }
-  }, [isInitialized, router, user]);
-
-  if (isInitialized && !user) {
+  if (!isReady) {
     return null;
   }
 

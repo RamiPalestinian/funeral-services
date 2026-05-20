@@ -8,6 +8,8 @@ import "@/entities/cremation/ui/CremationCard/CremationCard.css";
 import { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
+import { useRequireAuth } from "@/shared/hooks/useRequireAuth";
+import { showToast } from "@/shared/lib/toast";
 import {
   deleteCardThunk,
   getCardByIdThunk,
@@ -20,7 +22,7 @@ export default function CardByIdPage() {
   const { id } = useParams<{ id: string }>();
   const numericId = Number(id);
   const { cards } = useAppSelector((state) => state.card);
-  const { user, isInitialized } = useAppSelector((state) => state.user);
+  const { user, isReady } = useRequireAuth();
 
   function lineKind(card: CardType): string {
     if (card.service) return "Товар (магазин)";
@@ -41,15 +43,15 @@ export default function CardByIdPage() {
     card.userId === user.id;
 
   useEffect(() => {
-    if (!isInitialized) return;
-    if (!user) {
-      router.replace(CLIENT_ROUTES.AUTH);
-      return;
-    }
+    if (!isReady) return;
     if (Number.isFinite(numericId)) {
       void dispatch(getCardByIdThunk(numericId));
     }
-  }, [dispatch, isInitialized, user, router, numericId]);
+  }, [dispatch, isReady, numericId]);
+
+  if (!isReady) {
+    return null;
+  }
 
   return (
     <section className="shop-page card-item-detail-page">
@@ -109,7 +111,7 @@ export default function CardByIdPage() {
                     await dispatch(deleteCardThunk(card.id)).unwrap();
                     router.push(CLIENT_ROUTES.CARD);
                   } catch {
-                    console.log("Ошибка при удалении из корзины");
+                    showToast("Не удалось удалить из корзины", "error");
                   }
                 })();
               }}

@@ -4,12 +4,14 @@ import "./page.css";
 import ClassicCard from "@/entities/classic/ui/ClassicCard/ClassicCard";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
-import { createCardThunk } from "@/entities/card/api/CardApiThunk";
 import {
   createClassicThunk,
   fetchClassicThunk,
 } from "@/entities/classic/api/ClassicApiThunk";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useRequireAuth } from "@/shared/hooks/useRequireAuth";
+import { useIsAdmin } from "@/shared/hooks/useIsAdmin";
+import { useAddToCart } from "@/shared/hooks/useAddToCart";
 import Image from "next/image";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,26 +27,10 @@ export default function Classic() {
   const { classics, error: classicError } = useAppSelector(
     (state) => state.classic,
   );
-  //вытаскиваем юзера и инициализацию
-  const { user, isInitialized } = useAppSelector((state) => state.user);
-
-  const isAdmin = user?.id === 1;
+  const { isReady } = useRequireAuth();
+  const isAdmin = useIsAdmin();
+  const { addClassicToCart } = useAddToCart();
   const [formError, setFormError] = useState("");
-
-  const handleAddToCard = useCallback(
-    async (classicServiceId: number) => {
-      if (!user) {
-        router.push(CLIENT_ROUTES.AUTH);
-        return;
-      }
-      try {
-        await dispatch(createCardThunk({ classicServiceId })).unwrap();
-      } catch {
-        console.log("Ошибка при добавлении в корзину");
-      }
-    },
-    [user, router, dispatch],
-  );
 
   const {
     register,
@@ -75,7 +61,6 @@ export default function Classic() {
           ? error
           : "Не удалось создать услугу. Проверь поля формы.",
       );
-      console.error("Ошибка при создании классической услуги:", error);
     }
   };
 
@@ -89,14 +74,7 @@ export default function Classic() {
     dispatch(fetchClassicThunk());
   }, [dispatch]);
 
-  //защита сраницы
-  useEffect(() => {
-    if (isInitialized && !user) {
-      router.replace(CLIENT_ROUTES.AUTH);
-    }
-  }, [isInitialized, router, user]);
-
-  if (isInitialized && !user) {
+  if (!isReady) {
     return null;
   }
 
@@ -193,7 +171,7 @@ export default function Classic() {
           <ClassicCard
             key={classic.id}
             classic={classic}
-            onAddToCard={handleAddToCard}
+            onAddToCard={addClassicToCart}
           />
         ))}
       </div>

@@ -3,6 +3,7 @@
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { updateProfileThunk } from "@/entities/user/api/UserApiThunk";
 import type { UserType } from "@/entities/user/model";
+import { showToast } from "@/shared/lib/toast";
 import "./ProfileAvatarEditor.css";
 
 export default function ProfileAvatarEditor({
@@ -27,7 +28,7 @@ export default function ProfileAvatarEditor({
       setUser(await dispatch(updateProfileThunk({ avatar: url })).unwrap());
       e.currentTarget.closest("details")?.removeAttribute("open");
     } catch {
-      console.log("Ошибка при обновлении аватарки");
+      showToast("Не удалось обновить аватарку", "error");
     }
   };
 

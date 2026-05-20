@@ -5,12 +5,14 @@ import "./page.css";
 import IslamicCard from "@/entities/islamic/ui/IslamicCard/IslamicCard";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
-import { createCardThunk } from "@/entities/card/api/CardApiThunk";
 import {
   createIslamicThunk,
   fetchIslamicThunk,
 } from "@/entities/islamic/api/IslamicApiThunk";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useRequireAuth } from "@/shared/hooks/useRequireAuth";
+import { useIsAdmin } from "@/shared/hooks/useIsAdmin";
+import { useAddToCart } from "@/shared/hooks/useAddToCart";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -25,29 +27,14 @@ export default function Islamic() {
   const { islamics, error: islamicError } = useAppSelector(
     (state) => state.islamic,
   );
-  const { user, isInitialized } = useAppSelector((state) => state.user);
-
-  const isAdmin = user?.id === 1;
+  const { isReady } = useRequireAuth();
+  const isAdmin = useIsAdmin();
+  const { addIslamicToCart } = useAddToCart();
   const [formError, setFormError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredIslamics = islamics.filter((islamic) =>
     islamic.name.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
-
-  const handleAddToCard = useCallback(
-    async (islamicId: number) => {
-      if (!user) {
-        router.push(CLIENT_ROUTES.AUTH);
-        return;
-      }
-      try {
-        await dispatch(createCardThunk({ islamicId })).unwrap();
-      } catch {
-        console.log("Ошибка при добавлении в корзину");
-      }
-    },
-    [user, router, dispatch],
   );
 
   const {
@@ -79,7 +66,6 @@ export default function Islamic() {
           ? error
           : "Не удалось создать услугу. Проверь поля формы.",
       );
-      console.error("Ошибка при создании исламской услуги:", error);
     }
   };
 
@@ -87,13 +73,7 @@ export default function Islamic() {
     dispatch(fetchIslamicThunk());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (isInitialized && !user) {
-      router.replace(CLIENT_ROUTES.AUTH);
-    }
-  }, [isInitialized, router, user]);
-
-  if (isInitialized && !user) {
+  if (!isReady) {
     return null;
   }
 
@@ -194,7 +174,7 @@ export default function Islamic() {
           <IslamicCard
             key={islamic.id}
             islamic={islamic}
-            onAddToCard={() => void handleAddToCard(islamic.id)}
+            onAddToCard={() => void addIslamicToCart(islamic.id)}
           />
         ))}
       </div>
