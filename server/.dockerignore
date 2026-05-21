@@ -1,7 +1,10 @@
 node_modules
+dist
 .next
 npm-debug.log
 .env
 .env.*
 .git
 .gitignore
+tsconfig.build.tsbuildinfo
+**/*.spec.ts

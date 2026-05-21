@@ -8,7 +8,7 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 COPY . .
-RUN npm run build && test -f dist/main.js
+RUN rm -f tsconfig.build.tsbuildinfo && npm run build && test -f dist/main.js
 
 FROM public.ecr.aws/docker/library/node:22-alpine AS runner
 

@@ -4,5 +4,11 @@
     "rootDir": "./src"
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "src/database/migrations"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "test",
+    "src/database/migrations",
+    "**/*.spec.ts"
+  ]
 }
