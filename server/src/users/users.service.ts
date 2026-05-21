@@ -102,7 +102,7 @@ export class UsersService {
     }
 
     return {
-      cardId: card.id,
+      cardId: Number(card.id),
       name: item.name,
       price: Number(item.price),
       category: item.category ?? null,

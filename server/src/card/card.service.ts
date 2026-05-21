@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Card } from './card.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { CreateCardDto } from './dto/create-card.dto';

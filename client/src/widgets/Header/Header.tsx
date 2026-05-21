@@ -113,7 +113,6 @@ export default function Header({ user, setUser }: HeaderProps) {
             <img
               className="navlink-cart-icon"
               src="/cart.png"
-              alt=""
               width={18}
               height={18}
             />

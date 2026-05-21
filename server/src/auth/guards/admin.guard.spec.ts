@@ -9,7 +9,8 @@ describe('AdminGuard', () => {
     ({
       switchToHttp: () => ({
         getRequest: () => ({
-          user: userId === undefined ? undefined : { userId, email: 'u@test.ru' },
+          user:
+            userId === undefined ? undefined : { userId, email: 'u@test.ru' },
         }),
       }),
     }) as ExecutionContext;
@@ -28,6 +29,8 @@ describe('AdminGuard', () => {
   });
 
   it('rejects when user is missing', () => {
-    expect(() => guard.canActivate(createContext())).toThrow(ForbiddenException);
+    expect(() => guard.canActivate(createContext())).toThrow(
+      ForbiddenException,
+    );
   });
 });
