@@ -33,7 +33,7 @@
   opacity: 0;
 }
 
-@media (width <= 640px) {
+@media (width <= 430px) {
   .contact-map__canvas,
   .contact-map--loading {
     height: 320px;

@@ -119,16 +119,31 @@
   overflow: hidden;
 }
 
-@media (width <= 700px) {
+@media (width <= 768px) {
+  .ai-chat-fab-panel {
+    width: min(420px, calc(100vw - 32px));
+  }
+}
+
+@media (width <= 430px) {
   .ai-chat-fab {
-    right: 16px;
-    bottom: 16px;
+    right: max(12px, env(safe-area-inset-right, 0px));
+    bottom: max(12px, env(safe-area-inset-bottom, 0px));
   }
 
   .ai-chat-fab-panel {
-    right: 16px;
-    bottom: 82px;
-    width: calc(100vw - 32px);
-    max-height: calc(100vh - 110px);
+    right: max(12px, env(safe-area-inset-right, 0px));
+    bottom: max(76px, calc(64px + env(safe-area-inset-bottom, 0px)));
+    width: calc(100vw - 24px);
+    max-height: min(72dvh, calc(100dvh - 100px));
+  }
+}
+
+@media (width <= 359px) {
+  .ai-chat-fab-button {
+    min-width: 52px;
+    min-height: 52px;
+    padding: 0 14px;
+    font-size: 11px;
   }
 }

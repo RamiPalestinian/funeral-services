@@ -401,7 +401,7 @@
   letter-spacing: 0.08em;
 }
 
-@media (width <= 980px) {
+@media (width <= 1024px) {
   .personal-service-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -421,7 +421,7 @@
   }
 }
 
-@media (width <= 640px) {
+@media (width <= 430px) {
   .personal-page {
     gap: 16px;
     padding: 10px 12px 32px;
@@ -466,5 +466,22 @@
   .personal-avatar-editor .personal-avatar-wrap {
     width: 64px;
     height: 64px;
+  }
+}
+
+@media (width <= 389px) {
+  .personal-page {
+    padding-inline: 10px;
+  }
+
+  .personal-hero h1 {
+    font-size: clamp(1.5rem, 8vw, 2rem);
+  }
+}
+
+@media (width <= 359px) {
+  .personal-hero,
+  .personal-section {
+    padding: 16px 12px;
   }
 }

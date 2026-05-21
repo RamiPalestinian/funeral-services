@@ -102,7 +102,7 @@
   transform: translateY(-1px);
 }
 
-@media (width <= 640px) {
+@media (width <= 430px) {
   .checkout-success-card {
     padding: 24px 20px;
   }

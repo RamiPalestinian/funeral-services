@@ -61,3 +61,27 @@
   color: #f6f1e8;
   background: linear-gradient(135deg, rgb(193 140 127 / 92%), rgb(150 90 80 / 92%));
 }
+
+@media (width <= 430px) {
+  .confirm-dialog-overlay {
+    align-items: flex-end;
+    padding: 12px 12px max(16px, env(safe-area-inset-bottom, 0px));
+  }
+
+  .confirm-dialog {
+    width: 100%;
+    padding: 20px 18px;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .confirm-dialog-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .confirm-dialog-button {
+    justify-content: center;
+    width: 100%;
+    min-height: var(--touch-min);
+  }
+}

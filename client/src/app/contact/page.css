@@ -111,7 +111,7 @@
 .contact-primary,
 .contact-secondary {
   display: grid;
-  gap: 18px;
+  gap: 12px;
   min-width: 0;
 }
 
@@ -123,20 +123,21 @@
   background:
     linear-gradient(180deg, rgb(255 255 255 / 5%), rgb(255 255 255 / 1%)),
     var(--bg-panel);
-  border-radius: 28px;
+  border-radius: 20px;
   box-shadow: var(--shadow-md);
 }
 
 .contact-panel {
-  padding: 30px 28px;
+  display: grid;
+  gap: 8px;
+  padding: 18px 20px;
 }
 
 .contact-panel-call {
-  display: grid;
-  align-content: space-between;
-  min-height: 220px;
+  align-content: start;
+  min-height: 0;
   background:
-    radial-gradient(circle at top right, rgb(125 151 168 / 16%), transparent 28%),
+    radial-gradient(circle at top right, rgb(125 151 168 / 12%), transparent 32%),
     linear-gradient(180deg, rgb(255 255 255 / 5%), rgb(255 255 255 / 1%)),
     var(--bg-panel);
 }
@@ -144,12 +145,18 @@
 .contact-panel a {
   width: fit-content;
   font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
-  font-size: clamp(1.55rem, 2.7vw, 2.2rem);
-  line-height: 0.96;
+  font-size: clamp(1.2rem, 2.2vw, 1.55rem);
+  line-height: 1.05;
   color: var(--text-main);
 }
 
-.contact-panel p,
+.contact-panel p {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
 .contact-detail p {
   line-height: 1.7;
   color: var(--text-muted);
@@ -211,7 +218,7 @@
   color: var(--accent-stone);
 }
 
-@media (width <= 980px) {
+@media (width <= 1024px) {
   .contact-hero-grid,
   .contact-columns {
     grid-template-columns: 1fr;
@@ -222,18 +229,35 @@
   }
 }
 
-@media (width <= 640px) {
+@media (width <= 430px) {
   .contact-page {
     gap: 28px;
     padding-top: 8px;
   }
 
   .contact-panel {
-    padding: 22px 18px;
-    border-radius: 22px;
+    gap: 6px;
+    padding: 14px 16px;
+    border-radius: 18px;
   }
 
   .contact-panel a {
-    font-size: clamp(1.35rem, 6.5vw, 1.8rem);
+    font-size: clamp(1.1rem, 5vw, 1.35rem);
+  }
+
+  .contact-panel p {
+    font-size: 0.82rem;
+  }
+}
+
+@media (width <= 389px) {
+  .contact-panel {
+    padding: 12px 14px;
+  }
+}
+
+@media (width <= 359px) {
+  .contact-page {
+    gap: 22px;
   }
 }

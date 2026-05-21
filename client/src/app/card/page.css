@@ -70,3 +70,45 @@
 .cart-back-link {
   margin-left: auto;
 }
+
+@media (width <= 1024px) {
+  .cart-total {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+}
+
+@media (width <= 430px) {
+  .cart-total {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 18px 16px;
+    border-radius: 22px;
+  }
+
+  .cart-total-price {
+    align-self: flex-start;
+  }
+
+  .cart-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cart-checkout-btn {
+    width: 100%;
+    min-height: var(--touch-min);
+  }
+
+  .cart-back-link {
+    margin-left: 0;
+    text-align: center;
+  }
+}
+
+@media (width <= 359px) {
+  .cart-panel-message,
+  .cart-message-wrap {
+    padding-inline: 12px;
+  }
+}

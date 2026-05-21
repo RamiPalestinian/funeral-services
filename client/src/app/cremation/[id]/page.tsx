@@ -1,5 +1,4 @@
 "use client";
-import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
 
 import "../page.css";
 import "@/entities/cremation/ui/CremationCard/CremationCard.css";

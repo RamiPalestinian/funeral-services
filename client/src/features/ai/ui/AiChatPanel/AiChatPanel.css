@@ -184,12 +184,41 @@
   opacity: 0.55;
 }
 
-@media (width <= 700px) {
+@media (width <= 1024px) {
+  .ai-chat-panel--page {
+    min-height: min(70vh, 640px);
+  }
+}
+
+@media (width <= 768px) {
+  .ai-chat-panel--widget {
+    width: min(100vw - 24px, 400px);
+    max-height: min(72vh, 520px);
+  }
+}
+
+@media (width <= 430px) {
   .ai-chat-message {
     max-width: 100%;
   }
 
   .ai-chat-form-row {
     display: grid;
+  }
+
+  .ai-chat-form button {
+    width: 100%;
+    min-height: var(--touch-min);
+  }
+
+  .ai-chat-panel--page,
+  .ai-chat-panel--widget {
+    border-radius: 20px;
+  }
+}
+
+@media (width <= 389px) {
+  .ai-chat-messages {
+    padding: 12px;
   }
 }

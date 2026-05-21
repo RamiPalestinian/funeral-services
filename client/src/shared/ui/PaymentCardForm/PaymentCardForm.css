@@ -55,6 +55,25 @@
   gap: 12px;
 }
 
+@media (width <= 430px) {
+  .payment-card-form__row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .payment-card-form__input {
+    min-height: var(--touch-min);
+    font-size: 16px;
+  }
+}
+
+@media (width <= 359px) {
+  .payment-card-form {
+    padding: 14px 12px;
+    margin-inline: 0;
+  }
+}
+
 .payment-card-form__hint {
   margin: 0;
   font-size: 12px;

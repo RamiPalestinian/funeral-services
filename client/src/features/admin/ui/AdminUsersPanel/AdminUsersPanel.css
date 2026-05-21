@@ -15,3 +15,16 @@
   color: var(--text-muted, rgb(255 255 255 / 55%));
   border-top: 1px solid var(--line-soft);
 }
+
+@media (width <= 1024px) {
+  .admin-users__cart-count,
+  .admin-users__category {
+    font-size: 11px;
+  }
+}
+
+@media (width <= 430px) {
+  .admin-users__empty-cart {
+    font-size: 13px;
+  }
+}

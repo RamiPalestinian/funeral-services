@@ -110,7 +110,7 @@
   transform: translateY(-2px);
 }
 
-@media (width <= 640px) {
+@media (width <= 430px) {
   .not-found-card {
     padding: 24px 18px;
   }

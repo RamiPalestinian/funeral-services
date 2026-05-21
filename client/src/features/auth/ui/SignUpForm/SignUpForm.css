@@ -70,7 +70,7 @@
   color: var(--danger);
 }
 
-@media (width <= 640px) {
+@media (width <= 430px) {
   .auth-form-block {
     gap: 22px;
     padding: 22px 16px 16px;
