@@ -28,7 +28,10 @@ describe('UsersService', () => {
         { provide: getModelToken(Card), useValue: cardModel },
         { provide: getModelToken(Service), useValue: serviceModel },
         { provide: getModelToken(Islamic), useValue: islamicModel },
-        { provide: getModelToken(ClassicService), useValue: classicServiceModel },
+        {
+          provide: getModelToken(ClassicService),
+          useValue: classicServiceModel,
+        },
         { provide: getModelToken(Cremation), useValue: cremationModel },
       ],
     }).compile();
