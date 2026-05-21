@@ -8,7 +8,7 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 COPY . .
-RUN npm run build
+RUN npm run build && test -f dist/main.js
 
 FROM public.ecr.aws/docker/library/node:22-alpine AS runner
 
@@ -20,6 +20,7 @@ COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 
 COPY --from=builder /app/dist ./dist
+RUN test -f dist/main.js
 COPY --from=builder /app/src/database ./src/database
 COPY sequelize.config.js .sequelizerc ./
 COPY knowledge-base ./knowledge-base

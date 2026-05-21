@@ -17,16 +17,16 @@
             api        → docker: postgres     → БД (volume pgdata)
 ```
 
-| Файл | Роль |
-|------|------|
-| `docker-compose.yml` | 4 сервиса: `postgres`, `api`, `web`, `proxy` |
-| `.env` (корень) | Секреты для compose + API (`POSTGRES_*`, `DB_*`, JWT, AI) |
-| `deploy/Caddyfile` | Маршруты домена → контейнеры |
-| `server/Dockerfile` | Сборка API → образ `api` |
-| `server/docker-entrypoint.sh` | migrate → seed? → `node dist/main.js` |
-| `client/Dockerfile` | Сборка Next → образ `web` |
-| `client/next.config.ts` | `output: "standalone"` — лёгкий runtime в Docker |
-| `client/.env.local` | Только локально (не в Docker, не в git) |
+| Файл                          | Роль                                                      |
+| ----------------------------- | --------------------------------------------------------- |
+| `docker-compose.yml`          | 4 сервиса: `postgres`, `api`, `web`, `proxy`              |
+| `.env` (корень)               | Секреты для compose + API (`POSTGRES_*`, `DB_*`, JWT, AI) |
+| `deploy/Caddyfile`            | Маршруты домена → контейнеры                              |
+| `server/Dockerfile`           | Сборка API → образ `api`                                  |
+| `server/docker-entrypoint.sh` | migrate → seed? → `node dist/main.js`                     |
+| `client/Dockerfile`           | Сборка Next → образ `web`                                 |
+| `client/next.config.ts`       | `output: "standalone"` — лёгкий runtime в Docker          |
+| `client/.env.local`           | Только локально (не в Docker, не в git)                   |
 
 **Запрос пользователя:**
 
@@ -62,14 +62,14 @@ client/src/shared/lib/axiosInstance.ts
   → снова Caddy → api
 ```
 
-| Путь в `client/` | Роль |
-|------------------|------|
-| `src/app/` | Страницы (App Router): `page.tsx` = маршрут |
-| `src/entities/` | Сущности: card, user, shop… + API thunks |
-| `src/features/` | Формы, UI-фичи (логин, профиль…) |
-| `src/shared/lib/axiosInstance.ts` | Все HTTP-запросы на бэкенд |
-| `src/shared/hooks/useReduxHooks.ts` | Redux в компонентах |
-| `next.config.ts` | `standalone` для Docker-образа |
+| Путь в `client/`                    | Роль                                        |
+| ----------------------------------- | ------------------------------------------- |
+| `src/app/`                          | Страницы (App Router): `page.tsx` = маршрут |
+| `src/entities/`                     | Сущности: card, user, shop… + API thunks    |
+| `src/features/`                     | Формы, UI-фичи (логин, профиль…)            |
+| `src/shared/lib/axiosInstance.ts`   | Все HTTP-запросы на бэкенд                  |
+| `src/shared/hooks/useReduxHooks.ts` | Redux в компонентах                         |
+| `next.config.ts`                    | `standalone` для Docker-образа              |
 
 **Локально vs прод:**
 
@@ -126,11 +126,11 @@ cd /opt/funeral-services && docker compose up -d --build
 
 ## 1. Что получится в итоге
 
-| URL | Куда идёт запрос |
-|-----|------------------|
-| `https://funeral-services.ru/` | Next.js (фронт) |
-| `https://funeral-services.ru/api/...` | NestJS (бэкенд) |
-| База данных | PostgreSQL внутри Docker (снаружи не открыта) |
+| URL                                   | Куда идёт запрос                              |
+| ------------------------------------- | --------------------------------------------- |
+| `https://funeral-services.ru/`        | Next.js (фронт)                               |
+| `https://funeral-services.ru/api/...` | NestJS (бэкенд)                               |
+| База данных                           | PostgreSQL внутри Docker (снаружи не открыта) |
 
 Пользователь заходит на сайт → Caddy принимает 80/443 → отдаёт статику/SSR с контейнера `web`, API проксирует на контейнер `api`.
 
@@ -341,13 +341,13 @@ DB_SEED=true
 
 **Правила:**
 
-| Переменная | Зачем |
-|------------|--------|
-| `POSTGRES_*` | Создание БД в контейнере `postgres` |
-| `DB_*` | Подключение API к той же БД (`DB_HOST=postgres` — имя сервиса в compose) |
-| `DB_USER` / `DB_PASSWORD` / `DB_NAME` | Должны совпадать с `POSTGRES_*` |
-| `DB_SEED=true` | Один раз заполнить тестовыми данными; после успешного старта → `false` |
-| `CORS_ORIGIN` | Иначе браузер заблокирует запросы с фронта к API |
+| Переменная                            | Зачем                                                                    |
+| ------------------------------------- | ------------------------------------------------------------------------ |
+| `POSTGRES_*`                          | Создание БД в контейнере `postgres`                                      |
+| `DB_*`                                | Подключение API к той же БД (`DB_HOST=postgres` — имя сервиса в compose) |
+| `DB_USER` / `DB_PASSWORD` / `DB_NAME` | Должны совпадать с `POSTGRES_*`                                          |
+| `DB_SEED=true`                        | Один раз заполнить тестовыми данными; после успешного старта → `false`   |
+| `CORS_ORIGIN`                         | Иначе браузер заблокирует запросы с фронта к API                         |
 
 ### 7.4. Проверить, что Docker видит переменные
 
@@ -377,7 +377,7 @@ scp .env root@ВАШ_IP:/opt/funeral-services/.env
 
 ```bash
 cd /opt/funeral-services
-docker compose up -d --build
+
 ```
 
 - `--build` — пересобрать образы `api` и `web`;
@@ -435,10 +435,10 @@ docker compose logs postgres
 
 Создайте **A-записи**:
 
-| Имя | Тип | Значение |
-|-----|-----|----------|
-| `@` | A | IP вашего VPS |
-| `www` | A | IP вашего VPS |
+| Имя   | Тип | Значение      |
+| ----- | --- | ------------- |
+| `@`   | A   | IP вашего VPS |
+| `www` | A   | IP вашего VPS |
 
 Подождите 5–60 минут (иногда до 24 ч).
 
@@ -524,10 +524,10 @@ docker compose up -d api
 
 ```yaml
 services:
-  postgres:   # БД, volume pgdata
-  api:        # NestJS, build ./server, env_file: .env
-  web:        # Next.js, build ./client, NEXT_PUBLIC_API_URL
-  proxy:      # Caddy, порты 80/443
+  postgres: # БД, volume pgdata
+  api: # NestJS, build ./server, env_file: .env
+  web: # Next.js, build ./client, NEXT_PUBLIC_API_URL
+  proxy: # Caddy, порты 80/443
 ```
 
 - `api` ждёт `postgres` (healthcheck).
@@ -555,10 +555,10 @@ node dist/main.js
 
 ### 12.5. Локальная разработка vs Docker
 
-| | Локально | Docker на VPS |
-|--|----------|----------------|
-| Файл env | `server/.env` | корневой `.env` |
-| `DB_HOST` | `localhost` | `postgres` |
+|           | Локально                                      | Docker на VPS                             |
+| --------- | --------------------------------------------- | ----------------------------------------- |
+| Файл env  | `server/.env`                                 | корневой `.env`                           |
+| `DB_HOST` | `localhost`                                   | `postgres`                                |
 | Фронт API | `client/.env.local` → `http://localhost:3000` | build-arg → `https://funeral-services.ru` |
 
 ---
@@ -589,9 +589,21 @@ node dist/main.js
 - Caddy: `docker compose logs proxy`.
 - DNS и HTTPS настроены?
 
-### Сиды выполняются каждый раз
+### Сиды выполняются каждый раз / `admin@funeral.ru already exists`
 
-Поставьте `DB_SEED=false` после первого деплоя.
+Поставьте `DB_SEED=false` после первого деплоя. API в цикле Restarting из‑за `set -e` в entrypoint.
+
+### `Cannot find module '/app/dist/main.js'`
+
+Образ API собран без `dist/main.js`. На сервере:
+
+```bash
+git pull origin dev
+docker compose build --no-cache api
+docker compose up -d api
+```
+
+В `Dockerfile` есть проверка `test -f dist/main.js` — если сборка падает, смотрите лог `npm run build`.
 
 ### Потеря данных БД
 
@@ -642,13 +654,13 @@ docker image prune -f
 
 ## Ссылки в репозитории
 
-| Файл | Назначение |
-|------|------------|
-| `docker-compose.yml` | Описание всех сервисов |
-| `.env.example` | Шаблон переменных |
-| `deploy/Caddyfile` | Маршрутизация и HTTPS |
-| `server/Dockerfile` | Образ API |
-| `client/Dockerfile` | Образ фронта |
+| Файл                          | Назначение                   |
+| ----------------------------- | ---------------------------- |
+| `docker-compose.yml`          | Описание всех сервисов       |
+| `.env.example`                | Шаблон переменных            |
+| `deploy/Caddyfile`            | Маршрутизация и HTTPS        |
+| `server/Dockerfile`           | Образ API                    |
+| `client/Dockerfile`           | Образ фронта                 |
 | `server/docker-entrypoint.sh` | Миграции + опциональные сиды |
 
 Если что-то пойдёт не так — сохраните вывод `docker compose logs api` и `docker compose ps` для разбора.

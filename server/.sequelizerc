@@ -4,6 +4,8 @@ const fs = require('fs');
 const rootEnv = path.join(__dirname, '../.env');
 const serverEnv = path.join(__dirname, '.env');
 
+// Корневой .env — для Docker (DB_HOST=postgres). server/.env — для локальной разработки.
+// server/.env загружается последним и перекрывает корневой при npm run db:* на ПК.
 if (fs.existsSync(rootEnv)) {
   process.loadEnvFile(rootEnv);
 }
