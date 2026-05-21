@@ -107,7 +107,7 @@
   font-size: 14px;
 }
 
-@media (width <= 640px) {
+@media (width <= 430px) {
   .admin-orders__list {
     padding: 0 16px 20px;
   }

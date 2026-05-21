@@ -177,7 +177,7 @@
   color: var(--text-muted);
 }
 
-@media (width <= 980px) {
+@media (width <= 1024px) {
   .home-feature-grid,
   .home-process-grid {
     grid-template-columns: 1fr;
@@ -188,7 +188,7 @@
   }
 }
 
-@media (width <= 640px) {
+@media (width <= 430px) {
   .home-video-block {
     padding-top: 20px;
   }
@@ -200,5 +200,17 @@
   .home-content {
     gap: 44px;
     padding-top: 20px;
+  }
+}
+
+@media (width <= 389px) {
+  .home-feature-card {
+    padding: 18px 16px;
+  }
+}
+
+@media (width <= 359px) {
+  .home-video-player {
+    min-height: 200px;
   }
 }

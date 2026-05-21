@@ -135,9 +135,9 @@
   border-color: rgb(206 141 128 / 46%);
 }
 
-@media (width <= 640px) {
+@media (width <= 430px) {
   .cremation-card {
-    grid-template-rows: auto 210px 1fr;
+    grid-template-rows: auto min(210px, 52vw) 1fr;
     border-radius: 22px;
   }
 

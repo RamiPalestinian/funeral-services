@@ -234,7 +234,7 @@
   transform: translateY(-1px);
 }
 
-@media (width <= 980px) {
+@media (width <= 1024px) {
   .auth-shell {
     width: min(100%, 560px);
   }
@@ -250,7 +250,7 @@
   }
 }
 
-@media (width <= 640px) {
+@media (width <= 430px) {
   .auth-page {
     min-height: auto;
     padding-top: 18px;
@@ -266,6 +266,7 @@
   }
 
   .toggle-option {
+    min-height: var(--touch-min);
     padding-inline: 10px;
     font-size: 12px;
     letter-spacing: 0.08em;

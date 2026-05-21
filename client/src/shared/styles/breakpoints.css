@@ -1,0 +1,85 @@
+/*
+  Адаптив: популярные экраны (portrait, CSS px)
+  ≤359  — компактные Android (Galaxy A, Redmi, Honor)
+  ≤389  — iPhone SE, узкие 375
+  ≤430  — iPhone 11–17, Pro/Pro Max (390–428), Galaxy S, Xiaomi, Honor
+  ≤767  — большие телефоны / узкий landscape
+  ≤1024 — iPad, iPad Air (768–820)
+  ≤1180 — iPad Pro 11", landscape планшетов
+  ≥1181 — desktop
+*/
+
+:root {
+  --bp-phone-xs: 360px;
+  --bp-phone-sm: 390px;
+  --bp-phone: 430px;
+  --bp-tablet: 768px;
+  --bp-tablet-lg: 1024px;
+  --bp-desktop: 1180px;
+  --page-gutter: clamp(12px, 3.2vw, 24px);
+  --touch-min: 44px;
+}
+
+/* Safe area: iPhone с вырезом, Samsung gesture bar */
+@supports (padding: max(0px)) {
+  body {
+    padding-right: max(0px, env(safe-area-inset-right));
+    padding-left: max(0px, env(safe-area-inset-left));
+  }
+}
+
+/* Компактные телефоны */
+@media (width <= 359px) {
+  :root {
+    --radius-xl: 22px;
+    --toast-offset-top: 320px;
+  }
+}
+
+/* iPhone 12–17, Galaxy, Mi, Honor — стандартная ширина */
+@media (width <= 389px) {
+  :root {
+    --toast-offset-top: 310px;
+  }
+}
+
+@media (width <= 430px) {
+  :root {
+    --toast-offset-top: 300px;
+  }
+}
+
+/* Планшеты iPad */
+@media (width <= 1024px) {
+  :root {
+    --toast-offset-top: max(240px, var(--header-offset, 320px));
+  }
+}
+
+@media (width >= 768px) and (width <= 1024px) {
+  :root {
+    --container-width: min(100%, 960px);
+  }
+}
+
+@media (width >= 1025px) {
+  :root {
+    --toast-offset-top: 100px;
+  }
+}
+
+/* Утилиты для сеток и кнопок на узких экранах */
+@media (width <= 430px) {
+  .u-stack-sm {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .u-full-width-sm {
+    width: 100%;
+  }
+
+  .u-touch-target {
+    min-height: var(--touch-min);
+  }
+}

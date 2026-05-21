@@ -293,14 +293,14 @@
   }
 }
 
-@media (width <= 960px) {
+@media (width <= 1024px) {
   .home-cinematic-hero {
     padding-inline: 18px;
-    margin-top: -118px;
+    margin-top: 0;
   }
 
   .home-cinematic-inner {
-    padding: 144px 12px 98px;
+    padding: 128px 12px 98px;
   }
 
   .home-cinematic-stage {
@@ -317,11 +317,11 @@
   }
 }
 
-@media (width <= 640px) {
+@media (width <= 430px) {
   .home-cinematic-hero {
     min-height: 100svh;
     padding-inline: 12px;
-    margin-top: -110px;
+    margin-top: 0;
   }
 
   .home-cinematic-backdrop {
@@ -356,5 +356,25 @@
   .home-scroll-indicator {
     bottom: 18px;
     height: 64px;
+  }
+}
+
+@media (width <= 389px) {
+  .home-cinematic-inner {
+    padding: 132px 4px 88px;
+  }
+
+  .home-cinematic-title {
+    font-size: clamp(2.75rem, 16vw, 4.5rem);
+  }
+}
+
+@media (width <= 359px) {
+  .home-cinematic-hero {
+    margin-top: 0;
+  }
+
+  .home-cinematic-aside {
+    padding: 14px 12px;
   }
 }

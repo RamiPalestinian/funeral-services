@@ -133,9 +133,9 @@
   box-shadow: inset 0 0 0 1px rgb(214 204 189 / 8%);
 }
 
-@media (width <= 640px) {
+@media (width <= 430px) {
   .card-line {
-    grid-template-rows: auto 160px 1fr;
+    grid-template-rows: auto min(160px, 42vw) 1fr;
   }
 
 }

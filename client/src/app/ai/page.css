@@ -192,7 +192,7 @@
   opacity: 0.55;
 }
 
-@media (width <= 700px) {
+@media (width <= 430px) {
   .support-chat-hero,
   .support-chat-shell {
     padding: 20px 18px;
@@ -205,5 +205,23 @@
 
   .support-chat-form-row {
     display: grid;
+  }
+
+  .support-chat-form button {
+    width: 100%;
+    min-height: var(--touch-min);
+  }
+}
+
+@media (width <= 768px) {
+  .support-chat-shell {
+    min-height: min(65vh, 560px);
+  }
+}
+
+@media (width <= 359px) {
+  .support-chat-hero,
+  .support-chat-shell {
+    padding: 16px 12px;
   }
 }

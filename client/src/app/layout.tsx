@@ -11,6 +11,12 @@ export const metadata: Metadata = {
   description: "Ритуальное агентство: сопровождение, организация и поддержка",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{

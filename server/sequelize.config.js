@@ -1,3 +1,4 @@
+require('dotenv').config();
 
 module.exports = {
     development: {   
@@ -27,4 +28,4 @@ module.exports = {
       dialect: 'postgres',
       logging: false,
     },
-  };
+};

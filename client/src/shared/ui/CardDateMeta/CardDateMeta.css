@@ -33,7 +33,7 @@
   opacity: 0.92;
 }
 
-@media (width <= 640px) {
+@media (width <= 430px) {
   .card-date-meta {
     padding: 10px 14px;
     font-size: 11px;

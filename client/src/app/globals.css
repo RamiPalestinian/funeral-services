@@ -1,3 +1,5 @@
+@import url("../shared/styles/breakpoints.css");
+
 :root {
   --bg-main: #1a1f22;
   --bg-secondary: #232a2d;
@@ -74,6 +76,13 @@ body::after {
   border-radius: 20px;
 }
 
+@media (width <= 430px) {
+  body::after {
+    inset: 10px;
+    border-radius: 14px;
+  }
+}
+
 #root {
   min-height: 100vh;
 }
@@ -105,16 +114,9 @@ a {
 
 .app-root {
   min-height: 100vh;
+  min-height: 100dvh;
 }
 
-@media (width <= 980px) {
-  :root {
-    --toast-offset-top: 240px;
-  }
-}
-
-@media (width <= 700px) {
-  :root {
-    --toast-offset-top: 300px;
-  }
+body.site-mobile-menu-open {
+  overflow: hidden;
 }
