@@ -289,6 +289,11 @@
   align-items: stretch;
 }
 
+.personal-edit-grid--single {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 520px;
+}
+
 .personal-edit-grid .personal-edit-card {
   height: 100%;
 }

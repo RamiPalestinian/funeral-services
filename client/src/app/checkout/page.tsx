@@ -77,12 +77,22 @@ export default function CheckoutPage() {
     }
 
     try {
-      await dispatch(mockCheckoutThunk()).unwrap();
+      await dispatch(mockCheckoutThunk(paymentMethod as "card" | "sbp")).unwrap();
       router.push(CLIENT_ROUTES.CHECKOUT_SUCCESS);
     } catch {
       showToast("Не удалось завершить оплату", "error");
     }
   }, [dispatch, paymentMethod, router]);
+
+  const handleConfirmCashOrder = useCallback(async () => {
+    try {
+      await dispatch(mockCheckoutThunk("cash")).unwrap();
+      setIsCashOrderModalOpen(false);
+      router.push(CLIENT_ROUTES.CHECKOUT_SUCCESS);
+    } catch {
+      showToast("Не удалось оформить заказ", "error");
+    }
+  }, [dispatch, router]);
 
   useEffect(() => {
     if (!isReady) return;
@@ -255,13 +265,23 @@ export default function CheckoutPage() {
             <p className="checkout-cash-modal__total">
               Итого: <strong>{formatPriceRUB(totalPrice)} ₽</strong>
             </p>
-            <button
-              type="button"
-              className="cart-checkout-btn checkout-cash-modal__close"
-              onClick={() => setIsCashOrderModalOpen(false)}
-            >
-              Закрыть
-            </button>
+            <div className="checkout-cash-modal__actions">
+              <button
+                type="button"
+                className="cart-checkout-btn checkout-cash-modal__close"
+                onClick={() => setIsCashOrderModalOpen(false)}
+              >
+                Закрыть
+              </button>
+              <button
+                type="button"
+                className="cart-checkout-btn checkout-cash-modal__confirm"
+                disabled={isLoading}
+                onClick={() => void handleConfirmCashOrder()}
+              >
+                Подтвердить заказ
+              </button>
+            </div>
           </div>
         </div>
       ) : null}

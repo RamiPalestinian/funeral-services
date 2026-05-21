@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Card } from './card.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { CreateCardDto } from './dto/create-card.dto';
@@ -12,6 +8,7 @@ import { User } from 'src/users/user.model';
 import { Islamic } from 'src/islamic/islamic.model';
 import { ClassicService } from 'src/classic-service/classicService.model';
 import { Cremation } from 'src/cremations/cremations.model';
+import { OrdersService } from 'src/orders/orders.service';
 
 const catalogAttributes = [
   'id',
@@ -24,7 +21,10 @@ const catalogAttributes = [
 
 @Injectable()
 export class CardService {
-  constructor(@InjectModel(Card) private readonly cardModel: typeof Card) {}
+  constructor(
+    @InjectModel(Card) private readonly cardModel: typeof Card,
+    private readonly ordersService: OrdersService,
+  ) {}
 
   private cardWithRelationsInclude(): Includeable[] {
     return [
@@ -108,30 +108,10 @@ export class CardService {
     return result;
   }
 
-  async mockCheckoutForUser(userId: number) {
-    const cards = await this.findAllForUser(userId);
-
-    if (cards.length === 0) {
-      throw new NotFoundException('Корзина пуста');
-    }
-
-    let total = 0;
-    for (const card of cards) {
-      const price =
-        card.service?.price ??
-        card.islamic?.price ??
-        card.classicService?.price ??
-        card.cremation?.price ??
-        0;
-
-      total += Number(price);
-    }
-
-    return {
-      success: true,
-      message: 'Оплата прошла успешно',
-      total,
-      items: cards.length,
-    };
+  async mockCheckoutForUser(
+    userId: number,
+    paymentMethod: 'card' | 'sbp' | 'cash' = 'card',
+  ) {
+    return this.ordersService.createFromCart(userId, paymentMethod);
   }
 }
