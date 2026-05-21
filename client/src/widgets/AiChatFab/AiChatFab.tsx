@@ -5,9 +5,11 @@ import { useCallback, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import AiChatPanel from "@/features/ai/ui/AiChatPanel/AiChatPanel";
 import { CLIENT_ROUTES } from "@/shared/consts/clientRouts";
+import { useAppSelector } from "@/shared/hooks/useReduxHooks";
 import "./AiChatFab.css";
 
 export default function AiChatFab() {
+  const { user, isInitialized } = useAppSelector((state) => state.user);
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [lastPathname, setLastPathname] = useState(pathname);
@@ -44,7 +46,8 @@ export default function AiChatFab() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, closeChat]);
 
-  if (isAiPage) {
+  // Кружок «Чат-бот» только для авторизованных (на всех страницах, кроме /ai)
+  if (!isInitialized || !user || isAiPage) {
     return null;
   }
 

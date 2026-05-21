@@ -20,6 +20,7 @@ const userSlice = createSlice({
         builder.addCase(refreshTokenThunk.rejected,(state, action) => {
             state.isLoading = false;
             state.isInitialized = true;
+            state.user = null;
             state.error = action.payload ?? 'Ошибка при обновлении токена';
         })
 
