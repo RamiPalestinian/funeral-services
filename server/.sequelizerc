@@ -6,7 +6,8 @@ const serverEnv = path.join(__dirname, '.env');
 
 if (fs.existsSync(rootEnv)) {
   process.loadEnvFile(rootEnv);
-} else if (fs.existsSync(serverEnv)) {
+}
+if (fs.existsSync(serverEnv)) {
   process.loadEnvFile(serverEnv);
 }
 

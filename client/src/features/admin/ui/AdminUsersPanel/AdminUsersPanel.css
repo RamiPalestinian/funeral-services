@@ -1,0 +1,17 @@
+.admin-users__cart-count {
+  font-size: 12px;
+  color: var(--text-muted, rgb(255 255 255 / 55%));
+}
+
+.admin-users__category {
+  font-size: 12px;
+  color: var(--text-muted, rgb(255 255 255 / 50%));
+}
+
+.admin-users__empty-cart {
+  margin: 0;
+  padding-top: 12px;
+  font-size: 14px;
+  color: var(--text-muted, rgb(255 255 255 / 55%));
+  border-top: 1px solid var(--line-soft);
+}

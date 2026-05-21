@@ -110,14 +110,17 @@ export const deleteCardThunk = createAsyncThunk<
   }
 });
 
+export type CheckoutPaymentMethod = "card" | "sbp" | "cash";
+
 export const mockCheckoutThunk = createAsyncThunk<
   MockCheckoutResult,
-  void,
+  CheckoutPaymentMethod | void,
   { rejectValue: string }
->(CARD_THUNK_NAMES.CHECKOUT_MOCK, async (_, { rejectWithValue }) => {
+>(CARD_THUNK_NAMES.CHECKOUT_MOCK, async (paymentMethod, { rejectWithValue }) => {
   try {
     const { data, status } = await axiosInstance.post<MockCheckoutResult>(
       CARD_API_URLS.CHECKOUT_MOCK,
+      paymentMethod ? { paymentMethod } : {},
     );
 
     if (status === 200) {

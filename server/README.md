@@ -47,14 +47,14 @@ $ npm run start:prod
 ## Run tests
 
 ```bash
-# unit tests
-$ npm run test
+# unit tests (OrdersService, CardService, AdminGuard, UsersService, AppController)
+npm run test
 
-# e2e tests
-$ npm run test:e2e
+# e2e smoke test (GET /api без подключения к БД)
+npm run test:e2e
 
-# test coverage
-$ npm run test:cov
+# coverage
+npm run test:cov
 ```
 
 ## Deployment

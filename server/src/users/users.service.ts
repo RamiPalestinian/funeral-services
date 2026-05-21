@@ -14,6 +14,17 @@ import { Islamic } from 'src/islamic/islamic.model';
 import { Service } from 'src/services/services.model';
 import { User } from './user.model';
 import { toPublicUser } from './user-public';
+import { Op, Includeable } from 'sequelize';
+import { ADMIN_USER_ID } from '../common/constants/admin';
+
+const catalogAttributes = [
+  'id',
+  'name',
+  'description',
+  'price',
+  'category',
+  'image',
+] as const;
 
 type CreateUserPayload = {
   name: string;
@@ -55,6 +66,71 @@ export class UsersService {
 
   toPublicUser(user: User) {
     return user ? toPublicUser(user) : null;
+  }
+
+  private cardCatalogInclude(): Includeable[] {
+    return [
+      {
+        model: Service,
+        required: false,
+        attributes: [...catalogAttributes],
+      },
+      {
+        model: Islamic,
+        required: false,
+        attributes: [...catalogAttributes],
+      },
+      {
+        model: ClassicService,
+        required: false,
+        attributes: [...catalogAttributes],
+      },
+      {
+        model: Cremation,
+        required: false,
+        attributes: [...catalogAttributes],
+      },
+    ];
+  }
+
+  private mapCardToCartLine(card: Card) {
+    const item =
+      card.service ?? card.islamic ?? card.classicService ?? card.cremation;
+
+    if (!item) {
+      return null;
+    }
+
+    return {
+      cardId: card.id,
+      name: item.name,
+      price: Number(item.price),
+      category: item.category ?? null,
+    };
+  }
+
+  async findAllWithCartsForAdmin() {
+    const users = await this.userModel.findAll({
+      where: { id: { [Op.ne]: ADMIN_USER_ID } },
+      include: [
+        {
+          model: Card,
+          required: false,
+          include: this.cardCatalogInclude(),
+        },
+      ],
+      order: [
+        ['createdAt', 'DESC'],
+        [{ model: Card, as: 'cards' }, 'createdAt', 'DESC'],
+      ],
+    });
+
+    return users.map((user) => ({
+      user: toPublicUser(user),
+      cart: (user.cards ?? [])
+        .map((card) => this.mapCardToCartLine(card))
+        .filter((line): line is NonNullable<typeof line> => line !== null),
+    }));
   }
 
   async updateProfile(id: number, dto: UpdateUserDto) {

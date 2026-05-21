@@ -165,7 +165,14 @@
   color: var(--accent-stone);
 }
 
-.checkout-cash-modal__close {
+.checkout-cash-modal__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.checkout-cash-modal__close,
+.checkout-cash-modal__confirm {
   width: 100%;
 }
 

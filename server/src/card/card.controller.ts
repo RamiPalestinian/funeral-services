@@ -15,6 +15,7 @@ import type { Request } from 'express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CardService } from './card.service';
 import { CreateCardDto } from './dto/create-card.dto';
+import { CheckoutDto } from './dto/checkout.dto';
 
 type JwtRequestUser = { userId: number; email: string };
 
@@ -55,7 +56,13 @@ export class CardController {
 
   @Post('mock-checkout')
   @HttpCode(HttpStatus.OK)
-  mockCheckout(@Req() req: Request & { user: JwtRequestUser }) {
-    return this.cardService.mockCheckoutForUser(req.user.userId);
+  mockCheckout(
+    @Body() dto: CheckoutDto,
+    @Req() req: Request & { user: JwtRequestUser },
+  ) {
+    return this.cardService.mockCheckoutForUser(
+      req.user.userId,
+      dto.paymentMethod ?? 'card',
+    );
   }
 }

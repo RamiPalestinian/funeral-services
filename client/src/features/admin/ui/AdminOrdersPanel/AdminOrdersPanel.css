@@ -1,0 +1,119 @@
+.admin-orders__lead {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: var(--text-muted, rgb(255 255 255 / 62%));
+}
+
+.admin-orders__status,
+.admin-orders__error {
+  padding: 0 28px 28px;
+  font-size: 14px;
+}
+
+.admin-orders__error {
+  color: #e8a0a0;
+}
+
+.admin-orders__list {
+  display: grid;
+  gap: 14px;
+  padding: 0 28px 28px;
+  margin: 0;
+  list-style: none;
+}
+
+.admin-orders__card {
+  padding: 18px 20px;
+  background: rgb(255 255 255 / 3%);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg, 16px);
+}
+
+.admin-orders__card-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.admin-orders__name {
+  margin: 0 0 6px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.admin-orders__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-muted, rgb(255 255 255 / 62%));
+}
+
+.admin-orders__summary {
+  display: grid;
+  gap: 4px;
+  text-align: right;
+}
+
+.admin-orders__summary strong {
+  font-size: 18px;
+}
+
+.admin-orders__summary time {
+  font-size: 12px;
+  color: var(--text-muted, rgb(255 255 255 / 55%));
+}
+
+.admin-orders__details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px 16px;
+  margin: 14px 0;
+  font-size: 13px;
+}
+
+.admin-orders__details div {
+  display: grid;
+  gap: 2px;
+}
+
+.admin-orders__details dt {
+  color: var(--text-muted, rgb(255 255 255 / 50%));
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 10px;
+}
+
+.admin-orders__details dd {
+  margin: 0;
+}
+
+.admin-orders__items {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 12px 0 0;
+  list-style: none;
+  border-top: 1px solid var(--line-soft);
+}
+
+.admin-orders__items li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  .admin-orders__list {
+    padding: 0 16px 20px;
+  }
+
+  .admin-orders__summary {
+    width: 100%;
+    text-align: left;
+  }
+}
